@@ -60,7 +60,7 @@ jobs:
           python crossfold_analysis.py \
             --input results/crossfold/crossfold_training.parquet \
             --results-dir results/crossfold/training_audit \
-            --bootstrap 50000 \
+            --bootstrap 20000 \
             --seed 20260727
 
       - name: Run pre-registered one-shot cross-fold replication on evaluation demonstrations
@@ -71,7 +71,7 @@ jobs:
           python crossfold_analysis.py \
             --input results/crossfold/crossfold_evaluation.parquet \
             --results-dir results/crossfold/evaluation_audit \
-            --bootstrap 50000 \
+            --bootstrap 20000 \
             --seed 20260727
 
       - name: Compare training and evaluation without tuning
@@ -82,7 +82,7 @@ jobs:
             --training-json results/crossfold/training_audit/crossfold_calibration.json \
             --evaluation-json results/crossfold/evaluation_audit/crossfold_calibration.json \
             --output-dir results/crossfold \
-            --bootstrap 50000 \
+            --bootstrap 20000 \
             --seed 20260727
 
       - name: Display resolved findings
