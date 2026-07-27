@@ -23,7 +23,7 @@ permissions:
 
 concurrency:
   group: frozen-arc-v3-private-cycle-001
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   submit-and-record:
