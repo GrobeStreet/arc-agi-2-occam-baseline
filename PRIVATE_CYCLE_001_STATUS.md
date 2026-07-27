@@ -1,32 +1,27 @@
-# Private Cycle 001 Status
+# Frozen v3 Private Cycle 001 — Result
 
+**State:** BLOCKED_AUTH  
 **Competition:** `arc-prize-2026-arc-agi-2`  
-**Frozen solver:** representation v3  
-**Registration:** [`HYPOTHESIS-private-v3-cycle-001.md`](HYPOTHESIS-private-v3-cycle-001.md)  
-**Current state:** **READY FOR AUTHENTICATED KAGGLE RUN — NOT YET SUBMITTED**
+**Frozen source commit:** `70672f3aa62d089bfffd072461a5713caae1e099`  
+**Recorded:** 2026-07-27T04:23:32.528445+00:00
 
-## Completed
+- Kaggle kernel: `not created`
+- Kernel version: `not available`
+- Submission ref: `not available`
+- Submission status: `not available`
+- Visible public score: **not available**
+- Visible public rank: **not available**
 
-- Frozen v3 source is committed on `main`.
-- The solver writes exactly two validated attempts per test input.
-- Kaggle execution entrypoint exists at `contest/kaggle_kernel_v3/run.py`.
-- The private-cycle interpretation and representation firewall are registered.
-- The GitHub-to-Kaggle workflow is designed to preserve source hashes, kernel version, submission status, score, and ranking output.
+## Interpretation
 
-## External account gates
+The frozen kernel is prepared and hashed, but Kaggle authentication is not configured. No contest submission or ranking exists yet.
 
-An actual competition submission requires all of the following:
+## Expansion firewall
 
-1. The GrobeStreet Kaggle account has joined the ARC Prize 2026 competition and accepted its rules.
-2. Repository Actions secret `KAGGLE_API_TOKEN` contains a current Kaggle API token.
-3. Repository Actions variable or secret `KAGGLE_USERNAME` contains the exact Kaggle username.
+No representation change is authorized under Cycle 001. Any subsequent representation work requires a new precommitted `HYPOTHESIS-representation-cycle-002.md`.
 
-These account-level credentials are not stored in this public repository and must never be committed.
+## Recorded blocker or error
 
-## Result boundary
-
-No contest score or rank exists for Cycle 001 until Kaggle accepts and scores the notebook version. The public ARC-AGI-2 evaluation result of 0/167 is a separate previously observed public holdout and is not a Kaggle competition ranking.
-
-## Next authorized state
-
-After authentication is configured, run the `Frozen v3 private Kaggle cycle 001` GitHub Actions workflow exactly once. Its result becomes the immutable Cycle 001 contest record. Representation changes remain blocked until a new `HYPOTHESIS-representation-cycle-002.md` is committed.
+```text
+Missing GitHub Actions secret(s): KAGGLE_USERNAME, KAGGLE_API_TOKEN
+```
