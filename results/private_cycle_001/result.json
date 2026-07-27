@@ -2,101 +2,46 @@
   "commands": [
     {
       "command": [
-        "/opt/hostedtoolcache/Python/3.11.15/x64/bin/python",
-        "scripts/build_frozen_v3_kaggle_notebook.py",
-        "--root",
-        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/frozen_source",
-        "--output",
-        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb",
-        "--manifest",
-        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/source_manifest.json",
-        "--source-commit",
-        "70672f3aa62d089bfffd072461a5713caae1e099"
-      ],
-      "output": "Wrote /home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb\nWrote /home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/source_manifest.json\n",
-      "returncode": 0,
-      "seconds": 0.041
-    },
-    {
-      "command": [
         "kaggle",
         "competitions",
-        "files",
+        "submissions",
         "arc-prize-2026-arc-agi-2",
-        "--page-size",
-        "1",
+        "-v",
         "-q"
       ],
-      "output": "Next Page Token = CfDJ8Oxz6O_D_GNGkNy8kL7JFsX-PWOcieZPxJqUL0IZlveRc7ZoHjt8KekF-tsP_57n8xcLYcs-XX__OW-_Vp_pZsd0eD1B-PwelRktb2nn9UcN0KWSSkZQ1UZ_Paz0LX7TIyQdSMyQV3hRr0mGP_pLWPaefdTll5QVoX1aUz8\nname                                      size  creationDate                \n----------------------------------  ----------  --------------------------  \narc-agi_evaluation_challenges.json      984679  2026-03-10 16:17:02.950000  \n",
+      "output": "No submissions found\n",
       "returncode": 0,
-      "seconds": 0.558
+      "seconds": 0.684
     },
     {
       "command": [
         "kaggle",
         "kernels",
-        "push",
+        "pull",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001/8",
         "-p",
-        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build",
-        "-t",
-        "3600"
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/verify_kernel_version_8",
+        "-m"
       ],
-      "output": "Kernel version 5 successfully pushed.  Please check progress at https://www.kaggle.com/code/robertmorong/grobestreet-arc-frozen-v3-cycle-001\n",
-      "returncode": 0,
-      "seconds": 1.645
+      "output": "403 Client Error: Forbidden for url: https://api.kaggle.com/v1/kernels.KernelsApiService/GetKernel\n",
+      "returncode": 1,
+      "seconds": 0.618
     }
   ],
   "competition": "arc-prize-2026-arc-agi-2",
-  "created_at": "2026-07-27T19:36:23.450942+00:00",
+  "created_at": "2026-07-27T20:12:19.932571+00:00",
   "cycle": "private-v3-cycle-001",
-  "error": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.ERROR\"",
+  "error": "403 Client Error: Forbidden for url: https://api.kaggle.com/v1/kernels.KernelsApiService/GetKernel\n",
   "frozen_source_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
-  "interpretation": "The frozen Kaggle notebook did not complete successfully; no code-competition submission was made.",
+  "interpretation": "No competition submission was attempted.",
   "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
-  "kernel_version": 5,
-  "packaging_note": "PRIVATE_CYCLE_001_PACKAGING_NOTE.md",
+  "kernel_version": 8,
   "private_score": null,
   "public_rank": null,
   "public_score": null,
-  "registration": "HYPOTHESIS-private-v3-cycle-001.md",
-  "source_hashes": {
-    "benchmark_representation_v3.py": "82b07ad403406aff24b307f5565c09b29233ba05e43bf7b08945ec0524365046",
-    "contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb": "7bbc056981d82dd9911ff3daa2f96bdbd8c533d6af9aba836477e7d32dbbc983",
-    "dsl.py": "8eddc1f9a64db82bf7357d4f42e0fdc8d155f4a076e5c5ec71d12cc9b5fe1c89",
-    "dsl_v3.py": "14f84c3d696d40cb35d51cefbc32547e8d5b6d8769d7acd1d37c0849d939782d",
-    "kaggle_submission_v3.py": "2f1b26257b0843949e5aaa9c5484fd5e23fe304ec278b931d0bd5a53a4379ae6"
-  },
-  "source_manifest": {
-    "competition": "arc-prize-2026-arc-agi-2",
-    "created_at_utc": "2026-07-27T19:36:23.494467+00:00",
-    "cycle": "private-v3-cycle-001",
-    "frozen_files": {
-      "benchmark_representation_v3.py": {
-        "bytes": 14111,
-        "sha256": "82b07ad403406aff24b307f5565c09b29233ba05e43bf7b08945ec0524365046"
-      },
-      "dsl.py": {
-        "bytes": 7036,
-        "sha256": "8eddc1f9a64db82bf7357d4f42e0fdc8d155f4a076e5c5ec71d12cc9b5fe1c89"
-      },
-      "dsl_v3.py": {
-        "bytes": 22499,
-        "sha256": "14f84c3d696d40cb35d51cefbc32547e8d5b6d8769d7acd1d37c0849d939782d"
-      },
-      "kaggle_submission_v3.py": {
-        "bytes": 8843,
-        "sha256": "2f1b26257b0843949e5aaa9c5484fd5e23fe304ec278b931d0bd5a53a4379ae6"
-      }
-    },
-    "output_contract": "/kaggle/working/submission.json",
-    "packaging_note": "PRIVATE_CYCLE_001_PACKAGING_NOTE.md",
-    "registration": "HYPOTHESIS-private-v3-cycle-001.md",
-    "source_commit": "70672f3aa62d089bfffd072461a5713caae1e099"
-  },
-  "state": "KERNEL_EXECUTION_FAILED",
+  "state": "IMMUTABLE_KERNEL_VERIFY_FAILED",
   "submission_ref": null,
   "submission_status": null,
   "team_count": null,
-  "updated_at": "2026-07-27T19:37:07.176974+00:00",
-  "workflow_source_commit": "83284541024dafbdc5da28450fb1b551e2cab4a6"
+  "updated_at": "2026-07-27T20:12:21.235141+00:00"
 }
