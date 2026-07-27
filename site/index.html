@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A live, reproducible audit of demonstration consistency, candidate selection, and leaderboard uncertainty in ARC-AGI-2." />
+  <title>ARC Measurement Audit — How Do We Know a Solution Is Right?</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="kicker">ARC Prize 2026 · independent research · publish regardless</p>
+      <h1>How do we know an ARC solution is right?</h1>
+      <p class="lead">A live audit of the ruler underneath ARC-AGI-2: demonstration consistency, program selection, benchmark uncertainty, and what survives a stricter same-holdout test.</p>
+      <div class="badges">
+        <span>Task-weighted</span><span>50,000 cluster bootstraps</span><span>Same-heldout v2 registered</span><span>Public evaluation one-shot</span>
+      </div>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline">Code and paper</a>
+        <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/pull/1">Live audit branch</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="status" id="status">
+      <div>
+        <p class="eyebrow">Current run</p>
+        <h2 id="runTitle">Loading the evidence record…</h2>
+        <p id="runDetail">The page reads the committed machine-readable results. It does not hard-code a favorable outcome.</p>
+      </div>
+      <span class="status-dot" aria-hidden="true"></span>
+    </section>
+
+    <section>
+      <p class="eyebrow">The first correction</p>
+      <h2>Programs are not independent observations. Tasks are.</h2>
+      <p class="section-lead">The original percentages pooled every generated program, so candidate-rich tasks counted more. Equal-task weighting lowers the headline rates and makes the uncertainty visible.</p>
+      <div class="metric-grid" id="prefixMetrics">
+        <article class="metric placeholder"><b>—</b><span>Loading k=1</span></article>
+        <article class="metric placeholder"><b>—</b><span>Loading k=2</span></article>
+        <article class="metric placeholder"><b>—</b><span>Loading k=3</span></article>
+      </div>
+      <p class="note">These prefix rates are descriptive. In the original design, increasing <em>k</em> also changed the held-out demonstration. The registered v2 experiment below holds the target fixed.</p>
+    </section>
+
+    <section class="dark-panel">
+      <p class="eyebrow">The resolved test</p>
+      <h2>Same target. More evidence. Every subset.</h2>
+      <p class="section-lead">For every task and held-out demonstration, v2 fits every possible subset of the remaining demonstrations. Subsets are averaged inside held-out targets, targets inside tasks, and tasks are then bootstrapped.</p>
+      <div id="crossfoldSummary" class="result-stack">
+        <div class="loading-line"></div><div class="loading-line short"></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Program selection</p>
+      <h2>“Shortest” is not a complete rule when equally short programs disagree.</h2>
+      <p class="section-lead">The audit separates the first-enumerated shortest program, random choice among minimum-complexity ties, tie-aware MDL voting, all-candidate consensus, and the candidate oracle ceiling.</p>
+      <div id="selectorTable" class="table-shell"><p class="muted">Waiting for the registered cross-fold result.</p></div>
+    </section>
+
+    <section class="split">
+      <div>
+        <p class="eyebrow">Actual contest progress</p>
+        <h2>Evidence-weighted selection, not syntax-count voting.</h2>
+        <p>The v2 solver learns equal-task reliability priors for DSL program families using only leave-one-demonstration-out prediction. It freezes those priors, combines them with task-local evidence, and is evaluated once on the public evaluation split.</p>
+        <div id="solverSummary" class="result-stack"><p class="muted">Benchmark run pending or loading.</p></div>
+      </div>
+      <aside class="principle">
+        <p class="eyebrow">Core principle</p>
+        <blockquote>A candidate should earn influence by predicting evidence it was not fitted to—not because the DSL can spell the same idea many ways.</blockquote>
+      </aside>
+    </section>
+
+    <section class="calculator">
+      <div>
+        <p class="eyebrow">Try the ruler</p>
+        <h2>ARC leaderboard uncertainty calculator</h2>
+        <p>Enter two scores and a task count. The calculator shows Wilson intervals and an unpaired two-proportion test. A proper system comparison should use paired per-task outcomes and McNemar’s test when those outcomes are available.</p>
+      </div>
+      <form id="calcForm" class="calc-grid">
+        <label>Tasks <input id="taskCount" type="number" min="10" step="1" value="120"></label>
+        <label>System A score (%) <input id="scoreA" type="number" min="0" max="100" step="0.1" value="54"></label>
+        <label>System B score (%) <input id="scoreB" type="number" min="0" max="100" step="0.1" value="45"></label>
+        <button class="button primary" type="submit">Recalculate</button>
+      </form>
+      <div id="calcResult" class="calc-result"></div>
+    </section>
+
+    <section>
+      <p class="eyebrow">What changed after adversarial review</p>
+      <h2>The paper is allowed to get less dramatic.</h2>
+      <div class="change-grid">
+        <article><h3>Original</h3><p>One-demo consistency was reported as exactly 50%.</p><h3>After task weighting</h3><p>45.6%, with a wide task-cluster interval. “Coin flip” is a rough description, not an exact benchmark constant.</p></article>
+        <article><h3>Original</h3><p>50% → 87% → 95% was interpreted as the effect of more demonstrations.</p><h3>After identification audit</h3><p>The original trend changed both the task mix and target. Same-heldout cross-fold contrasts are now primary.</p></article>
+        <article><h3>Original</h3><p>MDL matched the oracle ceiling in 17 ambiguous cells.</p><h3>After finite-sample audit</h3><p>That remains an encouraging sample result, not proof of oracle equivalence. Tie rules and miss-rate bounds are now explicit.</p></article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <p class="eyebrow">Research standard</p>
+      <h2>A number without its uncertainty is not a measurement.</h2>
+      <p>All code, data pointers, preregistration, negative results, and machine-readable outputs are public. The site updates from the evidence record committed by the workflows.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/arc-task-clustered-v2/HYPOTHESIS-crossfold-v2.md">Read the registered test</a>
+        <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER.md">Read the original draft</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Robert Morong · independent, AI-assisted research · ARC Prize 2026 Paper Track candidate</div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
