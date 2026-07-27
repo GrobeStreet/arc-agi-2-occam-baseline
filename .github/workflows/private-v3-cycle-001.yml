@@ -15,7 +15,6 @@ on:
       - 'scripts/build_frozen_v3_kaggle_notebook.py'
       - 'scripts/kaggle_private_cycle_001_v2.py'
       - 'scripts/kaggle_private_cycle_001_live.py'
-      - 'scripts/kaggle_private_cycle_submit_exact.py'
       - '.github/workflows/private-v3-cycle-001.yml'
 
 permissions:
@@ -96,10 +95,6 @@ jobs:
       - name: Run the registered frozen submission and ranking collector
         if: steps.cycle_guard.outputs.run_cycle == 'true'
         run: python scripts/kaggle_private_cycle_001_live.py
-
-      - name: Submit the exact validated downloaded output path
-        if: steps.cycle_guard.outputs.run_cycle == 'true'
-        run: python scripts/kaggle_private_cycle_submit_exact.py
 
       - name: Publish the immutable or blocked result record
         if: always() && steps.cycle_guard.outputs.run_cycle == 'true'
