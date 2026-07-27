@@ -11,37 +11,72 @@
       ],
       "output": "No submissions found\n",
       "returncode": 0,
-      "seconds": 0.684
+      "seconds": 0.735
     },
     {
       "command": [
         "kaggle",
         "kernels",
-        "pull",
-        "robertmorong/grobestreet-arc-frozen-v3-cycle-001/8",
-        "-p",
-        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/verify_kernel_version_8",
-        "-m"
+        "status",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001"
       ],
-      "output": "403 Client Error: Forbidden for url: https://api.kaggle.com/v1/kernels.KernelsApiService/GetKernel\n",
-      "returncode": 1,
-      "seconds": 0.618
+      "output": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.COMPLETE\"\n",
+      "returncode": 0,
+      "seconds": 0.682
+    },
+    {
+      "command": [
+        "kaggle",
+        "kernels",
+        "files",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-v",
+        "--page-size",
+        "200"
+      ],
+      "output": "name,size,creationDate\ndsl.cpython-312.pyc,914,\"8:03 pm, Monday 27 July 2026 UTC\"\ndsl_v3.cpython-312.pyc,923,\"8:03 pm, Monday 27 July 2026 UTC\"\nbenchmark_representation_v3.py,921,\"8:03 pm, Monday 27 July 2026 UTC\"\ndsl.py,849,\"8:03 pm, Monday 27 July 2026 UTC\"\ndsl_v3.py,859,\"8:03 pm, Monday 27 July 2026 UTC\"\nkaggle_submission_v3.py,900,\"8:03 pm, Monday 27 July 2026 UTC\"\nprivate_v3_cycle_001_source_manifest.json,956,\"8:03 pm, Monday 27 July 2026 UTC\"\nsubmission.json,879,\"8:03 pm, Monday 27 July 2026 UTC\"\nsubmission_v3_metadata.json,915,\"8:03 pm, Monday 27 July 2026 UTC\"\n",
+      "returncode": 0,
+      "seconds": 0.682
+    },
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submit",
+        "arc-prize-2026-arc-agi-2",
+        "-f",
+        "submission.json",
+        "-k",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-v",
+        "8",
+        "-m",
+        "Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d"
+      ],
+      "output": "0 submissions remaining today.\n",
+      "returncode": 0,
+      "seconds": 1.891
     }
   ],
   "competition": "arc-prize-2026-arc-agi-2",
-  "created_at": "2026-07-27T20:12:19.932571+00:00",
+  "created_at": "2026-07-27T20:18:02.546204+00:00",
   "cycle": "private-v3-cycle-001",
-  "error": "403 Client Error: Forbidden for url: https://api.kaggle.com/v1/kernels.KernelsApiService/GetKernel\n",
+  "error": null,
   "frozen_source_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
-  "interpretation": "No competition submission was attempted.",
+  "interpretation": "Kaggle accepted immutable kernel version 8; score or rank remained pending when recorded.",
   "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
   "kernel_version": 8,
   "private_score": null,
-  "public_rank": null,
+  "provenance": {
+    "completed_output_probe_commit": "73a612e836f35c286ba2428280ed7e27e11243c3",
+    "kernel_push_record_commit": "24457fc3480474d5a424966d082c7285a4db6160",
+    "output_filename": "submission.json"
+  },
+  "public_rank": 0,
   "public_score": null,
-  "state": "IMMUTABLE_KERNEL_VERIFY_FAILED",
+  "state": "SUBMITTED_SCORE_PENDING",
   "submission_ref": null,
-  "submission_status": null,
-  "team_count": null,
-  "updated_at": "2026-07-27T20:12:21.235141+00:00"
+  "submission_status": "SubmissionStatus.COMPLETE",
+  "team_count": 1283,
+  "updated_at": "2026-07-27T20:48:21.877279+00:00"
 }
