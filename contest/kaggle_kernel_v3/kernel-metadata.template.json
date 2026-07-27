@@ -1,0 +1,16 @@
+{
+  "id": "__KAGGLE_USERNAME__/grobestreet-arc-frozen-v3-cycle-001",
+  "title": "GrobeStreet ARC Frozen V3 Cycle 001",
+  "code_file": "frozen_v3_cycle_001.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "arc-prize-2026-arc-agi-2"
+  ],
+  "kernel_sources": [],
+  "model_sources": []
+}
