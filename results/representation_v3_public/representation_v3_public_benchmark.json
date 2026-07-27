@@ -1,0 +1,77 @@
+{
+  "registration": "HYPOTHESIS-v3-public-eval.md",
+  "solver": "representation-v3.0-frozen",
+  "data_root": "external/ARC-AGI-2/data/evaluation",
+  "task_count": 120,
+  "output_count": 167,
+  "runtime_seconds": 40.013540506362915,
+  "output_level": {
+    "coverage": {
+      "successes": 0,
+      "trials": 167,
+      "rate": 0.0,
+      "exact_ci95": [
+        0.0,
+        0.021846920830611915
+      ]
+    },
+    "pass1": {
+      "successes": 0,
+      "trials": 167,
+      "rate": 0.0,
+      "exact_ci95": [
+        0.0,
+        0.021846920830611915
+      ]
+    },
+    "pass2": {
+      "successes": 0,
+      "trials": 167,
+      "rate": 0.0,
+      "exact_ci95": [
+        0.0,
+        0.021846920830611915
+      ]
+    }
+  },
+  "task_level": {
+    "any_output_covered": {
+      "successes": 0,
+      "trials": 120,
+      "rate": 0.0,
+      "exact_ci95": [
+        0.0,
+        0.030272972577420072
+      ]
+    },
+    "whole_task_pass1": {
+      "successes": 0,
+      "trials": 120,
+      "rate": 0.0,
+      "exact_ci95": [
+        0.0,
+        0.030272972577420072
+      ]
+    },
+    "whole_task_pass2": {
+      "successes": 0,
+      "trials": 120,
+      "rate": 0.0,
+      "exact_ci95": [
+        0.0,
+        0.030272972577420072
+      ]
+    }
+  },
+  "paired_vs_v2_baseline": {
+    "baseline_source": "results/solver/solver_v2_benchmark.json",
+    "baseline_pass2_successes": 0,
+    "v3_pass2_successes": 0,
+    "v3_only_wins": 0,
+    "v2_only_wins": 0,
+    "exact_two_sided_p": 1.0
+  },
+  "registered_verdict": "NULL",
+  "submission": "submission_v3_public_evaluation.json",
+  "claim_boundary": "One-shot public-evaluation result; not a private Kaggle or verified score."
+}
