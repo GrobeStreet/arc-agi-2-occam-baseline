@@ -1,0 +1,128 @@
+name: ARC measurement audit v2
+
+on:
+  push:
+    branches: [arc-task-clustered-v2]
+    paths:
+      - 'task_clustered_analysis.py'
+      - 'crossfold_ablation.py'
+      - 'crossfold_analysis.py'
+      - 'crossfold_replication.py'
+      - 'HYPOTHESIS-crossfold-v2.md'
+      - 'ablate_cell_training.parquet'
+      - '.github/workflows/arc-measurement-v2.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'task_clustered_analysis.py'
+      - 'crossfold_ablation.py'
+      - 'crossfold_analysis.py'
+      - 'crossfold_replication.py'
+      - 'HYPOTHESIS-crossfold-v2.md'
+      - 'ablate_cell_training.parquet'
+      - '.github/workflows/arc-measurement-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arc-measurement-v2-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  recompute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip numpy pandas scipy pyarrow
+
+      - name: Fetch official ARC-AGI-2 corpus and pin commit
+        run: |
+          rm -rf external/ARC-AGI-2
+          git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git external/ARC-AGI-2
+          mkdir -p results
+          git -C external/ARC-AGI-2 rev-parse HEAD | tee results/arc_agi_2_data_commit.txt
+
+      - name: Recompute corrected legacy-prefix calibration
+        run: python task_clustered_analysis.py --bootstrap 50000 --seed 20260727
+
+      - name: Run same-holdout cross-fold experiment on training tasks
+        run: |
+          python crossfold_ablation.py training \
+            --data-root external/ARC-AGI-2/data \
+            --output-dir results/crossfold
+
+      - name: Analyze training cross-fold experiment
+        run: |
+          python crossfold_analysis.py \
+            --input results/crossfold/crossfold_training.parquet \
+            --results-dir results/crossfold/training_audit \
+            --bootstrap 50000 \
+            --seed 20260727
+
+      - name: Run pre-registered one-shot cross-fold replication on evaluation demonstrations
+        run: |
+          python crossfold_ablation.py evaluation \
+            --data-root external/ARC-AGI-2/data \
+            --output-dir results/crossfold
+          python crossfold_analysis.py \
+            --input results/crossfold/crossfold_evaluation.parquet \
+            --results-dir results/crossfold/evaluation_audit \
+            --bootstrap 50000 \
+            --seed 20260727
+
+      - name: Compare training and evaluation without tuning
+        run: |
+          python crossfold_replication.py \
+            --training-task-summary results/crossfold/training_audit/crossfold_task_summary.csv \
+            --evaluation-task-summary results/crossfold/evaluation_audit/crossfold_task_summary.csv \
+            --training-json results/crossfold/training_audit/crossfold_calibration.json \
+            --evaluation-json results/crossfold/evaluation_audit/crossfold_calibration.json \
+            --output-dir results/crossfold \
+            --bootstrap 50000 \
+            --seed 20260727
+
+      - name: Display resolved findings
+        run: |
+          cat results/task_weighted_calibration.md
+          echo '--- SAME-HOLDOUT TRAINING AUDIT ---'
+          cat results/crossfold/training_audit/crossfold_calibration.md
+          echo '--- ONE-SHOT EVALUATION AUDIT ---'
+          cat results/crossfold/evaluation_audit/crossfold_calibration.md
+          echo '--- REPLICATION ---'
+          cat results/crossfold/crossfold_replication.md
+
+      - name: Commit deterministic evidence record on branch pushes
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/arc_agi_2_data_commit.txt results/task_weighted_calibration.* results/task_weighted_task_cells.csv results/crossfold/
+          git diff --cached --quiet || git commit -m 'Add resolved same-holdout ARC measurement audit v2'
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload complete audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: arc-measurement-audit-v2
+          retention-days: 90
+          path: |
+            results/arc_agi_2_data_commit.txt
+            results/task_weighted_calibration.json
+            results/task_weighted_calibration.md
+            results/task_weighted_task_cells.csv
+            results/crossfold/
