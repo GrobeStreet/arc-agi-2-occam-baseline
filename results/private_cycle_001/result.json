@@ -1,0 +1,26 @@
+{
+  "commands": [],
+  "competition": "arc-prize-2026-arc-agi-2",
+  "created_at": "2026-07-27T04:20:19.843590+00:00",
+  "cycle": "private-v3-cycle-001",
+  "error": "Missing GitHub Actions secret(s): KAGGLE_USERNAME, KAGGLE_API_TOKEN",
+  "frozen_source_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
+  "interpretation": "The frozen kernel is prepared and hashed, but Kaggle authentication is not configured. No contest submission or ranking exists yet.",
+  "kernel_ref": null,
+  "kernel_version": null,
+  "private_score": null,
+  "public_rank": null,
+  "public_score": null,
+  "source_hashes": {
+    "benchmark_representation_v3.py": "82b07ad403406aff24b307f5565c09b29233ba05e43bf7b08945ec0524365046",
+    "contest/kaggle_kernel_v3/run.py": "fe76959d4341cebfd1a2635f6ffbd01c402be00355207dbff185327f83800a79",
+    "dsl.py": "8eddc1f9a64db82bf7357d4f42e0fdc8d155f4a076e5c5ec71d12cc9b5fe1c89",
+    "dsl_v3.py": "14f84c3d696d40cb35d51cefbc32547e8d5b6d8769d7acd1d37c0849d939782d",
+    "kaggle_submission_v3.py": "2f1b26257b0843949e5aaa9c5484fd5e23fe304ec278b931d0bd5a53a4379ae6"
+  },
+  "state": "BLOCKED_AUTH",
+  "submission_ref": null,
+  "submission_status": null,
+  "updated_at": "2026-07-27T04:20:19.852025+00:00",
+  "workflow_source_commit": "abeea36ff763c3c20c3423898c71fba72defcbc6"
+}
