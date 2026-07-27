@@ -7,6 +7,7 @@ on:
       - 'site/**'
       - 'ARC_Measurement_Audit_v2.pdf'
       - 'results/task_weighted_calibration.json'
+      - 'results/leaderboard_measurement_v2.json'
       - 'results/crossfold/**'
       - 'results/solver/**'
       - '.github/workflows/pages.yml'
@@ -42,6 +43,7 @@ jobs:
 
           mapping = {
               'results/task_weighted_calibration.json': '_site/data/task_weighted_calibration.json',
+              'results/leaderboard_measurement_v2.json': '_site/data/leaderboard_measurement_v2.json',
               'results/crossfold/training_audit/crossfold_calibration.json': '_site/data/crossfold_training.json',
               'results/crossfold/evaluation_audit/crossfold_calibration.json': '_site/data/crossfold_evaluation.json',
               'results/crossfold/crossfold_replication.json': '_site/data/crossfold_replication.json',
