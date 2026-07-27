@@ -1,0 +1,59 @@
+{
+  "observed_at": "2026-07-27T20:33:31.901185+00:00",
+  "competition": "arc-prize-2026-arc-agi-2",
+  "authenticated": true,
+  "commands": {
+    "submissions": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submissions",
+        "arc-prize-2026-arc-agi-2",
+        "-v",
+        "-q"
+      ],
+      "returncode": 0,
+      "output": "ref,fileName,date,description,status,publicScore,privateScore\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.COMPLETE,,\n"
+    },
+    "team_submissions": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "team-submissions",
+        "arc-prize-2026-arc-agi-2",
+        "-v",
+        "-q"
+      ],
+      "returncode": 2,
+      "output": "usage: kaggle competitions team-submissions [-h] [-v | --format OUTPUT_FORMAT]\n                                            [-q]\n                                            team_id\nkaggle competitions team-submissions: error: argument team_id: invalid int value: 'arc-prize-2026-arc-agi-2'\n"
+    },
+    "entered": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "list",
+        "--group",
+        "entered",
+        "-v"
+      ],
+      "returncode": 0,
+      "output": "ref,deadline,category,reward,teamCount,userHasEntered,userRank\nhttps://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,\"700,000 Usd\",1283,True,0\nhttps://www.kaggle.com/competitions/arc-prize-2026-paper-track,2026-11-09 23:59:00,Featured,\"450,000 Usd\",107,True,0\n"
+    },
+    "leaderboard": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "leaderboard",
+        "arc-prize-2026-arc-agi-2",
+        "-d",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/leaderboard_snapshot",
+        "-q"
+      ],
+      "returncode": 0,
+      "output": ""
+    }
+  },
+  "matched_rows": [],
+  "leaderboard_files": []
+}

@@ -1,0 +1,4 @@
+usage: kaggle competitions team-submissions [-h] [-v | --format OUTPUT_FORMAT]
+                                            [-q]
+                                            team_id
+kaggle competitions team-submissions: error: argument team_id: invalid int value: 'arc-prize-2026-arc-agi-2'
