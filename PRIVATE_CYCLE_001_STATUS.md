@@ -1,9 +1,9 @@
 # Frozen V3 Private Cycle 001 — Kaggle Result
 
-**State:** `KERNEL_VERSION_UNRESOLVED`  
+**State:** `BLOCKED_RULES_NOT_ACCEPTED`  
 **Competition:** `arc-prize-2026-arc-agi-2`  
 **Frozen source:** `70672f3aa62d089bfffd072461a5713caae1e099`  
-**Recorded:** 2026-07-27T18:11:30.640332+00:00
+**Recorded:** 2026-07-27T18:14:43.838277+00:00
 
 ## Official competition record
 
@@ -18,7 +18,7 @@
 
 ## Interpretation
 
-No code-competition submission was made because the immutable kernel version could not be named safely.
+The exact frozen notebook was built and authenticated access to the competition data was confirmed. Kaggle refused to attach the competition as a notebook datasource until the account joins the competition and accepts its rules. No kernel version, submission, score, or rank exists yet.
 
 ## Representation firewall
 
@@ -27,5 +27,5 @@ Cycle 001 authorizes no representation edits. Any expansion requires a new `HYPO
 ## Blocker or error
 
 ```text
-The official CLI did not expose a parseable kernel version in its push output.
+Kaggle authentication succeeded, but the robertmorong account has not accepted the ARC Prize 2026 - ARC-AGI-2 competition rules.
 ```
