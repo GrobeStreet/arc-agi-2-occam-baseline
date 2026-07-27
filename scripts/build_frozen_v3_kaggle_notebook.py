@@ -106,6 +106,7 @@ import json
 import os
 import pathlib
 import runpy
+import sys
 
 
 def is_arc_challenge_file(path):
@@ -152,6 +153,10 @@ if challenge_path is None:
 os.environ["ARC_TEST_CHALLENGES"] = str(challenge_path)
 print("Using ARC challenge file:", challenge_path)
 
+# Jupyter launches kernels with its own '-f <connection-file>' arguments. The
+# frozen script uses argparse, so expose only the script name and preserve all
+# of its registered defaults.
+sys.argv = ["kaggle_submission_v3.py"]
 runpy.run_path("/kaggle/working/kaggle_submission_v3.py", run_name="__main__")
 submission = pathlib.Path("/kaggle/working/submission.json")
 if not submission.is_file() or submission.stat().st_size == 0:
