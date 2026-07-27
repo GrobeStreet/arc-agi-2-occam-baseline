@@ -4,12 +4,15 @@ const paths = {
   evaluation: 'data/crossfold_evaluation.json',
   replication: 'data/crossfold_replication.json',
   solver: 'data/solver_v2_benchmark.json',
+  v3Holdout: 'data/representation_v3_holdout.json',
+  v3Public: 'data/representation_v3_public.json',
   leaderboard: 'data/leaderboard_measurement_v2.json'
 };
 
 const fmt = (x, d = 1) => Number.isFinite(Number(x)) ? `${(100 * Number(x)).toFixed(d)}%` : '—';
 const pp = (x, d = 1) => Number.isFinite(Number(x)) ? `${Number(x) >= 0 ? '+' : ''}${(100 * Number(x)).toFixed(d)} pp` : '—';
 const ci = (interval, formatter = fmt) => Array.isArray(interval) && interval.length === 2 ? `${formatter(interval[0])} to ${formatter(interval[1])}` : '—';
+const countRate = section => section && Number.isFinite(Number(section.successes)) && Number.isFinite(Number(section.trials)) ? `${section.successes}/${section.trials} (${fmt(section.rate)})` : '—';
 
 async function load(path) {
   const response = await fetch(path, { cache: 'no-store' });
@@ -42,7 +45,6 @@ function contrast(payload, name = 'k=2 minus k=1') {
 function renderCrossfold(training, evaluation, replication) {
   const trainK1Coverage = metric(training, 1, 'coverage');
   const trainK1Reliability = metric(training, 1, 'candidate_reliability');
-  const trainK1Consensus = metric(training, 1, 'consensus_yield');
   const trainK2Reliability = metric(training, 2, 'candidate_reliability');
   const evalK1Coverage = metric(evaluation, 1, 'coverage');
   const evalK1Consensus = metric(evaluation, 1, 'consensus_yield');
@@ -78,29 +80,45 @@ function renderCrossfold(training, evaluation, replication) {
 
   const rep = replication?.primary_same_holdout_replication?.same_direction?.consensus_yield;
   if (rep) {
-    const status = rep.same_nonzero_direction === true ? 'replicated in direction' : rep.same_nonzero_direction === false ? 'did not replicate in direction' : 'replication inconclusive';
-    document.getElementById('runDetail').textContent = `The registered same-target consensus effect was ${pp(rep.training_delta)} in training and ${pp(rep.evaluation_delta)} in the one-shot public-evaluation replication: ${status}.`;
+    const direction = rep.same_nonzero_direction === true ? 'replicated in direction' : rep.same_nonzero_direction === false ? 'did not replicate in direction' : 'replication inconclusive';
+    document.getElementById('runDetail').textContent = `The registered same-target consensus effect was ${pp(rep.training_delta)} in training and ${pp(rep.evaluation_delta)} in the one-shot public-evaluation replication: ${direction}.`;
   }
 }
 
-function renderSolver(payload) {
+function normalizeSolverMethod(method) {
+  if (!method) return { pass1: null, pass2: null, correct: null, trials: null };
+  const p1 = method.pass1?.rate ?? method.pass_at_1 ?? method.pass1;
+  const p2 = method.pass2?.rate ?? method.pass_at_2 ?? method.pass2;
+  const correct = method.pass2?.correct;
+  const trials = method.pass2?.trials;
+  return { pass1: Number(p1), pass2: Number(p2), correct, trials };
+}
+
+function renderSolver(payload, v3Holdout, v3Public) {
   const methods = payload?.methods || payload?.benchmarks?.public_evaluation?.methods || {};
-  const normalize = method => {
-    if (!method) return { pass1: null, pass2: null, correct: null, trials: null };
-    const p1 = method.pass1?.rate ?? method.pass_at_1 ?? method.pass1;
-    const p2 = method.pass2?.rate ?? method.pass_at_2 ?? method.pass2;
-    const correct = method.pass2?.correct;
-    const trials = method.pass2?.trials;
-    return { pass1: Number(p1), pass2: Number(p2), correct, trials };
-  };
-  const legacy = normalize(methods.baseline_vote_then_mdl || methods.legacy || methods.legacy_vote_mdl);
-  const mdl = normalize(methods.pure_mdl || methods.mdl);
-  const evidence = normalize(methods.evidence_weighted || methods.evidence);
-  document.getElementById('solverSummary').innerHTML = [
+  const legacy = normalizeSolverMethod(methods.baseline_vote_then_mdl || methods.legacy || methods.legacy_vote_mdl);
+  const evidence = normalizeSolverMethod(methods.evidence_weighted || methods.evidence);
+  const cards = [
     `<div class="result-card"><strong>Released baseline pass@2</strong><div class="big">${fmt(legacy.pass2)}</div><span>${legacy.correct ?? '—'} / ${legacy.trials ?? '—'} public-evaluation outputs</span></div>`,
-    `<div class="result-card"><strong>Pure MDL pass@2</strong><div class="big">${fmt(mdl.pass2)}</div><span>Frozen comparator</span></div>`,
     `<div class="result-card"><strong>Evidence-weighted v2 pass@2</strong><div class="big">${fmt(evidence.pass2)}</div><span>Delta vs baseline ${pp(evidence.pass2 - legacy.pass2)} · promotion gate not met</span></div>`
-  ].join('');
+  ];
+
+  if (v3Holdout?.output_level) {
+    const baseline = v3Holdout.output_level.baseline_pass2;
+    const expanded = v3Holdout.output_level.v3_pass2;
+    const paired = v3Holdout.output_level.paired_v3_vs_baseline_pass2 || {};
+    const verdict = paired.a_only > paired.b_only ? (paired.exact_two_sided_p < .05 ? 'clear' : 'directional') : paired.a_only === paired.b_only ? 'null' : 'failure';
+    cards.push(`<div class="result-card"><strong>Registered representation-v3 training holdout</strong><div class="big">${countRate(baseline)} → ${countRate(expanded)}</div><span>${paired.a_only ?? '—'} v3-only win, p=${Number(paired.exact_two_sided_p ?? 1).toFixed(3)} · ${verdict}</span></div>`);
+  }
+
+  if (v3Public?.output_level) {
+    const pass2 = v3Public.output_level.pass2;
+    const paired = v3Public.paired_vs_v2_baseline || {};
+    cards.push(`<div class="result-card"><strong>Frozen v3 public-evaluation pass@2</strong><div class="big">${countRate(pass2)}</div><span>${v3Public.registered_verdict || 'registered result'} · ${paired.v3_only_wins ?? '—'} v3-only wins · p=${Number(paired.exact_two_sided_p ?? 1).toFixed(3)}</span></div>`);
+  } else {
+    cards.push(`<div class="result-card"><strong>Frozen v3 public-evaluation run</strong><div class="big">Pending</div><span>The dashboard will update from the committed one-shot result.</span></div>`);
+  }
+  document.getElementById('solverSummary').innerHTML = cards.join('');
 }
 
 async function render() {
@@ -108,8 +126,8 @@ async function render() {
   const entries = await Promise.allSettled(Object.entries(paths).map(async ([key, path]) => [key, await load(path)]));
   const data = {};
   for (const entry of entries) {
-    if (entry.status === 'fulfilled') data[entry.value[0]] = entry.value[1];
-    else console.warn(entry.reason);
+    if (entry.status === 'fulfilled' && entry.value[1]?.status !== 'pending') data[entry.value[0]] = entry.value[1];
+    else if (entry.status === 'rejected') console.warn(entry.reason);
   }
 
   if (data.prefix) {
@@ -128,7 +146,7 @@ async function render() {
     document.getElementById('crossfoldSummary').innerHTML = '<div class="result-card"><strong>The registered result file is unavailable.</strong><p>See the repository evidence ledger.</p></div>';
   }
 
-  if (data.solver) renderSolver(data.solver);
+  renderSolver(data.solver || {}, data.v3Holdout || {}, data.v3Public || {});
   if (data.leaderboard?.test_output_count) {
     document.getElementById('taskCount').value = data.leaderboard.test_output_count;
     calculate();
