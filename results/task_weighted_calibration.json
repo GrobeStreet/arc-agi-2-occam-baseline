@@ -1,6 +1,6 @@
 {
   "estimand": "For each k, average the within-task fraction of demonstration-consistent programs that generalize, giving every represented task equal weight.",
-  "uncertainty": "Nonparametric percentile bootstrap resampling complete task clusters; all k cells from a sampled task travel together.",
+  "uncertainty": "Percentile bootstrap resampling equally weighted task-level rates.",
   "input": "ablate_cell_training.parquet",
   "n_unique_tasks_any_k": 67,
   "bootstrap_replicates": 50000,
@@ -16,7 +16,7 @@
       "task_cluster_bootstrap_se": 0.0584564288892426,
       "task_cluster_bootstrap_ci95": [
         0.34245439469320066,
-        0.5710839740690488
+        0.5710839740690486
       ]
     },
     {
@@ -26,10 +26,10 @@
       "program_weighted_rate": 0.868421052631579,
       "task_weighted_rate": 0.7982590885816693,
       "task_minus_program_weighted": -0.07016196404990971,
-      "task_cluster_bootstrap_se": 0.07095299172372604,
+      "task_cluster_bootstrap_se": 0.0704221702570864,
       "task_cluster_bootstrap_ci95": [
-        0.6507936507936508,
-        0.9262672811059908
+        0.6451612903225806,
+        0.9272913466461854
       ]
     },
     {
@@ -39,10 +39,10 @@
       "program_weighted_rate": 0.9487179487179487,
       "task_weighted_rate": 0.9090909090909091,
       "task_minus_program_weighted": -0.03962703962703962,
-      "task_cluster_bootstrap_se": NaN,
+      "task_cluster_bootstrap_se": 0.08738063877736586,
       "task_cluster_bootstrap_ci95": [
-        NaN,
-        NaN
+        0.7272727272727273,
+        1.0
       ]
     },
     {
@@ -52,40 +52,50 @@
       "program_weighted_rate": 1.0,
       "task_weighted_rate": 1.0,
       "task_minus_program_weighted": 0.0,
-      "task_cluster_bootstrap_se": NaN,
+      "task_cluster_bootstrap_se": 0.0,
       "task_cluster_bootstrap_ci95": [
-        NaN,
-        NaN
+        1.0,
+        1.0
       ]
     }
   ],
-  "adjacent_k_contrasts": [
+  "legacy_prefix_contrasts": [
     {
       "contrast": "k=2 minus k=1",
-      "observed_delta": 0.3427336852950719,
+      "n_common_tasks": 31,
+      "observed_delta": -0.04647861099474002,
+      "bootstrap_se": 0.06226743169273814,
       "bootstrap_ci95": [
-        0.18453620076754398,
-        0.5001928129913207
+        -0.1755108690592562,
+        0.0664246148117116
       ],
-      "bootstrap_probability_positive": 1.0
+      "bootstrap_probability_positive": 0.2382,
+      "warning": "Different held-out demonstration at each k; not a same-target causal contrast."
     },
     {
       "contrast": "k=3 minus k=2",
-      "observed_delta": 0.11083182050923979,
+      "n_common_tasks": 11,
+      "observed_delta": 0.0230880230880231,
+      "bootstrap_se": 0.014875269234214299,
       "bootstrap_ci95": [
-        NaN,
-        NaN
+        0.0,
+        0.0562770562770563
       ],
-      "bootstrap_probability_positive": 0.89734
+      "bootstrap_probability_positive": 0.89018,
+      "warning": "Different held-out demonstration at each k; not a same-target causal contrast."
     },
     {
       "contrast": "k=4 minus k=3",
-      "observed_delta": 0.09090909090909094,
+      "n_common_tasks": 2,
+      "observed_delta": 0.0,
+      "bootstrap_se": 0.0,
       "bootstrap_ci95": [
-        NaN,
-        NaN
+        0.0,
+        0.0
       ],
-      "bootstrap_probability_positive": 0.54688
+      "bootstrap_probability_positive": 0.0,
+      "warning": "Different held-out demonstration at each k; not a same-target causal contrast."
     }
-  ]
+  ],
+  "identification_note": "The original prefix experiment changes both k and the held-out target. Use crossfold_ablation.py for same-holdout comparisons."
 }
