@@ -1,6 +1,6 @@
 # Frozen ARC Cycle 001 — Live Kaggle Probe
 
-**Observed:** 2026-07-27T20:36:03.975989+00:00  
+**Observed:** 2026-07-27T23:11:32.704928+00:00  
 **Kernel:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001`  
 **State:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.COMPLETE"`  
 **Submission ref:** `55037417`
@@ -59,7 +59,7 @@ Return code: `0`
 
 ```text
 ref,deadline,category,reward,teamCount,userHasEntered,userRank
-https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,"700,000 Usd",1283,True,0
+https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,"700,000 Usd",1284,True,0
 https://www.kaggle.com/competitions/arc-prize-2026-paper-track,2026-11-09 23:59:00,Featured,"450,000 Usd",107,True,0
 
 ```
