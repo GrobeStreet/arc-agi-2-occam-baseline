@@ -1,14 +1,14 @@
 # Frozen V3 Private Cycle 001 — Kaggle Result
 
-**State:** `BLOCKED_RULES_NOT_ACCEPTED`  
+**State:** `KERNEL_EXECUTION_FAILED`  
 **Competition:** `arc-prize-2026-arc-agi-2`  
 **Frozen source:** `70672f3aa62d089bfffd072461a5713caae1e099`  
-**Recorded:** 2026-07-27T18:14:43.838277+00:00
+**Recorded:** 2026-07-27T19:17:56.401526+00:00
 
 ## Official competition record
 
 - Kernel: `robertmorong/grobestreet-arc-frozen-v3-cycle-001`
-- Kernel version: `not available`
+- Kernel version: `1`
 - Submission ref: `not available`
 - Submission status: `not available`
 - Visible public score: **not available**
@@ -18,7 +18,7 @@
 
 ## Interpretation
 
-The exact frozen notebook was built and authenticated access to the competition data was confirmed. Kaggle refused to attach the competition as a notebook datasource until the account joins the competition and accepts its rules. No kernel version, submission, score, or rank exists yet.
+The frozen Kaggle notebook did not complete successfully; no code-competition submission was made.
 
 ## Representation firewall
 
@@ -27,5 +27,5 @@ Cycle 001 authorizes no representation edits. Any expansion requires a new `HYPO
 ## Blocker or error
 
 ```text
-Kaggle authentication succeeded, but the robertmorong account has not accepted the ARC Prize 2026 - ARC-AGI-2 competition rules.
+robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.ERROR"
 ```

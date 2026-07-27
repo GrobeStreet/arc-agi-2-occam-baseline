@@ -1,1 +1,1 @@
-Kernel push error: You must accept this competition's rules before you'll be able to add it as a datasource: arc-prize-2026-arc-agi-2
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/robertmorong/grobestreet-arc-frozen-v3-cycle-001
