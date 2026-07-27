@@ -2,17 +2,7 @@ name: ARC measurement audit v2
 
 on:
   push:
-    branches: [arc-task-clustered-v2]
-    paths:
-      - 'task_clustered_analysis.py'
-      - 'crossfold_ablation.py'
-      - 'crossfold_analysis.py'
-      - 'crossfold_replication.py'
-      - 'HYPOTHESIS-crossfold-v2.md'
-      - 'ablate_cell_training.parquet'
-      - '.github/workflows/arc-measurement-v2.yml'
-  pull_request:
-    branches: [main]
+    branches: [arc-task-clustered-v2, main]
     paths:
       - 'task_clustered_analysis.py'
       - 'crossfold_ablation.py'
@@ -27,8 +17,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: arc-measurement-v2-${{ github.event.pull_request.number || github.ref_name }}
-  cancel-in-progress: true
+  group: arc-measurement-v2-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   recompute:
@@ -38,7 +28,7 @@ jobs:
       - name: Check out audit branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -106,7 +96,6 @@ jobs:
           cat results/crossfold/crossfold_replication.md
 
       - name: Commit deterministic evidence record on branch pushes
-        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
