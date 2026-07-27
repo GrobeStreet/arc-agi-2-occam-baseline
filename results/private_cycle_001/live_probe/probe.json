@@ -1,0 +1,70 @@
+{
+  "observed_at": "2026-07-27T19:34:29.449098+00:00",
+  "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+  "competition": "arc-prize-2026-arc-agi-2",
+  "authenticated": true,
+  "commands": {
+    "kernel_status": {
+      "command": [
+        "kaggle",
+        "kernels",
+        "status",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001"
+      ],
+      "returncode": 0,
+      "output": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.ERROR\"\n"
+    },
+    "kernel_output": {
+      "command": [
+        "kaggle",
+        "kernels",
+        "output",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/live_probe/kernel_output",
+        "-o",
+        "-q"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    "kernel_pull": {
+      "command": [
+        "kaggle",
+        "kernels",
+        "pull",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/live_probe/kernel_pull",
+        "-m"
+      ],
+      "returncode": 0,
+      "output": "Source code and metadata downloaded to /home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/live_probe/kernel_pull\n"
+    },
+    "submissions": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submissions",
+        "arc-prize-2026-arc-agi-2",
+        "-v",
+        "-q"
+      ],
+      "returncode": 0,
+      "output": "No submissions found\n"
+    },
+    "entered_competitions": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "list",
+        "--group",
+        "entered",
+        "-v"
+      ],
+      "returncode": 0,
+      "output": "ref,deadline,category,reward,teamCount,userHasEntered,userRank\nhttps://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,\"700,000 Usd\",1282,True,0\nhttps://www.kaggle.com/competitions/arc-prize-2026-paper-track,2026-11-09 23:59:00,Featured,\"450,000 Usd\",107,True,0\n"
+    }
+  },
+  "state": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.ERROR\""
+}
