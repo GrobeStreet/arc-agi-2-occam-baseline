@@ -1,39 +1,44 @@
 # Submit Frozen V3 to ARC Prize 2026 Now
 
-The frozen solver, registration, notebook builder, score collector, and ranking collector are in the repository. The only external gate is authenticated Kaggle execution.
+The frozen solver, registration, notebook builder, submission runner, score collector, and ranking collector are pushed to `main`. The only remaining external gate is authenticated Kaggle execution.
 
 ## One-time account setup
 
-1. Join the Kaggle competition and accept its rules:
-   `https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2`
+1. Join `ARC Prize 2026 - ARC-AGI-2` on Kaggle and accept its rules.
 2. In Kaggle account settings, create an API token.
 3. In this GitHub repository, open **Settings → Secrets and variables → Actions**.
-4. Add repository secrets:
-   - `KAGGLE_USERNAME` — your Kaggle username.
-   - `KAGGLE_KEY` — the API token value from `kaggle.json`.
-   - `KAGGLE_TEAM_NAME` — optional; use the exact leaderboard team name when it differs from the username.
-5. Open **Actions → Frozen ARC v3 private Cycle 001 → Run workflow**.
+4. Add these repository secrets:
+   - `KAGGLE_USERNAME` — the exact Kaggle username.
+   - Either `KAGGLE_API_TOKEN` — Kaggle's current token value — **or** `KAGGLE_KEY` — the key from a legacy `kaggle.json` file.
+   - `KAGGLE_TEAM_NAME` — optional; exact leaderboard team name if it differs from the username.
+5. Open **Actions → Frozen v3 private Kaggle cycle 001 → Run workflow**.
 
 The workflow will:
 
-- hash the frozen source files;
+- read the solver only from frozen commit `70672f3aa62d089bfffd072461a5713caae1e099`;
+- hash every frozen source file;
 - construct a private Kaggle notebook with internet disabled;
 - attach the ARC Prize 2026 competition data;
 - run `kaggle_submission_v3.py` on the hidden competition test;
-- submit notebook version 1 to the code competition;
-- poll until Kaggle scores the submission;
-- download the leaderboard;
-- calculate the exact public rank when the team name is available, or the tied score rank interval otherwise;
-- commit `results/private_v3_cycle_001/status.json` and the sanitized score/ranking records.
+- validate that `submission.json` contains exactly two grids for every test input;
+- submit the immutable notebook version to the code competition;
+- wait for Kaggle scoring;
+- query the authenticated account's visible public rank;
+- download the leaderboard evidence;
+- commit the sanitized result to `results/private_cycle_001/result.json` and `RESULT.md`.
 
 ## Research firewall
 
-Cycle 001 is evaluation only. Do not edit `dsl.py`, `dsl_v3.py`, `benchmark_representation_v3.py`, or `kaggle_submission_v3.py` after the registration and still call the submission Cycle 001.
+Private Cycle 001 is evaluation-only. Do not edit `dsl.py`, `dsl_v3.py`, `benchmark_representation_v3.py`, or `kaggle_submission_v3.py` and still call the submission Cycle 001. The runner reconstructs them from the frozen commit even if newer files exist on `main`.
 
-Any representation expansion must begin with a new committed registration based on `HYPOTHESIS-representation-cycle-002-TEMPLATE.md`. The Cycle 001 Kaggle score may be used as a final aggregate outcome, not as task-level tuning feedback.
+Any representation expansion must begin with a new committed registration named `HYPOTHESIS-representation-cycle-002.md` or later. The Cycle 001 Kaggle score may be used as a final aggregate outcome, not as task-level tuning feedback.
 
 ## Current official status
 
-Until the workflow returns a scored Kaggle submission:
+The first automated run prepared and hashed the kernel but recorded:
+
+> **BLOCKED_AUTH — `KAGGLE_USERNAME` and a Kaggle API token were not configured as GitHub Actions secrets.**
+
+Until Kaggle accepts and scores the notebook:
 
 > **Unranked — no authenticated competition submission has been scored.**
