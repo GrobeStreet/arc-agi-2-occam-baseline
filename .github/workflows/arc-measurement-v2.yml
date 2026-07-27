@@ -1,5 +1,8 @@
 name: ARC measurement audit v2
 
+# Canonical full-corpus workflow. A workflow-file change intentionally triggers
+# recomputation so the leaderboard-denominator correction is committed with the
+# same pinned ARC-AGI-2 data revision as the cross-fold evidence.
 on:
   push:
     branches: [arc-task-clustered-v2, main]
