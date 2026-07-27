@@ -1,0 +1,2123 @@
+{
+  "design": "For every task and held-out demonstration, evaluate every subset of the remaining demonstrations. Same-target adjacent-k effects hold the target fixed.",
+  "data_policy": "Public ARC-AGI-2 demonstration pairs only; no hidden test labels or private leaderboard feedback used for development.",
+  "primary_unit": "ARC task",
+  "input": "results/crossfold/crossfold_training.parquet",
+  "n_analyzed_tasks": 1000,
+  "n_subset_cells": 28476,
+  "n_covered_subset_cells": 1166,
+  "n_holdout_k_folds": 8092,
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 20260727,
+  "results_by_k": [
+    {
+      "k": 1,
+      "n_tasks": 1000,
+      "n_holdout_folds": 3232,
+      "n_subset_cells": 8092,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.07101666666666664,
+          "ci95": [
+            0.05706624999999999,
+            0.08583333333333332
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.03125572416548444,
+          "ci95": [
+            0.021789029029696833,
+            0.0417243862610943
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.03414285714285714,
+          "ci95": [
+            0.023952261904761907,
+            0.04524779761904759
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.034003571428571425,
+          "ci95": [
+            0.023859434523809522,
+            0.04500717261904762
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.034008333333333335,
+          "ci95": [
+            0.023849970238095236,
+            0.04500035714285711
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.033126190476190476,
+          "ci95": [
+            0.023135654761904764,
+            0.04400499999999998
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.03439285714285714,
+          "ci95": [
+            0.02411904761904762,
+            0.045540654761904754
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": 0.32755613107184534,
+          "ci95": [
+            0.25071185775855526,
+            0.4042742939243857
+          ]
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": 0.3303883116343108,
+          "ci95": [
+            0.25309728096050377,
+            0.4079242317829646
+          ]
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": 0.3629172229639519,
+          "ci95": [
+            0.28079206321951855,
+            0.4449656789799252
+          ]
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": 0.36011348464619486,
+          "ci95": [
+            0.27849599445041173,
+            0.44175184296379943
+          ]
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": 0.36065865598575875,
+          "ci95": [
+            0.27906828673068573,
+            0.44224141241591186
+          ]
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": 0.3503004005340454,
+          "ci95": [
+            0.2695075675901429,
+            0.4308829157499958
+          ]
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": 0.36525367156208277,
+          "ci95": [
+            0.28302457128684805,
+            0.44756973467578515
+          ]
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": 0.2696706720071206,
+          "ci95": [
+            0.19796218958013315,
+            0.3438126527576068
+          ]
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": 0.03812861593235424,
+          "ci95": [
+            0.013985716184211152,
+            0.06778185221004362
+          ]
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": 0.8695101332184861,
+          "ci95": [
+            0.8300371926518497,
+            0.9071444433928244
+          ]
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": 4.36502002670227,
+          "ci95": [
+            3.2644440067693745,
+            5.669000076804916
+          ]
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.01983333333333333,
+          "ci95": [
+            0.011833333333333335,
+            0.028583333333333332
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.021333333333333333,
+          "ci95": [
+            0.013199583333333334,
+            0.03021666666666667
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.021416666666666664,
+          "ci95": [
+            0.013233333333333335,
+            0.030249999999999996
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.007308678821178821,
+          "ci95": [
+            0.003430139478576979,
+            0.011796222943722937
+          ]
+        }
+      }
+    },
+    {
+      "k": 2,
+      "n_tasks": 842,
+      "n_holdout_folds": 2916,
+      "n_subset_cells": 8079,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.03825359122271237,
+          "ci95": [
+            0.026620150435471102,
+            0.05081452889944576
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.02962630204316665,
+          "ci95": [
+            0.0189078721984007,
+            0.04137118912801807
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.0302991743015496,
+          "ci95": [
+            0.01938673509783961,
+            0.04222111469290803
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.0302991743015496,
+          "ci95": [
+            0.01938673509783961,
+            0.04222111469290803
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.0302991743015496,
+          "ci95": [
+            0.01938673509783961,
+            0.04222111469290803
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.0302991743015496,
+          "ci95": [
+            0.01938673509783961,
+            0.04222111469290803
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.0302991743015496,
+          "ci95": [
+            0.01938673509783961,
+            0.04222111469290803
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": 0.5078886670225327,
+          "ci95": [
+            0.3778296464173624,
+            0.6396632514719442
+          ]
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": 0.5146613190730838,
+          "ci95": [
+            0.38474259482980416,
+            0.6460628173267062
+          ]
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": 0.5274042950513538,
+          "ci95": [
+            0.394977408008658,
+            0.6603062723697583
+          ]
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": 0.5274042950513538,
+          "ci95": [
+            0.394977408008658,
+            0.6603062723697583
+          ]
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": 0.5274042950513538,
+          "ci95": [
+            0.394977408008658,
+            0.6603062723697583
+          ]
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": 0.5274042950513538,
+          "ci95": [
+            0.394977408008658,
+            0.6603062723697583
+          ]
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": 0.5274042950513538,
+          "ci95": [
+            0.394977408008658,
+            0.6603062723697583
+          ]
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": 0.10200746965452846,
+          "ci95": [
+            0.04318923305756411,
+            0.17365507379094328
+          ]
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": 0.04481792717086835,
+          "ci95": [
+            0.0,
+            0.10810810810810811
+          ]
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": 0.9681649674460132,
+          "ci95": [
+            0.9460772580881277,
+            0.9864817895403002
+          ]
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": 3.9122315592903827,
+          "ci95": [
+            2.459255765199161,
+            5.647149092970522
+          ]
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.005559325868114466,
+          "ci95": [
+            0.0020953512046148625,
+            0.009868863816310367
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.005559325868114466,
+          "ci95": [
+            0.0020953512046148625,
+            0.009868863816310367
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.005559325868114466,
+          "ci95": [
+            0.0020953512046148625,
+            0.009868863816310367
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.002106662142291596,
+          "ci95": [
+            0.0004924970780077669,
+            0.004147343814802247
+          ]
+        }
+      }
+    },
+    {
+      "k": 3,
+      "n_tasks": 267,
+      "n_holdout_folds": 1191,
+      "n_subset_cells": 5336,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.04373996789727127,
+          "ci95": [
+            0.02137506688068486,
+            0.06902086677367576
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.03801795374829083,
+          "ci95": [
+            0.016853932584269662,
+            0.062258486415789786
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.03838951310861423,
+          "ci95": [
+            0.016853932584269662,
+            0.06273408239700375
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.03838951310861423,
+          "ci95": [
+            0.016853932584269662,
+            0.06273408239700375
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.03838951310861423,
+          "ci95": [
+            0.016853932584269662,
+            0.06273408239700375
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.03838951310861423,
+          "ci95": [
+            0.016853932584269662,
+            0.06273408239700375
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.03838951310861423,
+          "ci95": [
+            0.016853932584269662,
+            0.06273408239700375
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": 0.6344246031746033,
+          "ci95": [
+            0.39455498866213146,
+            0.8598710317460317
+          ]
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": 0.6344246031746033,
+          "ci95": [
+            0.39455498866213146,
+            0.8598710317460317
+          ]
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": 0.640625,
+          "ci95": [
+            0.4,
+            0.8666666666666667
+          ]
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": 0.640625,
+          "ci95": [
+            0.4,
+            0.8666666666666667
+          ]
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": 0.640625,
+          "ci95": [
+            0.4,
+            0.8666666666666667
+          ]
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": 0.640625,
+          "ci95": [
+            0.4,
+            0.8666666666666667
+          ]
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": 0.640625,
+          "ci95": [
+            0.4,
+            0.8666666666666667
+          ]
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": 0.046875,
+          "ci95": [
+            0.0,
+            0.125
+          ]
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": 0.9937996031746033,
+          "ci95": [
+            0.9831349206349207,
+            1.0
+          ]
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": 2.828125,
+          "ci95": [
+            1.1538461538461537,
+            4.897058823529412
+          ]
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "k": 4,
+      "n_tasks": 78,
+      "n_holdout_folds": 435,
+      "n_subset_cells": 3445,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.02564102564102564,
+          "ci95": [
+            0.0,
+            0.0641025641025641
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "k": 5,
+      "n_tasks": 29,
+      "n_holdout_folds": 190,
+      "n_subset_cells": 2040,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "k": 6,
+      "n_tasks": 11,
+      "n_holdout_folds": 82,
+      "n_subset_cells": 1008,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "k": 7,
+      "n_tasks": 3,
+      "n_holdout_folds": 26,
+      "n_subset_cells": 376,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "k": 8,
+      "n_tasks": 1,
+      "n_holdout_folds": 10,
+      "n_subset_cells": 90,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "k": 9,
+      "n_tasks": 1,
+      "n_holdout_folds": 10,
+      "n_subset_cells": 10,
+      "metrics": {
+        "coverage": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_random_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_vote_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "oracle_yield": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "candidate_reliability": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "subset_random_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_random_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mdl_vote_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "consensus_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "oracle_accuracy_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "ambiguity_rate_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "minimum_complexity_output_tie_rate": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "modal_fraction_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "mean_candidate_count_covered": {
+          "task_weighted_mean": null,
+          "ci95": null
+        },
+        "legacy_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "mdl_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "consensus_subset_instability": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "random_rate_range": {
+          "task_weighted_mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    }
+  ],
+  "same_holdout_adjacent_k_contrasts": [
+    {
+      "contrast": "k=2 minus k=1",
+      "n_common_task_holdouts": 2916,
+      "n_common_tasks": 842,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": -0.03658805564981337,
+          "ci95": [
+            -0.046309806582965726,
+            -0.02737805395317272
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": -0.0024649992402489716,
+          "ci95": [
+            -0.004959213509087628,
+            -3.611908765266056e-05
+          ],
+          "bootstrap_probability_positive": 0.02345
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": -0.004312294989254609,
+          "ci95": [
+            -0.006752841873091281,
+            -0.0021151453455491463
+          ],
+          "bootstrap_probability_positive": 5e-05
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": -0.004146872525732382,
+          "ci95": [
+            -0.006581551860649248,
+            -0.00198641273611583
+          ],
+          "bootstrap_probability_positive": 0.0001
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": -0.00415252799457075,
+          "ci95": [
+            -0.00659148427779663,
+            -0.001979343400067872
+          ],
+          "bootstrap_probability_positive": 0.00015
+        },
+        "consensus_yield": {
+          "task_weighted_delta": -0.0036986766202918224,
+          "ci95": [
+            -0.005980658296572786,
+            -0.001665535572898993
+          ],
+          "bootstrap_probability_positive": 0.00015
+        },
+        "oracle_yield": {
+          "task_weighted_delta": -0.004609207103268861,
+          "ci95": [
+            -0.006995814953059608,
+            -0.0024968894921388986
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    {
+      "contrast": "k=3 minus k=2",
+      "n_common_task_holdouts": 1191,
+      "n_common_tasks": 267,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": -0.011976101301943999,
+          "ci95": [
+            -0.018031032637774214,
+            -0.006616729088639201
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": -8.174305927114907e-05,
+          "ci95": [
+            -0.002172891524483285,
+            0.0020738833402691005
+          ],
+          "bootstrap_probability_positive": 0.4571
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": -0.0009809167112537899,
+          "ci95": [
+            -0.0031032637774210804,
+            0.0010344212591403604
+          ],
+          "bootstrap_probability_positive": 0.1681
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": -0.0009809167112537899,
+          "ci95": [
+            -0.0031032637774210804,
+            0.0010344212591403604
+          ],
+          "bootstrap_probability_positive": 0.1681
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": -0.0009809167112537899,
+          "ci95": [
+            -0.0031032637774210804,
+            0.0010344212591403604
+          ],
+          "bootstrap_probability_positive": 0.1681
+        },
+        "consensus_yield": {
+          "task_weighted_delta": -0.0009809167112537899,
+          "ci95": [
+            -0.0031032637774210804,
+            0.0010344212591403604
+          ],
+          "bootstrap_probability_positive": 0.1681
+        },
+        "oracle_yield": {
+          "task_weighted_delta": -0.0009809167112537899,
+          "ci95": [
+            -0.0031032637774210804,
+            0.0010344212591403604
+          ],
+          "bootstrap_probability_positive": 0.1681
+        }
+      }
+    },
+    {
+      "contrast": "k=4 minus k=3",
+      "n_common_task_holdouts": 435,
+      "n_common_tasks": 78,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": -0.00228937728937729,
+          "ci95": [
+            -0.005586080586080587,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    {
+      "contrast": "k=5 minus k=4",
+      "n_common_task_holdouts": 190,
+      "n_common_tasks": 29,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    {
+      "contrast": "k=6 minus k=5",
+      "n_common_task_holdouts": 82,
+      "n_common_tasks": 11,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    {
+      "contrast": "k=7 minus k=6",
+      "n_common_task_holdouts": 26,
+      "n_common_tasks": 3,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    {
+      "contrast": "k=8 minus k=7",
+      "n_common_task_holdouts": 10,
+      "n_common_tasks": 1,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    {
+      "contrast": "k=9 minus k=8",
+      "n_common_task_holdouts": 10,
+      "n_common_tasks": 1,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    }
+  ],
+  "ambiguous_subset_selection": {
+    "n_cells": 224,
+    "n_tasks": 41,
+    "overall": {
+      "random": {
+        "task_weighted_rate": 0.18878790785970823,
+        "ci95": [
+          0.10822906983719902,
+          0.2777042756215856
+        ]
+      },
+      "legacy_first_shortest": {
+        "task_weighted_rate": 0.3121737270004279,
+        "ci95": [
+          0.18527813436029097,
+          0.44792522464698326
+        ]
+      },
+      "mdl_random_tie": {
+        "task_weighted_rate": 0.30403294822421906,
+        "ci95": [
+          0.18292468977321352,
+          0.43479032948224206
+        ]
+      },
+      "mdl_vote_tie": {
+        "task_weighted_rate": 0.30004992155184707,
+        "ci95": [
+          0.17715019255455713,
+          0.4305398659249749
+        ]
+      },
+      "consensus": {
+        "task_weighted_rate": 0.27356297247183,
+        "ci95": [
+          0.15635073455997717,
+          0.4001108971616028
+        ]
+      },
+      "oracle": {
+        "task_weighted_rate": 0.3365639709028669,
+        "ci95": [
+          0.20538938810440735,
+          0.47560975609756095
+        ]
+      }
+    },
+    "by_k": [
+      {
+        "k": 1,
+        "n_cells": 186,
+        "n_tasks": 41,
+        "random": 0.1866951955872595,
+        "random_ci95": [
+          0.10589093411819685,
+          0.2747592742499608
+        ],
+        "legacy_first_shortest": 0.3119531944307297,
+        "legacy_first_shortest_ci95": [
+          0.18512022316579443,
+          0.4488655327342742
+        ],
+        "mdl_random_tie": 0.3021769950203839,
+        "mdl_random_tie_ci95": [
+          0.18016329225973,
+          0.43216962434228157
+        ],
+        "mdl_vote_tie": 0.2984626199645455,
+        "mdl_vote_tie_ci95": [
+          0.1747946084724005,
+          0.4295325967357417
+        ],
+        "consensus": 0.2721616423798709,
+        "consensus_ci95": [
+          0.15280378479030596,
+          0.3989752876562887
+        ],
+        "oracle": 0.33634343833316876,
+        "oracle_ci95": [
+          0.20397946084724006,
+          0.4759306803594352
+        ]
+      },
+      {
+        "k": 2,
+        "n_cells": 35,
+        "n_tasks": 11,
+        "random": 0.39806069351523893,
+        "random_ci95": [
+          0.18801652892561985,
+          0.621643655166382
+        ],
+        "legacy_first_shortest": 0.5909090909090909,
+        "legacy_first_shortest_ci95": [
+          0.3181818181818182,
+          0.8636363636363636
+        ],
+        "mdl_random_tie": 0.5909090909090909,
+        "mdl_random_tie_ci95": [
+          0.3181818181818182,
+          0.8636363636363636
+        ],
+        "mdl_vote_tie": 0.5909090909090909,
+        "mdl_vote_tie_ci95": [
+          0.3181818181818182,
+          0.8636363636363636
+        ],
+        "consensus": 0.5909090909090909,
+        "consensus_ci95": [
+          0.3181818181818182,
+          0.8636363636363636
+        ],
+        "oracle": 0.5909090909090909,
+        "oracle_ci95": [
+          0.3181818181818182,
+          0.8636363636363636
+        ]
+      },
+      {
+        "k": 3,
+        "n_cells": 3,
+        "n_tasks": 2,
+        "random": 0.873015873015873,
+        "random_ci95": [
+          0.8571428571428571,
+          0.8888888888888888
+        ],
+        "legacy_first_shortest": 1.0,
+        "legacy_first_shortest_ci95": [
+          1.0,
+          1.0
+        ],
+        "mdl_random_tie": 1.0,
+        "mdl_random_tie_ci95": [
+          1.0,
+          1.0
+        ],
+        "mdl_vote_tie": 1.0,
+        "mdl_vote_tie_ci95": [
+          1.0,
+          1.0
+        ],
+        "consensus": 1.0,
+        "consensus_ci95": [
+          1.0,
+          1.0
+        ],
+        "oracle": 1.0,
+        "oracle_ci95": [
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "contrasts": {
+      "legacy_shortest_minus_random": {
+        "task_weighted_difference": 0.12338581914071968,
+        "ci95": [
+          0.056491713927783294,
+          0.19406038254225702
+        ],
+        "bootstrap_probability_positive": 0.9999
+      },
+      "mdl_random_minus_random": {
+        "task_weighted_difference": 0.11524504036451086,
+        "ci95": [
+          0.05893951507292285,
+          0.17928424481416597
+        ],
+        "bootstrap_probability_positive": 1.0
+      },
+      "mdl_vote_minus_random": {
+        "task_weighted_difference": 0.11126201369213887,
+        "ci95": [
+          0.04608235520001446,
+          0.17933329932898973
+        ],
+        "bootstrap_probability_positive": 0.9999
+      },
+      "consensus_minus_random": {
+        "task_weighted_difference": 0.08477506461212175,
+        "ci95": [
+          0.02605823485148113,
+          0.14790973203081892
+        ],
+        "bootstrap_probability_positive": 0.99825
+      },
+      "mdl_vote_minus_legacy_shortest": {
+        "task_weighted_difference": -0.012123805448580806,
+        "ci95": [
+          -0.07702182284980745,
+          0.04336043360433604
+        ],
+        "bootstrap_probability_positive": 0.3303
+      },
+      "oracle_minus_mdl_vote": {
+        "task_weighted_difference": 0.03651404935101983,
+        "ci95": [
+          0.0012836970474967907,
+          0.09470831550420768
+        ],
+        "bootstrap_probability_positive": 0.9845
+      },
+      "oracle_minus_consensus": {
+        "task_weighted_difference": 0.06300099843103694,
+        "ci95": [
+          0.017472543146484096,
+          0.12560280273855368
+        ],
+        "bootstrap_probability_positive": 0.9999
+      }
+    }
+  },
+  "modal_vote_calibration": {
+    "n_cells": 1166,
+    "n_tasks": 107,
+    "task_weighted_brier": 0.5420567832261459,
+    "brier_ci95": [
+      0.46493547484443787,
+      0.6183536939839991
+    ],
+    "task_weighted_mean_absolute_gap": 0.5953921051386758,
+    "mean_absolute_gap_ci95": [
+      0.5211626052894107,
+      0.6673795318765775
+    ],
+    "bins": [
+      {
+        "bin": "[0,.5)",
+        "n_cells": 50,
+        "n_tasks": 13,
+        "task_weighted_confidence": 0.2590053486172208,
+        "task_weighted_accuracy": 0.1456043956043956,
+        "accuracy_ci95": [
+          0.019230769230769232,
+          0.3186813186813187
+        ],
+        "confidence_minus_accuracy": 0.11340095301282514,
+        "gap_ci95": [
+          -0.06489914195393648,
+          0.24320864532051745
+        ]
+      },
+      {
+        "bin": "[.5,.7)",
+        "n_cells": 121,
+        "n_tasks": 29,
+        "task_weighted_confidence": 0.528431440845234,
+        "task_weighted_accuracy": 0.22931034482758622,
+        "accuracy_ci95": [
+          0.10689655172413792,
+          0.36896551724137927
+        ],
+        "confidence_minus_accuracy": 0.29912109601764775,
+        "gap_ci95": [
+          0.15979649947753397,
+          0.42320921862301164
+        ]
+      },
+      {
+        "bin": "[.7,.9)",
+        "n_cells": 47,
+        "n_tasks": 9,
+        "task_weighted_confidence": 0.79710472361266,
+        "task_weighted_accuracy": 0.4444444444444444,
+        "accuracy_ci95": [
+          0.1111111111111111,
+          0.7777777777777778
+        ],
+        "confidence_minus_accuracy": 0.35266027916821563,
+        "gap_ci95": [
+          0.03308273736845165,
+          0.6667742956631845
+        ]
+      },
+      {
+        "bin": "[.9,1)",
+        "n_cells": 6,
+        "n_tasks": 2,
+        "task_weighted_confidence": 0.9090909090909091,
+        "task_weighted_accuracy": 0.5,
+        "accuracy_ci95": [
+          0.0,
+          1.0
+        ],
+        "confidence_minus_accuracy": 0.40909090909090906,
+        "gap_ci95": [
+          -0.09090909090909094,
+          0.9090909090909091
+        ]
+      },
+      {
+        "bin": "1.0",
+        "n_cells": 942,
+        "n_tasks": 94,
+        "task_weighted_confidence": 1.0,
+        "task_weighted_accuracy": 0.37804267661017943,
+        "accuracy_ci95": [
+          0.28786355609663966,
+          0.4699849277688084
+        ],
+        "confidence_minus_accuracy": 0.6219573233898206,
+        "gap_ci95": [
+          0.5300150722311916,
+          0.7121364439033603
+        ]
+      }
+    ]
+  },
+  "interpretation": "Marginal rates by k are descriptive because tasks with fewer demonstrations cannot contribute at larger k. Same-holdout contrasts are the primary evidence-count test."
+}

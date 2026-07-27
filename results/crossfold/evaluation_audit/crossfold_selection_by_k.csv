@@ -1,0 +1,2 @@
+k,n_cells,n_tasks,random,random_ci95,legacy_first_shortest,legacy_first_shortest_ci95,mdl_random_tie,mdl_random_tie_ci95,mdl_vote_tie,mdl_vote_tie_ci95,consensus,consensus_ci95,oracle,oracle_ci95
+1,4,1,0.0,"[0.0, 0.0]",0.0,"[0.0, 0.0]",0.0,"[0.0, 0.0]",0.0,"[0.0, 0.0]",0.0,"[0.0, 0.0]",0.0,"[0.0, 0.0]"

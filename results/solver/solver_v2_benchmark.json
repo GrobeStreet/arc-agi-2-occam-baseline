@@ -1,0 +1,105 @@
+{
+  "design": "Family priors learned only from public training demonstrations; fixed algorithm then evaluated once on public evaluation test outputs.",
+  "not_a_private_leaderboard_claim": true,
+  "training_tasks_used_for_priors": 1000,
+  "evaluation_tasks": 120,
+  "evaluation_test_outputs": 167,
+  "prior_strength": 8.0,
+  "family_count": 136,
+  "benchmark_seconds": 42.54971001199999,
+  "methods": {
+    "legacy": {
+      "pass1": {
+        "correct": 0,
+        "trials": 167,
+        "rate": 0.0,
+        "wilson_ci95": [
+          0.0,
+          0.02248551872134217
+        ]
+      },
+      "pass2": {
+        "correct": 0,
+        "trials": 167,
+        "rate": 0.0,
+        "wilson_ci95": [
+          0.0,
+          0.02248551872134217
+        ]
+      },
+      "tasks_with_any_pass2": 0,
+      "tasks_all_test_outputs_pass2": 0
+    },
+    "mdl": {
+      "pass1": {
+        "correct": 0,
+        "trials": 167,
+        "rate": 0.0,
+        "wilson_ci95": [
+          0.0,
+          0.02248551872134217
+        ]
+      },
+      "pass2": {
+        "correct": 0,
+        "trials": 167,
+        "rate": 0.0,
+        "wilson_ci95": [
+          0.0,
+          0.02248551872134217
+        ]
+      },
+      "tasks_with_any_pass2": 0,
+      "tasks_all_test_outputs_pass2": 0
+    },
+    "evidence": {
+      "pass1": {
+        "correct": 0,
+        "trials": 167,
+        "rate": 0.0,
+        "wilson_ci95": [
+          0.0,
+          0.02248551872134217
+        ]
+      },
+      "pass2": {
+        "correct": 0,
+        "trials": 167,
+        "rate": 0.0,
+        "wilson_ci95": [
+          0.0,
+          0.02248551872134217
+        ]
+      },
+      "tasks_with_any_pass2": 0,
+      "tasks_all_test_outputs_pass2": 0
+    }
+  },
+  "paired_exact_tests": {
+    "evidence_vs_legacy_pass1": {
+      "a_only": 0,
+      "b_only": 0,
+      "discordant": 0,
+      "exact_two_sided_p": 1.0
+    },
+    "evidence_vs_legacy_pass2": {
+      "a_only": 0,
+      "b_only": 0,
+      "discordant": 0,
+      "exact_two_sided_p": 1.0
+    },
+    "evidence_vs_mdl_pass1": {
+      "a_only": 0,
+      "b_only": 0,
+      "discordant": 0,
+      "exact_two_sided_p": 1.0
+    },
+    "evidence_vs_mdl_pass2": {
+      "a_only": 0,
+      "b_only": 0,
+      "discordant": 0,
+      "exact_two_sided_p": 1.0
+    }
+  },
+  "interpretation_rule": "Promote the evidence-weighted selector only if it improves paired public-evaluation outcomes without using evaluation feedback for tuning. Otherwise retain the measurement audit and report the algorithmic null result."
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A full-corpus, task- and target-controlled audit of demonstration consistency, candidate selection, and leaderboard uncertainty in ARC-AGI-2." />
+  <title>ARC Measurement Audit v2 — When a Calibration Curve Is a Selection Curve</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="kicker">ARC Prize 2026 · Paper Track candidate · full-corpus resolution · publish regardless</p>
+      <h1>When a calibration curve is really a selection curve.</h1>
+      <p class="lead">A live audit of the ruler underneath ARC-AGI-2: equal task weights, fixed prediction targets, explicit no-candidate failures, selection regret, and one-shot public-evaluation replication.</p>
+      <div class="badges">
+        <span>1,000 training tasks</span><span>120 evaluation tasks</span><span>28,476 subset cells</span><span>Task-cluster bootstrap</span><span>Frozen holdout</span>
+      </div>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER_V2.md">Read paper v2</a>
+        <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline">Code and evidence</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="status" id="status">
+      <div>
+        <p class="eyebrow">Resolved status</p>
+        <h2 id="runTitle">Loading the committed evidence record…</h2>
+        <p id="runDetail">The site reads machine-readable workflow outputs. It does not select a favorable result.</p>
+      </div>
+      <span class="status-dot" aria-hidden="true"></span>
+    </section>
+
+    <section>
+      <p class="eyebrow">Correction one</p>
+      <h2>Programs were not independent observations. Tasks are.</h2>
+      <p class="section-lead">The original 50% → 87% → 95% curve pooled correlated candidates, changed the held-out target, and selected easier task subsets as <em>k</em> increased. Equal-task weighting is the first correction, not the final causal test.</p>
+      <div class="metric-grid" id="prefixMetrics">
+        <article class="metric placeholder"><b>—</b><span>Loading k=1</span></article>
+        <article class="metric placeholder"><b>—</b><span>Loading k=2</span></article>
+        <article class="metric placeholder"><b>—</b><span>Loading k=3</span></article>
+      </div>
+      <p class="note">These prefix estimates are descriptive. The registered v2 experiment below holds the target fixed and counts no-candidate subsets as failures.</p>
+    </section>
+
+    <section class="dark-panel">
+      <p class="eyebrow">Registered full-corpus test</p>
+      <h2>Same task. Same target. Every evidence subset.</h2>
+      <p class="section-lead">For every task and held-out demonstration, v2 fits every possible subset of the remaining demonstrations. Subsets are averaged within targets, targets within tasks, and tasks are bootstrapped.</p>
+      <div id="crossfoldSummary" class="result-stack">
+        <div class="loading-line"></div><div class="loading-line short"></div>
+      </div>
+      <p class="callout"><strong>Resolved interpretation:</strong> another demonstration improves reliability among surviving candidates, but the small DSL stops generating candidates often enough that end-to-end consensus yield falls.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Program selection</p>
+      <h2>MDL helps. It does not equal the oracle.</h2>
+      <p class="section-lead">The audit distinguishes enumeration-order shortest, random choice among equal-complexity ties, tie-aware MDL voting, all-candidate consensus, and the candidate oracle ceiling.</p>
+      <div id="selectorTable" class="table-shell"><p class="muted">Loading selector evidence.</p></div>
+    </section>
+
+    <section class="split">
+      <div>
+        <p class="eyebrow">Contest-facing negative result</p>
+        <h2>Better selection cannot recover a missing hypothesis.</h2>
+        <p>Program-family reliability priors were learned only from training demonstrations, frozen, and evaluated once across all 167 public-evaluation test outputs. The selector tied the released baseline at zero; the hypothesis library—not the tie-breaker—is the bottleneck.</p>
+        <div id="solverSummary" class="result-stack"><p class="muted">Loading frozen solver benchmark.</p></div>
+      </div>
+      <aside class="principle">
+        <p class="eyebrow">Core principle</p>
+        <blockquote>A candidate should earn influence by predicting evidence it was not fitted to—not because the DSL can spell the same idea many ways.</blockquote>
+      </aside>
+    </section>
+
+    <section>
+      <p class="eyebrow">Leaderboard correction</p>
+      <h2>The public score is not 120 Bernoulli trials.</h2>
+      <p class="section-lead">The official public evaluation corpus contains 120 tasks but 167 test outputs, and scores are calculated over test outputs. Outputs nested within one task are dependent. Defensible rankings require per-output paired outcomes and task-clustered uncertainty.</p>
+      <div class="change-grid">
+        <article><h3>Correct denominator</h3><p>167 public test outputs, not 120 tasks, for the public output-level score.</p></article>
+        <article><h3>Correct comparison</h3><p>Use paired outcome differences; do not treat two headline percentages as independent samples.</p></article>
+        <article><h3>Correct uncertainty</h3><p>Cluster by task whenever a task contains multiple test outputs.</p></article>
+      </div>
+    </section>
+
+    <section class="calculator">
+      <div>
+        <p class="eyebrow">Try the approximation</p>
+        <h2>Output-level leaderboard uncertainty calculator</h2>
+        <p>The default denominator is the 167 public-evaluation test outputs. This remains an unpaired approximation; proper system comparison needs paired outcomes and task-clustered uncertainty.</p>
+      </div>
+      <form id="calcForm" class="calc-grid">
+        <label>Test outputs <input id="taskCount" type="number" min="10" step="1" value="167"></label>
+        <label>System A score (%) <input id="scoreA" type="number" min="0" max="100" step="0.1" value="54"></label>
+        <label>System B score (%) <input id="scoreB" type="number" min="0" max="100" step="0.1" value="45"></label>
+        <button class="button primary" type="submit">Recalculate</button>
+      </form>
+      <div id="calcResult" class="calc-result"></div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Claims ledger</p>
+      <h2>The better test is allowed to reverse the paper.</h2>
+      <div class="change-grid">
+        <article><h3>Withdrawn</h3><p>“One-example consistency is exactly a coin flip.” “More demos cause a 50→95% rise.” “MDL matches the oracle.”</p></article>
+        <article><h3>Established</h3><p>Demonstrations create a precision–coverage tradeoff. MDL beats random under ambiguity. Training engagement transfers poorly.</p></article>
+        <article><h3>Next frontier</h3><p>Generate better hypotheses, retain semantic diversity, and route uncovered tasks to a richer solver.</p></article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <p class="eyebrow">The contribution</p>
+      <h2>Not a better score. A better ruler.</h2>
+      <p>All code, registrations, negative results, exact data provenance, and machine-readable outputs are public.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER_V2.md">Canonical paper v2</a>
+        <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/RESULTS_V2.md">Findings ledger</a>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">Robert Morong · independent, AI-assisted research · ARC Prize 2026 Paper Track candidate · full-corpus results committed and reproducible</div></footer>
+  <script src="app.js"></script>
+</body>
+</html>

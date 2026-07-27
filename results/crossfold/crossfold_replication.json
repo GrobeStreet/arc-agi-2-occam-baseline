@@ -1,0 +1,633 @@
+{
+  "registration": "HYPOTHESIS-crossfold-v2.md",
+  "policy": "One-shot confirmatory application to public evaluation demonstration pairs after analysis code and interpretation thresholds were frozen. No evaluation feedback tuning.",
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 20260727,
+  "training_tasks": 1000,
+  "evaluation_tasks": 120,
+  "by_k": [
+    {
+      "k": 1,
+      "n_training_tasks": 1000,
+      "n_evaluation_tasks": 120,
+      "metrics": {
+        "coverage": {
+          "training_task_weighted_mean": 0.07101666666666664,
+          "evaluation_task_weighted_mean": 0.010277777777777778,
+          "evaluation_minus_training": -0.06073888888888887,
+          "ci95": [
+            -0.07841708333333333,
+            -0.04261097222222224
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "random_yield": {
+          "training_task_weighted_mean": 0.03125572416548444,
+          "evaluation_task_weighted_mean": 0.0013888888888888883,
+          "evaluation_minus_training": -0.02986683527659555,
+          "ci95": [
+            -0.040528633378290914,
+            -0.01989201203777831
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "legacy_mdl_yield": {
+          "training_task_weighted_mean": 0.03414285714285714,
+          "evaluation_task_weighted_mean": 0.0013888888888888883,
+          "evaluation_minus_training": -0.03275396825396825,
+          "ci95": [
+            -0.044326309523809525,
+            -0.0222293253968254
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_random_yield": {
+          "training_task_weighted_mean": 0.034003571428571425,
+          "evaluation_task_weighted_mean": 0.0013888888888888883,
+          "evaluation_minus_training": -0.032614682539682534,
+          "ci95": [
+            -0.04393224206349206,
+            -0.022049990079365082
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_vote_yield": {
+          "training_task_weighted_mean": 0.034008333333333335,
+          "evaluation_task_weighted_mean": 0.0013888888888888883,
+          "evaluation_minus_training": -0.032619444444444444,
+          "ci95": [
+            -0.04404405753968253,
+            -0.02208324404761906
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "consensus_yield": {
+          "training_task_weighted_mean": 0.033126190476190476,
+          "evaluation_task_weighted_mean": 0.0013888888888888883,
+          "evaluation_minus_training": -0.031737301587301585,
+          "ci95": [
+            -0.04275970238095238,
+            -0.02142775793650794
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "oracle_yield": {
+          "training_task_weighted_mean": 0.03439285714285714,
+          "evaluation_task_weighted_mean": 0.0013888888888888883,
+          "evaluation_minus_training": -0.03300396825396825,
+          "ci95": [
+            -0.044550039682539684,
+            -0.02229571428571431
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "candidate_reliability": {
+          "training_task_weighted_mean": 0.32755613107184534,
+          "evaluation_task_weighted_mean": 0.125,
+          "evaluation_minus_training": -0.20255613107184534,
+          "ci95": [
+            -0.38340901300434693,
+            0.05404326559738034
+          ],
+          "bootstrap_probability_evaluation_higher": 0.05145
+        },
+        "ambiguity_rate_covered": {
+          "training_task_weighted_mean": 0.2696706720071206,
+          "evaluation_task_weighted_mean": 0.25,
+          "evaluation_minus_training": -0.019670672007120582,
+          "ci95": [
+            -0.32337728081886963,
+            0.48928933021806825
+          ],
+          "bootstrap_probability_evaluation_higher": 0.38625
+        }
+      }
+    },
+    {
+      "k": 2,
+      "n_training_tasks": 842,
+      "n_evaluation_tasks": 86,
+      "metrics": {
+        "coverage": {
+          "training_task_weighted_mean": 0.03825359122271237,
+          "evaluation_task_weighted_mean": 0.0019379844961240303,
+          "evaluation_minus_training": -0.036315606726588345,
+          "ci95": [
+            -0.04925256238771263,
+            -0.02386784911998275
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "random_yield": {
+          "training_task_weighted_mean": 0.02962630204316665,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02962630204316665,
+          "ci95": [
+            -0.041273846155823586,
+            -0.019075994219996596
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "legacy_mdl_yield": {
+          "training_task_weighted_mean": 0.0302991743015496,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.0302991743015496,
+          "ci95": [
+            -0.04242195453003054,
+            -0.019437705010745404
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_random_yield": {
+          "training_task_weighted_mean": 0.0302991743015496,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.0302991743015496,
+          "ci95": [
+            -0.04219559438977492,
+            -0.019420879990951254
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_vote_yield": {
+          "training_task_weighted_mean": 0.0302991743015496,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.0302991743015496,
+          "ci95": [
+            -0.042150209252347026,
+            -0.019451843682841318
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "consensus_yield": {
+          "training_task_weighted_mean": 0.0302991743015496,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.0302991743015496,
+          "ci95": [
+            -0.04215020925234701,
+            -0.01943784639746635
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "oracle_yield": {
+          "training_task_weighted_mean": 0.0302991743015496,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.0302991743015496,
+          "ci95": [
+            -0.04233422406967538,
+            -0.01943784639746635
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "candidate_reliability": {
+          "training_task_weighted_mean": 0.5078886670225327,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.5078886670225327,
+          "ci95": [
+            -0.6366044181578927,
+            -0.3790722615647375
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "ambiguity_rate_covered": {
+          "training_task_weighted_mean": 0.10200746965452846,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.10200746965452846,
+          "ci95": [
+            -0.17226890756302518,
+            -0.04411764705882353
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        }
+      }
+    },
+    {
+      "k": 3,
+      "n_training_tasks": 267,
+      "n_evaluation_tasks": 25,
+      "metrics": {
+        "coverage": {
+          "training_task_weighted_mean": 0.04373996789727127,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.04373996789727127,
+          "ci95": [
+            -0.06931514178705189,
+            -0.02153558052434457
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "random_yield": {
+          "training_task_weighted_mean": 0.03801795374829083,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.03801795374829083,
+          "ci95": [
+            -0.06132215682777481,
+            -0.016853932584269662
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "legacy_mdl_yield": {
+          "training_task_weighted_mean": 0.03838951310861423,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.03838951310861423,
+          "ci95": [
+            -0.06273408239700375,
+            -0.016853932584269662
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_random_yield": {
+          "training_task_weighted_mean": 0.03838951310861423,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.03838951310861423,
+          "ci95": [
+            -0.06367041198501873,
+            -0.017790262172284643
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_vote_yield": {
+          "training_task_weighted_mean": 0.03838951310861423,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.03838951310861423,
+          "ci95": [
+            -0.06273408239700375,
+            -0.018726591760299626
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "consensus_yield": {
+          "training_task_weighted_mean": 0.03838951310861423,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.03838951310861423,
+          "ci95": [
+            -0.06367041198501873,
+            -0.018726591760299626
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "oracle_yield": {
+          "training_task_weighted_mean": 0.03838951310861423,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.03838951310861423,
+          "ci95": [
+            -0.06367041198501873,
+            -0.018726591760299626
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "candidate_reliability": {
+          "training_task_weighted_mean": 0.6344246031746033,
+          "evaluation_task_weighted_mean": null,
+          "evaluation_minus_training": null,
+          "ci95": null,
+          "bootstrap_probability_evaluation_higher": null
+        },
+        "ambiguity_rate_covered": {
+          "training_task_weighted_mean": 0.046875,
+          "evaluation_task_weighted_mean": null,
+          "evaluation_minus_training": null,
+          "ci95": null,
+          "bootstrap_probability_evaluation_higher": null
+        }
+      }
+    },
+    {
+      "k": 4,
+      "n_training_tasks": 78,
+      "n_evaluation_tasks": 7,
+      "metrics": {
+        "coverage": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "random_yield": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "legacy_mdl_yield": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_random_yield": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_vote_yield": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "consensus_yield": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "oracle_yield": {
+          "training_task_weighted_mean": 0.02564102564102564,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": -0.02564102564102564,
+          "ci95": [
+            -0.0641025641025641,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "candidate_reliability": {
+          "training_task_weighted_mean": 1.0,
+          "evaluation_task_weighted_mean": null,
+          "evaluation_minus_training": null,
+          "ci95": null,
+          "bootstrap_probability_evaluation_higher": null
+        },
+        "ambiguity_rate_covered": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": null,
+          "evaluation_minus_training": null,
+          "ci95": null,
+          "bootstrap_probability_evaluation_higher": null
+        }
+      }
+    },
+    {
+      "k": 5,
+      "n_training_tasks": 29,
+      "n_evaluation_tasks": 1,
+      "metrics": {
+        "coverage": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "random_yield": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "legacy_mdl_yield": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_random_yield": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "mdl_vote_yield": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "consensus_yield": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "oracle_yield": {
+          "training_task_weighted_mean": 0.0,
+          "evaluation_task_weighted_mean": 0.0,
+          "evaluation_minus_training": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_probability_evaluation_higher": 0.0
+        },
+        "candidate_reliability": {
+          "training_task_weighted_mean": null,
+          "evaluation_task_weighted_mean": null,
+          "evaluation_minus_training": null,
+          "ci95": null,
+          "bootstrap_probability_evaluation_higher": null
+        },
+        "ambiguity_rate_covered": {
+          "training_task_weighted_mean": null,
+          "evaluation_task_weighted_mean": null,
+          "evaluation_minus_training": null,
+          "ci95": null,
+          "bootstrap_probability_evaluation_higher": null
+        }
+      }
+    }
+  ],
+  "primary_same_holdout_replication": {
+    "contrast": "k=2 minus k=1",
+    "training": {
+      "contrast": "k=2 minus k=1",
+      "n_common_task_holdouts": 2916,
+      "n_common_tasks": 842,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": -0.03658805564981337,
+          "ci95": [
+            -0.046309806582965726,
+            -0.02737805395317272
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": -0.0024649992402489716,
+          "ci95": [
+            -0.004959213509087628,
+            -3.611908765266056e-05
+          ],
+          "bootstrap_probability_positive": 0.02345
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": -0.004312294989254609,
+          "ci95": [
+            -0.006752841873091281,
+            -0.0021151453455491463
+          ],
+          "bootstrap_probability_positive": 5e-05
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": -0.004146872525732382,
+          "ci95": [
+            -0.006581551860649248,
+            -0.00198641273611583
+          ],
+          "bootstrap_probability_positive": 0.0001
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": -0.00415252799457075,
+          "ci95": [
+            -0.00659148427779663,
+            -0.001979343400067872
+          ],
+          "bootstrap_probability_positive": 0.00015
+        },
+        "consensus_yield": {
+          "task_weighted_delta": -0.0036986766202918224,
+          "ci95": [
+            -0.005980658296572786,
+            -0.001665535572898993
+          ],
+          "bootstrap_probability_positive": 0.00015
+        },
+        "oracle_yield": {
+          "task_weighted_delta": -0.004609207103268861,
+          "ci95": [
+            -0.006995814953059608,
+            -0.0024968894921388986
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    "evaluation": {
+      "contrast": "k=2 minus k=1",
+      "n_common_task_holdouts": 291,
+      "n_common_tasks": 86,
+      "metrics": {
+        "coverage": {
+          "task_weighted_delta": -0.012403100775193798,
+          "ci95": [
+            -0.02635658914728682,
+            -0.002325581395348837
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "random_yield": {
+          "task_weighted_delta": -0.001937984496124031,
+          "ci95": [
+            -0.005813953488372093,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "legacy_mdl_yield": {
+          "task_weighted_delta": -0.001937984496124031,
+          "ci95": [
+            -0.005813953488372093,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_random_yield": {
+          "task_weighted_delta": -0.001937984496124031,
+          "ci95": [
+            -0.005813953488372093,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "mdl_vote_yield": {
+          "task_weighted_delta": -0.001937984496124031,
+          "ci95": [
+            -0.005813953488372093,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "consensus_yield": {
+          "task_weighted_delta": -0.001937984496124031,
+          "ci95": [
+            -0.005813953488372093,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        },
+        "oracle_yield": {
+          "task_weighted_delta": -0.001937984496124031,
+          "ci95": [
+            -0.005813953488372093,
+            0.0
+          ],
+          "bootstrap_probability_positive": 0.0
+        }
+      }
+    },
+    "same_direction": {
+      "coverage": {
+        "training_delta": -0.03658805564981337,
+        "evaluation_delta": -0.012403100775193798,
+        "same_nonzero_direction": true
+      },
+      "random_yield": {
+        "training_delta": -0.0024649992402489716,
+        "evaluation_delta": -0.001937984496124031,
+        "same_nonzero_direction": true
+      },
+      "mdl_vote_yield": {
+        "training_delta": -0.00415252799457075,
+        "evaluation_delta": -0.001937984496124031,
+        "same_nonzero_direction": true
+      },
+      "consensus_yield": {
+        "training_delta": -0.0036986766202918224,
+        "evaluation_delta": -0.001937984496124031,
+        "same_nonzero_direction": true
+      },
+      "oracle_yield": {
+        "training_delta": -0.004609207103268861,
+        "evaluation_delta": -0.001937984496124031,
+        "same_nonzero_direction": true
+      }
+    }
+  }
+}
