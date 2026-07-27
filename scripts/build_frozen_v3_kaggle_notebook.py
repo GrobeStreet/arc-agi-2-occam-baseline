@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Build the self-contained Kaggle notebook for Private Cycle 001.
 
-The notebook embeds the exact frozen v3 source files from the checked-out Git
-commit. It writes those modules into /kaggle/working, records their SHA-256
-hashes, and executes kaggle_submission_v3.py with internet disabled by kernel
-metadata. Only Python's standard library is needed to build the notebook.
+The notebook embeds the exact frozen v3 source files from a supplied directory.
+It writes those modules into /kaggle/working, records their SHA-256 hashes, and
+executes kaggle_submission_v3.py with internet disabled by kernel metadata. Only
+Python's standard library is needed to build the notebook.
 """
 
 from __future__ import annotations
@@ -35,7 +35,12 @@ def git_head(root: Path) -> str:
         return "unknown"
 
 
-def make_notebook(root: Path, output: Path, manifest_path: Path) -> None:
+def make_notebook(
+    root: Path,
+    output: Path,
+    manifest_path: Path,
+    source_commit_override: str | None = None,
+) -> None:
     payload: dict[str, str] = {}
     hashes: dict[str, str] = {}
     sizes: dict[str, int] = {}
@@ -49,7 +54,7 @@ def make_notebook(root: Path, output: Path, manifest_path: Path) -> None:
         hashes[relative] = hashlib.sha256(raw).hexdigest()
         sizes[relative] = len(raw)
 
-    source_commit = git_head(root)
+    source_commit = source_commit_override or git_head(root)
     created_at = datetime.now(timezone.utc).isoformat()
     manifest = {
         "cycle": "private-v3-cycle-001",
@@ -61,6 +66,7 @@ def make_notebook(root: Path, output: Path, manifest_path: Path) -> None:
             for name in FROZEN_FILES
         },
         "registration": "HYPOTHESIS-private-v3-cycle-001.md",
+        "packaging_note": "PRIVATE_CYCLE_001_PACKAGING_NOTE.md",
         "output_contract": "/kaggle/working/submission.json",
     }
 
@@ -113,10 +119,11 @@ print(f"Submission ready: {submission} ({submission.stat().st_size:,} bytes)")
                 "source": [
                     "# GrobeStreet ARC Frozen V3 — Private Cycle 001\n",
                     "\n",
-                    "This code-competition notebook is generated from the source commit and file hashes recorded below. It uses the preregistered frozen representation-v3 grammar without post-hoc modification. Internet is disabled by `kernel-metadata.json`.\n",
+                    "This code-competition notebook is generated from the frozen source commit and file hashes recorded below. It uses the preregistered representation-v3 grammar without post-hoc modification. Internet is disabled by `kernel-metadata.json`.\n",
                     "\n",
-                    f"- Source commit: `{source_commit}`\n",
+                    f"- Frozen source commit: `{source_commit}`\n",
                     "- Registration: `HYPOTHESIS-private-v3-cycle-001.md`\n",
+                    "- Mechanical packaging note: `PRIVATE_CYCLE_001_PACKAGING_NOTE.md`\n",
                     "- Required output: `/kaggle/working/submission.json`\n",
                 ],
             },
@@ -167,9 +174,19 @@ def main() -> None:
         "--manifest",
         default="contest/kaggle_kernel_v3/source_manifest.json",
     )
+    parser.add_argument(
+        "--source-commit",
+        default=None,
+        help="Commit label to record when --root contains materialized frozen files.",
+    )
     args = parser.parse_args()
     root = Path(args.root).resolve()
-    make_notebook(root, Path(args.output), Path(args.manifest))
+    make_notebook(
+        root,
+        Path(args.output),
+        Path(args.manifest),
+        source_commit_override=args.source_commit,
+    )
 
 
 if __name__ == "__main__":
