@@ -28,8 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
-      KAGGLE_USERNAME_SECRET: ${{ secrets.KAGGLE_USERNAME }}
-      KAGGLE_USERNAME_VARIABLE: ${{ vars.KAGGLE_USERNAME }}
+      # Kaggle username is public account metadata and was verified from the
+      # authenticated account settings. Only the API token remains secret.
+      KAGGLE_USERNAME: robertmorong
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
       KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
       PYTHONUNBUFFERED: '1'
@@ -92,10 +93,7 @@ jobs:
 
       - name: Run the registered frozen submission and ranking collector
         if: steps.cycle_guard.outputs.run_cycle == 'true'
-        shell: bash
-        run: |
-          export KAGGLE_USERNAME="${KAGGLE_USERNAME_SECRET:-$KAGGLE_USERNAME_VARIABLE}"
-          python scripts/kaggle_private_cycle_001_v2.py
+        run: python scripts/kaggle_private_cycle_001_v2.py
 
       - name: Publish the immutable or blocked result record
         if: always() && steps.cycle_guard.outputs.run_cycle == 'true'
