@@ -17,9 +17,10 @@ concurrency:
 jobs:
   submit-and-record:
     runs-on: ubuntu-latest
-    timeout-minutes: 750
+    timeout-minutes: 360
     env:
-      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+      KAGGLE_USERNAME_SECRET: ${{ secrets.KAGGLE_USERNAME }}
+      KAGGLE_USERNAME_VARIABLE: ${{ vars.KAGGLE_USERNAME }}
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN || secrets.KAGGLE_KEY }}
       KAGGLE_TEAM_NAME: ${{ secrets.KAGGLE_TEAM_NAME }}
     steps:
@@ -68,7 +69,10 @@ jobs:
 
       - name: Run the registered frozen submission and ranking collector
         if: steps.cycle_guard.outputs.run_cycle == 'true'
-        run: python scripts/kaggle_private_cycle_001.py
+        shell: bash
+        run: |
+          export KAGGLE_USERNAME="${KAGGLE_USERNAME_SECRET:-$KAGGLE_USERNAME_VARIABLE}"
+          python scripts/kaggle_private_cycle_001.py
 
       - name: Publish the immutable or blocked result record
         if: always() && steps.cycle_guard.outputs.run_cycle == 'true'
