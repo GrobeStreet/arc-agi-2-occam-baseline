@@ -1,2 +1,2 @@
-requested_at_utc=2026-07-27T20:08:00Z
-purpose=Observe current frozen ARC kernel status and whether any competition submission, score, or rank now exists; do not submit or modify solver code.
+requested_at_utc=2026-07-27T20:25:00Z
+purpose=Observe whether immutable ARC kernel version 8 has entered the competition submission queue, received a score, or obtained a rank; do not submit or modify code.
