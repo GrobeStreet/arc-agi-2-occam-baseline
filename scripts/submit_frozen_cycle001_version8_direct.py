@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Submit frozen ARC Cycle 001 kernel version 8 without pushing a new kernel.
 
-Version 8 was built from the registered frozen source and its latest Kaggle run is
+Version 8 was built from the registered frozen source and its Kaggle run is
 COMPLETE with `submission.json` present. This script performs no model work. It
 checks for an existing submission, verifies the live kernel/output state, submits
-the immutable kernel output filename, waits for scoring, and records score/rank.
+the immutable kernel output filename, polls for scoring, and records score/rank.
 """
 from __future__ import annotations
 
@@ -17,9 +17,7 @@ from submit_frozen_cycle001_version8 import (
     KERNEL_REF,
     KERNEL_VERSION,
     MESSAGE,
-    first,
     log,
-    number,
     parse_csv,
     refresh,
     run,
@@ -50,8 +48,8 @@ def terminalize(record, submit_returncode: int | None = None) -> None:
         )
     else:
         record.update(
-            state="SUBMISSION_FAILED_OR_TIMED_OUT",
-            interpretation="Kaggle did not accept or complete the immutable version-8 code submission.",
+            state="SUBMISSION_FAILED",
+            interpretation="Kaggle did not accept the immutable version-8 code submission.",
         )
 
 
@@ -126,6 +124,8 @@ def main() -> int:
         write_record(record)
         return 0
 
+    # The Kaggle CLI installed on the runner does not expose --wait on submit.
+    # Submit once, persist acceptance, then poll with `competitions submissions`.
     submit = run(
         [
             "kaggle", "competitions", "submit", COMPETITION,
@@ -133,17 +133,26 @@ def main() -> int:
             "-k", KERNEL_REF,
             "-v", str(KERNEL_VERSION),
             "-m", MESSAGE,
-            "--wait", "10800",
-            "--poll-interval", "30",
         ],
-        timeout=10900,
+        timeout=300,
     )
     log("direct_03_competition_submit.txt", submit, record)
     ref_match = re.search(r"(?i)submission\s+ref:\s*(\d+)", submit["output"])
     if ref_match:
         record["submission_ref"] = ref_match.group(1)
-    if submit["returncode"] != 0:
+
+    if submit["returncode"] != 0 and not record.get("submission_ref"):
         record["error"] = submit["output"][-16000:]
+        terminalize(record, submit["returncode"])
+        write_record(record)
+        return 0
+
+    record.update(
+        state="SUBMITTED_SCORE_PENDING",
+        error=None,
+        interpretation="Kaggle accepted immutable kernel version 8; polling for score and rank.",
+    )
+    write_record(record)
 
     refresh(record, wait_seconds=1800)
     terminalize(record, submit["returncode"])
