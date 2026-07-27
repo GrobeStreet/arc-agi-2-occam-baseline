@@ -1,0 +1,22 @@
+{
+  "split": "training",
+  "task_files_seen": 1000,
+  "tasks_written": 1000,
+  "possible_crossfold_cells": 28476,
+  "written_crossfold_cells": 28476,
+  "covered_cells": 1166,
+  "coverage": 0.04094676218570024,
+  "k_values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "parquet": "results/crossfold/crossfold_training.parquet",
+  "csv_gz": "results/crossfold/crossfold_training.csv.gz"
+}

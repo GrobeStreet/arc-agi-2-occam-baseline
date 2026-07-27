@@ -1,0 +1,18 @@
+{
+  "split": "evaluation",
+  "task_files_seen": 120,
+  "tasks_written": 120,
+  "possible_crossfold_cells": 1757,
+  "written_crossfold_cells": 1757,
+  "covered_cells": 18,
+  "coverage": 0.010244735344336939,
+  "k_values": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "parquet": "results/crossfold/crossfold_evaluation.parquet",
+  "csv_gz": "results/crossfold/crossfold_evaluation.csv.gz"
+}
