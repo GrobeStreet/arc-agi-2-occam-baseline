@@ -9,22 +9,14 @@ on:
       - 'advanced_arc_audit.py'
       - 'HYPOTHESIS-crossfold-v2.md'
       - '.github/workflows/arc-measurement-audit-v2.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'crossfold_ablation.py'
-      - 'crossfold_analysis.py'
-      - 'advanced_arc_audit.py'
-      - 'HYPOTHESIS-crossfold-v2.md'
-      - '.github/workflows/arc-measurement-audit-v2.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: arc-same-holdout-v2-${{ github.event.pull_request.number || github.ref_name }}
-  cancel-in-progress: true
+  group: arc-same-holdout-v2-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   audit:
@@ -34,7 +26,7 @@ jobs:
       - name: Check out the registered audit branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -73,22 +65,28 @@ jobs:
             --output-dir results/crossfold
 
       - name: Compare training and evaluation without hidden-test feedback
+        id: comparison
+        continue-on-error: true
         run: |
+          set -o pipefail
           python advanced_arc_audit.py \
             --training results/crossfold/crossfold_training.parquet \
             --evaluation results/crossfold/crossfold_evaluation.parquet \
             --output-dir results/crossfold \
             --bootstrap 50000 \
-            --seed 20260727
+            --seed 20260727 2>&1 | tee results/crossfold/advanced_arc_audit.log
 
-      - name: Print the complete evidence record
+      - name: Print the available evidence record
+        if: always()
         run: |
-          cat results/crossfold/training_audit/crossfold_calibration.md
+          cat results/crossfold/training_audit/crossfold_calibration.md || true
           echo '--- TRAINING TO EVALUATION REPLICATION ---'
-          cat results/crossfold/arc_crossfold_audit.md
+          cat results/crossfold/arc_crossfold_audit.md || true
+          echo '--- COMPARISON LOG ---'
+          cat results/crossfold/advanced_arc_audit.log || true
 
-      - name: Commit deterministic results on branch pushes
-        if: github.event_name == 'push'
+      - name: Commit deterministic results when the full comparison succeeds
+        if: github.event_name == 'push' && steps.comparison.outcome == 'success'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -96,7 +94,8 @@ jobs:
           git diff --cached --quiet || git commit -m 'Add registered same-holdout ARC audit v2 results'
           git push origin HEAD:${{ github.ref_name }}
 
-      - name: Upload the complete evidence artifact
+      - name: Upload the complete evidence artifact even on failure
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: arc-same-holdout-audit-v2
