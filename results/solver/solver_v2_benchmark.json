@@ -6,7 +6,7 @@
   "evaluation_test_outputs": 167,
   "prior_strength": 8.0,
   "family_count": 136,
-  "benchmark_seconds": 42.54971001199999,
+  "benchmark_seconds": 42.19263359999999,
   "methods": {
     "legacy": {
       "pass1": {

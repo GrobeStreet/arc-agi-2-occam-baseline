@@ -19,4 +19,4 @@ Program-family priors were learned only from public training demonstrations. The
 
 The selector is promoted only if it improves frozen paired evaluation outcomes. A tie or loss is retained as a negative result; the measurement paper does not depend on a solver gain.
 
-Runtime: 42.5 seconds after prior learning.
+Runtime: 42.2 seconds after prior learning.
