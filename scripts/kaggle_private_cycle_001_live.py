@@ -7,7 +7,6 @@ contract. It only hardens Kaggle packaging and evidence classification:
 * make the human-readable kernel title resolve exactly to the registered slug;
 * distinguish an authenticated account that has not accepted competition rules
   from a kernel-version parsing failure;
-* route the Kaggle submit command to the exact validated downloaded output path;
 * preserve every underlying CLI command and log from the registered runner.
 """
 from __future__ import annotations
@@ -20,7 +19,6 @@ import kaggle_private_cycle_001_v2 as cycle
 
 
 _original_write_records = cycle.write_records
-_original_run = cycle.run
 
 
 def _all_command_output(record: dict[str, Any]) -> str:
@@ -71,20 +69,8 @@ def write_kernel_metadata(username: str) -> None:
     path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
 
 
-def run(command: list[str], *, timeout: int = 900) -> dict[str, Any]:
-    """Apply only the pre-registered exact-path CLI repair."""
-    rewritten = list(command)
-    if rewritten[:3] == ["kaggle", "competitions", "submit"] and "-f" in rewritten:
-        index = rewritten.index("-f") + 1
-        if index < len(rewritten) and rewritten[index] == "submission.json":
-            exact = cycle.RESULT_DIR / "kernel_output" / "submission.json"
-            rewritten[index] = str(exact)
-    return _original_run(rewritten, timeout=timeout)
-
-
 cycle.write_records = write_records
 cycle.write_kernel_metadata = write_kernel_metadata
-cycle.run = run
 
 
 if __name__ == "__main__":
