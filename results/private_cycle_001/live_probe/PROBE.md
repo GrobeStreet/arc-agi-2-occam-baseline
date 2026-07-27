@@ -1,6 +1,6 @@
 # Frozen ARC Cycle 001 — Live Kaggle Probe
 
-**Observed:** 2026-07-27T20:06:21.213833+00:00  
+**Observed:** 2026-07-27T20:18:46.072001+00:00  
 **Kernel:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001`  
 **State:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.COMPLETE"`
 
@@ -35,7 +35,8 @@ Source code and metadata downloaded to /home/runner/work/arc-agi-2-occam-baselin
 Return code: `0`
 
 ```text
-No submissions found
+ref,fileName,date,description,status,publicScore,privateScore
+55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 — Private Cycle 001 — 70672f3aa62d,SubmissionStatus.PENDING,,
 
 ```
 
