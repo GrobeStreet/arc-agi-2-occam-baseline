@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-07-27T20:24:50.114771+00:00",
+  "observed_at": "2026-07-27T20:28:41.952458+00:00",
   "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
   "competition": "arc-prize-2026-arc-agi-2",
   "authenticated": true,
@@ -51,7 +51,7 @@
         "-q"
       ],
       "returncode": 0,
-      "output": "ref,fileName,date,description,status,publicScore,privateScore\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.PENDING,,\n"
+      "output": "ref,fileName,date,description,status,publicScore,privateScore\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.COMPLETE,,\n"
     },
     "submission_detail": {
       "command": [
