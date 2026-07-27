@@ -1,0 +1,123 @@
+{
+  "registration": "HYPOTHESIS-representation-v3.md",
+  "split": {
+    "definition": "int(SHA1(task_id)[0:8],16) mod 5 == 0",
+    "modulus": 5,
+    "remainder": 0,
+    "task_count": 183,
+    "output_count": 201
+  },
+  "runtime_seconds": 43.45771265029907,
+  "output_level": {
+    "baseline_coverage": {
+      "successes": 4,
+      "trials": 201,
+      "rate": 0.01990049751243781,
+      "wilson_ci95": [
+        0.007765339064164056,
+        0.050043231070027436
+      ]
+    },
+    "v3_coverage": {
+      "successes": 5,
+      "trials": 201,
+      "rate": 0.024875621890547265,
+      "wilson_ci95": [
+        0.010670974467623112,
+        0.056901237426835824
+      ]
+    },
+    "baseline_pass1": {
+      "successes": 4,
+      "trials": 201,
+      "rate": 0.01990049751243781,
+      "wilson_ci95": [
+        0.007765339064164056,
+        0.050043231070027436
+      ]
+    },
+    "baseline_pass2": {
+      "successes": 4,
+      "trials": 201,
+      "rate": 0.01990049751243781,
+      "wilson_ci95": [
+        0.007765339064164056,
+        0.050043231070027436
+      ]
+    },
+    "v3_pass1": {
+      "successes": 5,
+      "trials": 201,
+      "rate": 0.024875621890547265,
+      "wilson_ci95": [
+        0.010670974467623112,
+        0.056901237426835824
+      ]
+    },
+    "v3_pass2": {
+      "successes": 5,
+      "trials": 201,
+      "rate": 0.024875621890547265,
+      "wilson_ci95": [
+        0.010670974467623112,
+        0.056901237426835824
+      ]
+    },
+    "v3_candidate_oracle": {
+      "successes": 5,
+      "trials": 201,
+      "rate": 0.024875621890547265,
+      "wilson_ci95": [
+        0.010670974467623112,
+        0.056901237426835824
+      ]
+    },
+    "paired_v3_vs_baseline_pass2": {
+      "a_only": 1,
+      "b_only": 0,
+      "discordant": 1,
+      "exact_two_sided_p": 1.0
+    }
+  },
+  "task_level": {
+    "baseline_task_pass2": {
+      "successes": 4,
+      "trials": 183,
+      "rate": 0.02185792349726776,
+      "wilson_ci95": [
+        0.008532034847315923,
+        0.05484571400518803
+      ]
+    },
+    "v3_task_pass2": {
+      "successes": 5,
+      "trials": 183,
+      "rate": 0.0273224043715847,
+      "wilson_ci95": [
+        0.011725573737955469,
+        0.062356429413377004
+      ]
+    },
+    "v3_candidate_oracle_task": {
+      "successes": 5,
+      "trials": 183,
+      "rate": 0.0273224043715847,
+      "wilson_ci95": [
+        0.011725573737955469,
+        0.062356429413377004
+      ]
+    },
+    "paired_v3_vs_baseline_task_pass2": {
+      "a_only": 1,
+      "b_only": 0,
+      "discordant": 1,
+      "exact_two_sided_p": 1.0
+    }
+  },
+  "candidate_counts": {
+    "baseline_mean_passing_programs": 0.03482587064676617,
+    "v3_mean_passing_programs": 0.11442786069651742,
+    "baseline_mean_distinct_outputs": 0.01990049751243781,
+    "v3_mean_distinct_outputs": 0.024875621890547265
+  }
+}
