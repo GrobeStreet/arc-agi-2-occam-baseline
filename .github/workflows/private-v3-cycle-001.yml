@@ -17,12 +17,13 @@ concurrency:
 jobs:
   submit-and-record:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 750
     env:
       KAGGLE_USERNAME_SECRET: ${{ secrets.KAGGLE_USERNAME }}
       KAGGLE_USERNAME_VARIABLE: ${{ vars.KAGGLE_USERNAME }}
-      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN || secrets.KAGGLE_KEY }}
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
       KAGGLE_TEAM_NAME: ${{ secrets.KAGGLE_TEAM_NAME }}
+      PYTHONUNBUFFERED: '1'
     steps:
       - name: Check out the complete frozen history
         uses: actions/checkout@v4
@@ -47,9 +48,9 @@ jobs:
             )
           fi
           case "$state" in
-            SCORED_*|SUBMITTED_SCORE_PENDING|SUBMISSION_FAILED_OR_TIMED_OUT)
+            SCORED_*|SUBMITTED_SCORE_PENDING)
               echo "run_cycle=false" >> "$GITHUB_OUTPUT"
-              echo "Cycle 001 already reached terminal/submitted state: $state"
+              echo "Cycle 001 already reached a scored/submitted state: $state"
               ;;
             *)
               echo "run_cycle=true" >> "$GITHUB_OUTPUT"
@@ -65,7 +66,10 @@ jobs:
 
       - name: Install the official Kaggle CLI
         if: steps.cycle_guard.outputs.run_cycle == 'true'
-        run: python -m pip install --upgrade 'kaggle>=2.2.0'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'kaggle>=2.2.0,<3'
+          kaggle --version
 
       - name: Run the registered frozen submission and ranking collector
         if: steps.cycle_guard.outputs.run_cycle == 'true'
@@ -109,7 +113,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frozen-arc-v3-private-cycle-001
-          retention-days: 90
+          retention-days: 180
           path: |
             results/private_cycle_001/
             PRIVATE_CYCLE_001_STATUS.md
+            contest/kaggle_kernel_v3/build/
