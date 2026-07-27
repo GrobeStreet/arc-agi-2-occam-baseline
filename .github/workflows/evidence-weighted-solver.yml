@@ -7,6 +7,7 @@ on:
       - 'dsl.py'
       - 'evidence_weighted_solver.py'
       - 'benchmark_solver_v2.py'
+      - 'kaggle_submission_v2.py'
       - 'HYPOTHESIS-evidence-weighted-solver.md'
       - '.github/workflows/evidence-weighted-solver.yml'
   workflow_dispatch:
@@ -53,13 +54,37 @@ jobs:
             --prior-strength 8 \
             --relearn
 
-      - name: Build reproducible two-attempt evaluation submission artifact
+      - name: Build direct two-attempt evaluation submission artifact
         run: |
           python evidence_weighted_solver.py evaluation \
             --data-root external/ARC-AGI-2/data \
             --priors results/solver/family_priors.json \
             --output results/solver/submission_v2.json \
             --metadata results/solver/submission_v2_metadata.json
+
+      - name: Validate Kaggle-compatible wrapper against the same challenges
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          tasks = {}
+          for path in sorted(Path('external/ARC-AGI-2/data/evaluation').glob('*.json')):
+              tasks[path.stem] = json.loads(path.read_text())
+          Path('results/solver/evaluation_challenges_combined.json').write_text(json.dumps(tasks))
+          PY
+          python kaggle_submission_v2.py \
+            --test-challenges results/solver/evaluation_challenges_combined.json \
+            --priors results/solver/family_priors.json \
+            --output results/solver/submission_v2_kaggle.json \
+            --metadata results/solver/submission_v2_kaggle_metadata.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          direct = json.loads(Path('results/solver/submission_v2.json').read_text())
+          wrapped = json.loads(Path('results/solver/submission_v2_kaggle.json').read_text())
+          assert direct == wrapped, 'Kaggle wrapper diverges from frozen direct solver output'
+          print(f'validated identical two-attempt output for {len(direct)} tasks')
+          PY
 
       - name: Show benchmark verdict
         run: |
@@ -72,6 +97,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add results/solver/
           git diff --cached --quiet || git commit -m 'Add frozen evidence-weighted ARC solver benchmark'
+          git pull --rebase origin ${{ github.ref_name }}
           git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload solver benchmark artifact
