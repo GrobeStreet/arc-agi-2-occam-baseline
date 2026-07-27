@@ -1,16 +1,20 @@
-name: Task-clustered ARC calibration
+name: ARC measurement audit v2
 
 on:
   push:
     branches: [arc-task-clustered-v2]
     paths:
       - 'task_clustered_analysis.py'
+      - 'crossfold_ablation.py'
+      - 'crossfold_analysis.py'
       - 'ablate_cell_training.parquet'
       - '.github/workflows/task-clustered-calibration.yml'
   pull_request:
     branches: [main]
     paths:
       - 'task_clustered_analysis.py'
+      - 'crossfold_ablation.py'
+      - 'crossfold_analysis.py'
       - 'ablate_cell_training.parquet'
       - '.github/workflows/task-clustered-calibration.yml'
   workflow_dispatch:
@@ -18,35 +22,91 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: arc-measurement-v2-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   recompute:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 1
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install dependencies
-        run: python -m pip install --upgrade pip numpy pandas pyarrow
-      - name: Recompute task-weighted calibration
+        run: python -m pip install --upgrade pip numpy pandas scipy pyarrow
+
+      - name: Fetch the official ARC-AGI-2 corpus
+        run: |
+          rm -rf external/ARC-AGI-2
+          git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git external/ARC-AGI-2
+          git -C external/ARC-AGI-2 rev-parse HEAD | tee results/arc_agi_2_data_commit.txt
+
+      - name: Recompute task-weighted legacy-prefix calibration
         run: python task_clustered_analysis.py --bootstrap 50000 --seed 20260727
-      - name: Show machine-readable result
-        run: cat results/task_weighted_calibration.json
+
+      - name: Run complete same-holdout cross-fold experiment
+        run: |
+          python crossfold_ablation.py training \
+            --data-root external/ARC-AGI-2/data \
+            --output-dir results/crossfold
+
+      - name: Analyze cross-fold results with task-cluster uncertainty
+        run: |
+          python crossfold_analysis.py \
+            --input results/crossfold/crossfold_training.parquet \
+            --results-dir results/crossfold \
+            --bootstrap 50000 \
+            --seed 20260727
+
+      - name: Show headline results
+        run: |
+          cat results/task_weighted_calibration.md
+          echo '--- CROSS-FOLD ---'
+          cat results/crossfold/crossfold_calibration.md
+
       - name: Commit deterministic results on branch pushes
         if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add results/task_weighted_calibration.json results/task_weighted_calibration.md results/task_weighted_task_cells.csv
-          git diff --cached --quiet || git commit -m 'Add task-weighted ARC calibration results'
+          git add \
+            results/arc_agi_2_data_commit.txt \
+            results/task_weighted_calibration.json \
+            results/task_weighted_calibration.md \
+            results/task_weighted_task_cells.csv \
+            results/crossfold/crossfold_training.parquet \
+            results/crossfold/crossfold_training.csv.gz \
+            results/crossfold/crossfold_training_run.json \
+            results/crossfold/crossfold_calibration.json \
+            results/crossfold/crossfold_calibration.md \
+            results/crossfold/crossfold_fold_summary.csv \
+            results/crossfold/crossfold_task_summary.csv \
+            results/crossfold/crossfold_selection_by_k.csv
+          git diff --cached --quiet || git commit -m 'Add corrected same-holdout ARC calibration results'
           git push
-      - name: Upload result artifacts
+
+      - name: Upload complete audit artifact
         uses: actions/upload-artifact@v4
         with:
-          name: task-clustered-calibration
+          name: arc-measurement-audit-v2
           path: |
+            results/arc_agi_2_data_commit.txt
             results/task_weighted_calibration.json
             results/task_weighted_calibration.md
             results/task_weighted_task_cells.csv
+            results/crossfold/crossfold_training.parquet
+            results/crossfold/crossfold_training.csv.gz
+            results/crossfold/crossfold_training_run.json
+            results/crossfold/crossfold_calibration.json
+            results/crossfold/crossfold_calibration.md
+            results/crossfold/crossfold_fold_summary.csv
+            results/crossfold/crossfold_task_summary.csv
+            results/crossfold/crossfold_selection_by_k.csv
