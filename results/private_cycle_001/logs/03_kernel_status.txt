@@ -1,3 +1,7 @@
 [001] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.QUEUED"
 [002] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.RUNNING"
-[003] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.ERROR"
+[003] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.RUNNING"
+[004] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.RUNNING"
+[005] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.RUNNING"
+[006] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.RUNNING"
+[007] rc=0 robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.COMPLETE"
