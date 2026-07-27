@@ -4,6 +4,7 @@ const paths = {
   evaluation: 'data/crossfold_evaluation.json',
   replication: 'data/crossfold_replication.json',
   solver: 'data/solver_v2_benchmark.json',
+  representation: 'data/representation_v3.json',
   leaderboard: 'data/leaderboard_measurement_v2.json'
 };
 
@@ -42,7 +43,6 @@ function contrast(payload, name = 'k=2 minus k=1') {
 function renderCrossfold(training, evaluation, replication) {
   const trainK1Coverage = metric(training, 1, 'coverage');
   const trainK1Reliability = metric(training, 1, 'candidate_reliability');
-  const trainK1Consensus = metric(training, 1, 'consensus_yield');
   const trainK2Reliability = metric(training, 2, 'candidate_reliability');
   const evalK1Coverage = metric(evaluation, 1, 'coverage');
   const evalK1Consensus = metric(evaluation, 1, 'consensus_yield');
@@ -50,14 +50,13 @@ function renderCrossfold(training, evaluation, replication) {
   const primaryCoverage = primary?.metrics?.coverage;
   const primaryConsensus = primary?.metrics?.consensus_yield;
 
-  const cards = [
+  document.getElementById('crossfoldSummary').innerHTML = [
     `<div class="result-card"><strong>Training DSL coverage at k=1</strong><div class="big">${fmt(trainK1Coverage?.task_weighted_mean)}</div><span>95% task CI ${ci(trainK1Coverage?.ci95)}</span></div>`,
     `<div class="result-card"><strong>Candidate reliability: k=1 → k=2</strong><div class="big">${fmt(trainK1Reliability?.task_weighted_mean)} → ${fmt(trainK2Reliability?.task_weighted_mean)}</div><span>Conditional on candidate generation</span></div>`,
     `<div class="result-card"><strong>Same-target coverage effect</strong><div class="big">${pp(primaryCoverage?.task_weighted_delta)}</div><span>95% task CI ${ci(primaryCoverage?.ci95, pp)}</span></div>`,
     `<div class="result-card"><strong>Primary consensus-yield effect</strong><div class="big">${pp(primaryConsensus?.task_weighted_delta)}</div><span>95% task CI ${ci(primaryConsensus?.ci95, pp)} · registered negative</span></div>`,
     `<div class="result-card"><strong>One-shot evaluation coverage / yield</strong><div class="big">${fmt(evalK1Coverage?.task_weighted_mean)} / ${fmt(evalK1Consensus?.task_weighted_mean)}</div><span>Evaluation demonstrations; analysis frozen before run</span></div>`
-  ];
-  document.getElementById('crossfoldSummary').innerHTML = cards.join('');
+  ].join('');
 
   const selection = training?.ambiguous_subset_selection || {};
   const labels = {
@@ -103,6 +102,24 @@ function renderSolver(payload) {
   ].join('');
 }
 
+function renderRepresentation(payload) {
+  const output = payload?.output_level || {};
+  const task = payload?.task_level || {};
+  const baseline = output.baseline_pass2 || {};
+  const v3 = output.v3_pass2 || {};
+  const oracle = output.v3_candidate_oracle || {};
+  const paired = output.paired_v3_vs_baseline_pass2 || {};
+  const coverage = output.v3_coverage || {};
+  const taskV3 = task.v3_task_pass2 || {};
+  const taskBaseline = task.baseline_task_pass2 || {};
+  document.getElementById('v3Summary').innerHTML = [
+    `<div class="result-card"><strong>Output pass@2</strong><div class="big">${baseline.successes ?? '—'}/${baseline.trials ?? '—'} → ${v3.successes ?? '—'}/${v3.trials ?? '—'}</div><span>v2 ${fmt(baseline.rate)} · v3 ${fmt(v3.rate)}</span></div>`,
+    `<div class="result-card"><strong>Whole-task pass@2</strong><div class="big">${taskBaseline.successes ?? '—'}/${taskBaseline.trials ?? '—'} → ${taskV3.successes ?? '—'}/${taskV3.trials ?? '—'}</div><span>Frozen SHA1 training holdout</span></div>`,
+    `<div class="result-card"><strong>Paired discordance</strong><div class="big">${paired.a_only ?? '—'}–${paired.b_only ?? '—'}</div><span>v3-only vs v2-only · exact p=${Number.isFinite(Number(paired.exact_two_sided_p)) ? Number(paired.exact_two_sided_p).toFixed(3) : '—'}</span></div>`,
+    `<div class="result-card"><strong>V3 coverage / candidate oracle</strong><div class="big">${fmt(coverage.rate)} / ${fmt(oracle.rate)}</div><span>Ranked pass@2 equals the represented holdout ceiling</span></div>`
+  ].join('');
+}
+
 async function render() {
   const status = document.getElementById('status');
   const entries = await Promise.allSettled(Object.entries(paths).map(async ([key, path]) => [key, await load(path)]));
@@ -129,6 +146,9 @@ async function render() {
   }
 
   if (data.solver) renderSolver(data.solver);
+  if (data.representation?.output_level) renderRepresentation(data.representation);
+  else document.getElementById('v3Summary').innerHTML = '<div class="result-card"><strong>Representation-v3 result file unavailable.</strong><p>See REPRESENTATION-v3.md in the repository.</p></div>';
+
   if (data.leaderboard?.test_output_count) {
     document.getElementById('taskCount').value = data.leaderboard.test_output_count;
     calculate();
