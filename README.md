@@ -1,40 +1,46 @@
 # ARC Measurement Audit v2
-## How Do We Know an ARC Solution Is Right?
+## When a Calibration Curve Is a Selection Curve
 
 [![ARC measurement audit](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/arc-measurement-v2.yml/badge.svg)](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/arc-measurement-v2.yml)
 [![Evidence-weighted solver](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/evidence-weighted-solver.yml/badge.svg)](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/evidence-weighted-solver.yml)
 [![Paper build](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/build-paper.yml/badge.svg)](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/build-paper.yml)
 
-**Robert Morong · Independent research · ARC Prize 2026 Paper Track**  
-Task-weighted calibration, same-target controls, candidate-selection auditing, one-shot public-evaluation replication, and a publish-regardless correction record.
+**Robert Morong · Independent research · ARC Prize 2026 Paper Track candidate**  
+Task- and target-controlled measurement of demonstration value, candidate selection, confidence, and leaderboard uncertainty in ARC-AGI-2.
 
-**Live dashboard:** https://grobestreet.github.io/arc-agi-2-occam-baseline/  
-**Canonical paper:** [`PAPER.md`](PAPER.md) · **PDF:** [`ARC_Measurement_Audit_v2.pdf`](ARC_Measurement_Audit_v2.pdf)
+- **Canonical paper:** [`PAPER_V2.md`](PAPER_V2.md)
+- **Resolved findings ledger:** [`RESULTS_V2.md`](RESULTS_V2.md)
+- **Generated PDF:** [`ARC_Measurement_Audit_v2.pdf`](ARC_Measurement_Audit_v2.pdf)
+- **Registered tests:** [`HYPOTHESIS-crossfold-v2.md`](HYPOTHESIS-crossfold-v2.md) · [`HYPOTHESIS-evidence-weighted-solver.md`](HYPOTHESIS-evidence-weighted-solver.md)
+- **Live-dashboard source:** [`site/`](site/)
+
+`PAPER.md` and `RESULTS-v2.md` are retained as earlier v2 drafting artifacts. The files above are canonical whenever wording differs.
 
 ---
 
 ## The resolved finding
 
-The original paper reported that a demonstration-consistent program generalized at **50.0%, 86.8%, and 94.9%** after fitting one, two, and three demonstrations. Those percentages were correct for this DSL's generated candidate population, but the interpretation was too strong:
+The first draft reported that a demonstration-consistent program generalized at **50.0%, 86.8%, and 94.9%** after one, two, and three fitted demonstrations. Those numbers accurately described the generated candidate-program population, but not the effect of adding evidence:
 
 1. candidate-rich tasks received more weight;
-2. the held-out target changed as `k` changed;
-3. the represented task set shrank at larger `k`;
-4. equal-complexity program ties were not explicitly resolved.
+2. programs nested inside one task were treated as independent observations;
+3. the held-out target changed as `k` changed;
+4. the represented task set became easier and smaller at larger `k`;
+5. no-candidate failures were omitted from the apparent reliability story.
 
-V2 gives every task equal weight and holds the unseen demonstration fixed while varying only the amount of fitted evidence.
+The corrected full-corpus experiment holds the task and target fixed, enumerates every evidence subset, counts no-candidate cells as failures, and bootstraps ARC tasks.
 
 | Primary result | Resolved estimate |
 |---|---:|
 | Training coverage, `k=1` | **7.10%** [5.71, 8.58] |
-| Training candidate reliability, `k=1` | **32.8%** [25.1, 40.4] |
+| Training conditional candidate reliability, `k=1` | **32.8%** [25.1, 40.4] |
 | Training consensus yield, `k=1` | **3.31%** [2.31, 4.40] |
 | Same-target coverage change, `k=2 − k=1` | **−3.66 pp** [−4.63, −2.74] |
 | Same-target consensus-yield change | **−0.37 pp** [−0.60, −0.17] |
 | One-shot evaluation coverage, `k=1` | **1.03%** [0.17, 2.25] |
 | Evaluation same-target coverage change | **−1.24 pp** [−2.64, −0.23] |
 
-**Interpretation:** additional demonstrations make the rare surviving hypotheses cleaner, but this incomplete DSL loses expressible hypotheses faster than it gains reliability. The bottleneck is representation and coverage—not insufficient confidence in a good candidate set.
+**Interpretation:** added demonstrations improve the purity of the rare hypotheses this small DSL can still express, but they reduce hypothesis coverage enough that end-to-end yield falls. This is a **precision–coverage tradeoff**, not a monotone learning curve.
 
 ---
 
@@ -42,18 +48,20 @@ V2 gives every task equal weight and holds the unseen demonstration fixed while 
 
 ### Survived
 
-- **Underdetermination is real.** Multiple exact-consistent programs can disagree on the same unseen grid.
-- **Description length helps selection.** On 224 ambiguous subset cells across 41 training tasks, tie-aware MDL beats random candidate selection by **11.1 percentage points** [4.6, 17.9].
-- **N=120 is statistically coarse.** Small adjacent leaderboard gaps require paired per-task outcomes and uncertainty intervals.
+- **Underdetermination is real.** Exact-consistent programs can disagree on an unseen grid.
+- **Description length helps.** On 224 ambiguous subset cells across 41 tasks, tie-aware MDL beats random candidate selection by **11.1 percentage points** [4.6, 17.9].
+- **Coverage and selection are separate problems.** A selector cannot rescue an absent hypothesis.
+- **ARC rankings need uncertainty.** Scores should identify the output denominator, release paired outcomes, and cluster uncertainty by task.
 
 ### Refuted or narrowed
 
-- **“One demonstration is a coin flip; three are reliable.”** The marginal curve is strongly composition-confounded and does not identify the effect of another demonstration.
+- **“One example is exactly a coin flip; three are reliable.”** The original curve was composition- and target-confounded.
 - **“Shortest matches the oracle.”** The candidate oracle exceeds tie-aware MDL by **3.65 points** [0.13, 9.47].
-- **“Candidate agreement is calibrated confidence.”** When every candidate agrees, task-weighted accuracy is only **37.8%** [28.8, 47.0].
-- **“A better tie-breaker can rescue this solver.”** The released vote baseline, pure MDL, and the frozen evidence-weighted selector all score **0/167** public-evaluation outputs. The DSL rarely represents a viable answer on the harder split.
+- **“Candidate agreement is calibrated confidence.”** Unanimous candidates are correct only **37.8%** [28.8, 47.0] on the task-weighted audit.
+- **“A better tie-breaker can rescue this solver.”** The released baseline, pure MDL, and frozen evidence-weighted selector all score **0/167** public-evaluation outputs.
+- **“The public leaderboard is 120 Bernoulli trials.”** Public evaluation contains **120 tasks but 167 test outputs**; outputs are nested within tasks.
 
-The negative results are retained because the correction process is the contribution.
+The corrections are the contribution. No attractive claim is retained merely because it appeared in the first draft.
 
 ---
 
@@ -61,37 +69,39 @@ The negative results are retained because the correction process is the contribu
 
 ### 1. Equal-task correction
 
-`task_clustered_analysis.py` recomputes the legacy prefix experiment by averaging within task before averaging across tasks. Complete task clusters are bootstrapped.
+`task_clustered_analysis.py` recomputes the legacy prefix experiment by averaging within task before averaging across tasks, with task-cluster uncertainty.
 
-### 2. Same-target cross-fold experiment
+### 2. Same-target all-subsets experiment
 
-`crossfold_ablation.py` performs every feasible combination of:
+`crossfold_ablation.py` records every feasible:
 
 ```text
 task × held-out demonstration × k fitted demonstrations × fitted subset
 ```
 
-Every subset cell is recorded, including cells where the DSL generates no candidate. This separates:
+including no-candidate cells. `crossfold_analysis.py` separates:
 
-- **coverage** — whether a candidate exists;
-- **conditional reliability** — whether generated candidates generalize;
-- **yield** — whether the complete selection rule returns the answer.
+- coverage;
+- conditional candidate reliability;
+- selector accuracy conditional on generation;
+- end-to-end yield;
+- candidate-oracle yield and selection regret.
 
-`crossfold_analysis.py` averages subsets within holdout, holdouts within task, and then gives each task equal weight. Uncertainty is a task-cluster bootstrap.
+### 3. Frozen public-evaluation replication
 
-### 3. Frozen replication
-
-`HYPOTHESIS-crossfold-v2.md` records the interpretation thresholds before the complete run. The same code is then applied once to public evaluation demonstration pairs. `crossfold_replication.py` compares the frozen training and evaluation results without tuning.
+The interpretation gates were registered before the complete run. The same analysis was then applied once to public evaluation demonstration pairs. This is a previously observed public holdout, not a private or verified leaderboard result.
 
 ### 4. Audit-to-algorithm test
 
-`HYPOTHESIS-evidence-weighted-solver.md` freezes an evidence-weighted family selector before evaluation scoring. `benchmark_solver_v2.py` compares it with the released consensus baseline and pure MDL using paired outcomes. The result is an algorithmic null: all three score 0/167.
+`evidence_weighted_solver.py` learns equal-task program-family reliability from training demonstrations only. `benchmark_solver_v2.py` freezes the selector and compares it against the released baseline and pure MDL using paired public-evaluation outputs. The result is a documented null.
+
+### 5. Scoring-unit audit
+
+`leaderboard_stats_v2.py` directly counts tasks and test outputs in the pinned corpus and replaces the legacy `N=120` calculation with an output-aware, task-dependence-aware reporting standard.
 
 ---
 
-## Reproduce the complete audit
-
-### Environment
+## Reproduce
 
 ```bash
 git clone https://github.com/GrobeStreet/arc-agi-2-occam-baseline.git
@@ -104,17 +114,16 @@ mkdir -p external
 git clone https://github.com/arcprize/ARC-AGI-2.git external/ARC-AGI-2
 ```
 
-The committed workflow records the exact upstream data commit in `results/arc_agi_2_data_commit.txt`.
-
-### Correct the original estimand
+### Complete measurement audit
 
 ```bash
+python leaderboard_stats_v2.py \
+  --data-root external/ARC-AGI-2/data \
+  --split evaluation \
+  --output-dir results
+
 python task_clustered_analysis.py --bootstrap 50000 --seed 20260727
-```
 
-### Run the same-target training audit
-
-```bash
 python crossfold_ablation.py training \
   --data-root external/ARC-AGI-2/data \
   --output-dir results/crossfold
@@ -126,9 +135,7 @@ python crossfold_analysis.py \
   --seed 20260727
 ```
 
-### Reproduce the frozen public-evaluation replication
-
-The evaluation result has already been observed under v2. Re-running is reproduction, **not a fresh holdout for tuning**.
+### Previously observed public-evaluation replication
 
 ```bash
 python crossfold_ablation.py evaluation \
@@ -144,7 +151,7 @@ python crossfold_analysis.py \
 python crossfold_replication.py --bootstrap 20000 --seed 20260727
 ```
 
-### Reproduce the frozen selector benchmark
+### Frozen selector benchmark
 
 ```bash
 python benchmark_solver_v2.py \
@@ -155,7 +162,7 @@ python benchmark_solver_v2.py \
   --relearn
 ```
 
-### Build figures and paper
+### Paper
 
 ```bash
 python fig_v2.py
@@ -163,52 +170,54 @@ playwright install chromium
 python build_paper.py
 ```
 
+The workflow pins the exact upstream ARC-AGI-2 commit in `results/arc_agi_2_data_commit.txt`.
+
 ---
 
 ## Repository map
 
 ```text
-PAPER.md                              canonical revised paper
-ARC_Measurement_Audit_v2.pdf          generated paper PDF
-HYPOTHESIS-crossfold-v2.md            same-target preregistration
-HYPOTHESIS-evidence-weighted-solver.md frozen algorithm test
+PAPER_V2.md                           canonical paper
+RESULTS_V2.md                         resolved findings ledger
+ARC_Measurement_Audit_v2.pdf          generated canonical PDF
+HYPOTHESIS-crossfold-v2.md             same-target registration
+HYPOTHESIS-evidence-weighted-solver.md frozen selector registration
 
+leaderboard_stats_v2.py               scoring-unit correction
 task_clustered_analysis.py            equal-task legacy correction
 crossfold_ablation.py                 complete same-target experiment
 crossfold_analysis.py                 task-cluster inference
 crossfold_replication.py              one-shot train/evaluation comparison
 
-dsl.py                                diagnostic ARC program grammar
-evidence_weighted_solver.py           family-prior two-attempt solver
-benchmark_solver_v2.py                paired selector benchmark
-kaggle_submission_v2.py               Kaggle-compatible entrypoint
+dsl.py                                diagnostic symbolic grammar
+evidence_weighted_solver.py           training-only family-prior selector
+benchmark_solver_v2.py                paired frozen benchmark
+kaggle_submission_v2.py               two-attempt submission entrypoint
 
 results/task_weighted_calibration.*   corrected legacy estimates
-results/crossfold/                     raw cells and resolved audit
+results/crossfold/                     full-corpus and replication evidence
 results/solver/                        priors, predictions, benchmark, submission
-site/                                  live dashboard source
+site/                                  live-dashboard source
 ```
 
 ---
 
-## Data-use and claim boundaries
+## Claim boundaries
 
-- The public evaluation split is a **previously observed one-shot public holdout**, not a private or verified leaderboard result.
-- The 0/167 solver benchmark applies to this diagnostic DSL, not to ARC solvers generally.
-- The same-target result does not mean demonstrations are intrinsically harmful. It means added constraints expose a misspecified hypothesis class.
-- The paper's strongest contribution is measurement methodology: report coverage, conditional reliability, yield, selection rule, calibration, cost, paired outcomes, and task-cluster uncertainty.
-
----
+- The negative same-target effect applies to this incomplete diagnostic DSL, not to demonstrations or reasoning systems generally.
+- The public evaluation result is a previously observed public holdout, not a private or verified score.
+- The `0/167` result is scientifically useful but not contest competitive.
+- The strongest contribution is measurement methodology: report coverage, conditional reliability, end-to-end yield, semantic output diversity, selector policy, calibration, cost, paired outcomes, and task-cluster uncertainty.
 
 ## Citation
 
 ```bibtex
 @misc{morong2026arcmeasurement,
-  title  = {How Do We Know an ARC Solution Is Right? Coverage, Selection, Calibration, and the N=120 Problem in ARC-AGI-2},
+  title  = {When a Calibration Curve Is a Selection Curve: Task- and Target-Controlled Measurement of Demonstration Value in ARC-AGI-2},
   author = {Morong, Robert},
   year   = {2026},
   url    = {https://github.com/GrobeStreet/arc-agi-2-occam-baseline}
 }
 ```
 
-MIT License. AI-assisted implementation; errors remain the author's. Pull requests that reproduce, challenge, or falsify the results are encouraged.
+MIT License. AI-assisted implementation; errors remain the author's. Reproductions, challenges, and falsifications are encouraged.
