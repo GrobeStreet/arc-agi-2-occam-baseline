@@ -1,11 +1,20 @@
 name: Frozen ARC v3 private Cycle 001
 
 on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type SUBMIT_FROZEN_V3_CYCLE_001 to authorize the exact frozen code submission'
+        required: true
+        default: 'DO_NOT_SUBMIT'
   push:
     branches: [main]
     paths:
+      - 'contest/private_cycle_001.trigger'
+      - 'PRIVATE_CYCLE_001_PACKAGING_NOTE.md'
+      - 'scripts/build_frozen_v3_kaggle_notebook.py'
+      - 'scripts/kaggle_private_cycle_001_v2.py'
       - '.github/workflows/private-v3-cycle-001.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,25 +26,35 @@ concurrency:
 jobs:
   submit-and-record:
     runs-on: ubuntu-latest
-    timeout-minutes: 750
+    timeout-minutes: 360
     env:
       KAGGLE_USERNAME_SECRET: ${{ secrets.KAGGLE_USERNAME }}
       KAGGLE_USERNAME_VARIABLE: ${{ vars.KAGGLE_USERNAME }}
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
-      KAGGLE_TEAM_NAME: ${{ secrets.KAGGLE_TEAM_NAME }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
       PYTHONUNBUFFERED: '1'
+
     steps:
       - name: Check out the complete frozen history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Prevent a second scored Cycle 001 submission
+      - name: Enforce explicit manual authorization
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          if [[ "${{ inputs.confirmation }}" != "SUBMIT_FROZEN_V3_CYCLE_001" ]]; then
+            echo 'Manual dispatch was not explicitly authorized.' >&2
+            exit 2
+          fi
+
+      - name: Prevent a second terminal Cycle 001 submission
         id: cycle_guard
         shell: bash
         run: |
           state=''
-          if [ -f results/private_cycle_001/result.json ]; then
+          if [[ -f results/private_cycle_001/result.json ]]; then
             state=$(python - <<'PY'
           import json
           from pathlib import Path
@@ -45,16 +64,16 @@ jobs:
           except Exception:
               print('')
           PY
-            )
+          )
           fi
           case "$state" in
-            SCORED_*|SUBMITTED_SCORE_PENDING)
-              echo "run_cycle=false" >> "$GITHUB_OUTPUT"
-              echo "Cycle 001 already reached a scored/submitted state: $state"
+            SCORED_NONZERO|SCORED_NULL)
+              echo 'run_cycle=false' >> "$GITHUB_OUTPUT"
+              echo "Cycle 001 already has terminal state $state; refusing another submission."
               ;;
             *)
-              echo "run_cycle=true" >> "$GITHUB_OUTPUT"
-              echo "Cycle 001 may run from state: ${state:-UNRECORDED}"
+              echo 'run_cycle=true' >> "$GITHUB_OUTPUT"
+              echo "Cycle 001 may run from state ${state:-UNRECORDED}."
               ;;
           esac
 
@@ -76,13 +95,13 @@ jobs:
         shell: bash
         run: |
           export KAGGLE_USERNAME="${KAGGLE_USERNAME_SECRET:-$KAGGLE_USERNAME_VARIABLE}"
-          python scripts/kaggle_private_cycle_001.py
+          python scripts/kaggle_private_cycle_001_v2.py
 
       - name: Publish the immutable or blocked result record
         if: always() && steps.cycle_guard.outputs.run_cycle == 'true'
         shell: bash
         run: |
-          if [ ! -f results/private_cycle_001/result.json ]; then
+          if [[ ! -f results/private_cycle_001/result.json ]]; then
             mkdir -p results/private_cycle_001
             python - <<'PY'
           import json
@@ -117,4 +136,6 @@ jobs:
           path: |
             results/private_cycle_001/
             PRIVATE_CYCLE_001_STATUS.md
-            contest/kaggle_kernel_v3/build/
+            contest/kaggle_kernel_v3/build/kernel-metadata.json
+            contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb
+            contest/kaggle_kernel_v3/build/source_manifest.json
