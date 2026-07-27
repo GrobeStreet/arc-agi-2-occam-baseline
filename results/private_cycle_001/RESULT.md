@@ -1,9 +1,9 @@
 # Frozen V3 Private Cycle 001 — Kaggle Result
 
-**State:** `BLOCKED_AUTH`  
+**State:** `KERNEL_VERSION_UNRESOLVED`  
 **Competition:** `arc-prize-2026-arc-agi-2`  
 **Frozen source:** `70672f3aa62d089bfffd072461a5713caae1e099`  
-**Recorded:** 2026-07-27T17:50:39.113006+00:00
+**Recorded:** 2026-07-27T18:11:30.640332+00:00
 
 ## Official competition record
 
@@ -18,7 +18,7 @@
 
 ## Interpretation
 
-The exact self-contained notebook is prepared and hashed, but no authenticated Kaggle submission or rank exists.
+No code-competition submission was made because the immutable kernel version could not be named safely.
 
 ## Representation firewall
 
@@ -27,5 +27,5 @@ Cycle 001 authorizes no representation edits. Any expansion requires a new `HYPO
 ## Blocker or error
 
 ```text
-Missing GitHub Actions secret(s): KAGGLE_API_TOKEN or legacy KAGGLE_KEY
+The official CLI did not expose a parseable kernel version in its push output.
 ```

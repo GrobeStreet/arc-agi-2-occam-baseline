@@ -16,14 +16,42 @@
       "output": "Wrote /home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb\nWrote /home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build/source_manifest.json\n",
       "returncode": 0,
       "seconds": 0.04
+    },
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "files",
+        "arc-prize-2026-arc-agi-2",
+        "--page-size",
+        "1",
+        "-q"
+      ],
+      "output": "Next Page Token = CfDJ8Oxz6O_D_GNGkNy8kL7JFsU5UV7AGuxJsrbvir7SDnaNj1jsXMzosmAO-4HEnaz8BtJG-WCtGNTi-LwS_XxXVO_EfUKBVSJihiIi-gM9RJhRnMhd1xsQqbRXoo0x87ihIeUgzYlWKDjQmY1YNkfQ5SreSSkAJjpli_eGHf0\nname                                      size  creationDate                \n----------------------------------  ----------  --------------------------  \narc-agi_evaluation_challenges.json      984679  2026-03-10 16:17:02.950000  \n",
+      "returncode": 0,
+      "seconds": 0.635
+    },
+    {
+      "command": [
+        "kaggle",
+        "kernels",
+        "push",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/contest/kaggle_kernel_v3/build",
+        "-t",
+        "3600"
+      ],
+      "output": "Your kernel title does not resolve to the specified id. This may result in surprising behavior. We suggest making your title something that resolves to the specified id. See https://en.wikipedia.org/wiki/Clean_URL#Slug for more information on how slugs are determined.\nKernel push error: You must accept this competition's rules before you'll be able to add it as a datasource: arc-prize-2026-arc-agi-2\n",
+      "returncode": 0,
+      "seconds": 0.983
     }
   ],
   "competition": "arc-prize-2026-arc-agi-2",
-  "created_at": "2026-07-27T17:50:39.063142+00:00",
+  "created_at": "2026-07-27T18:11:28.973202+00:00",
   "cycle": "private-v3-cycle-001",
-  "error": "Missing GitHub Actions secret(s): KAGGLE_API_TOKEN or legacy KAGGLE_KEY",
+  "error": "The official CLI did not expose a parseable kernel version in its push output.",
   "frozen_source_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
-  "interpretation": "The exact self-contained notebook is prepared and hashed, but no authenticated Kaggle submission or rank exists.",
+  "interpretation": "No code-competition submission was made because the immutable kernel version could not be named safely.",
   "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
   "kernel_version": null,
   "packaging_note": "PRIVATE_CYCLE_001_PACKAGING_NOTE.md",
@@ -33,14 +61,14 @@
   "registration": "HYPOTHESIS-private-v3-cycle-001.md",
   "source_hashes": {
     "benchmark_representation_v3.py": "82b07ad403406aff24b307f5565c09b29233ba05e43bf7b08945ec0524365046",
-    "contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb": "f7ca401f8dfcc52bec472559ebf18dbebf8ad01e1de67e83091280386bd26ae7",
+    "contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb": "260fc7bad15a817e3eca8b6f5595217243170b8cc7684870732290b235aa0c94",
     "dsl.py": "8eddc1f9a64db82bf7357d4f42e0fdc8d155f4a076e5c5ec71d12cc9b5fe1c89",
     "dsl_v3.py": "14f84c3d696d40cb35d51cefbc32547e8d5b6d8769d7acd1d37c0849d939782d",
     "kaggle_submission_v3.py": "2f1b26257b0843949e5aaa9c5484fd5e23fe304ec278b931d0bd5a53a4379ae6"
   },
   "source_manifest": {
     "competition": "arc-prize-2026-arc-agi-2",
-    "created_at_utc": "2026-07-27T17:50:39.105695+00:00",
+    "created_at_utc": "2026-07-27T18:11:29.015029+00:00",
     "cycle": "private-v3-cycle-001",
     "frozen_files": {
       "benchmark_representation_v3.py": {
@@ -65,10 +93,10 @@
     "registration": "HYPOTHESIS-private-v3-cycle-001.md",
     "source_commit": "70672f3aa62d089bfffd072461a5713caae1e099"
   },
-  "state": "BLOCKED_AUTH",
+  "state": "KERNEL_VERSION_UNRESOLVED",
   "submission_ref": null,
   "submission_status": null,
   "team_count": null,
-  "updated_at": "2026-07-27T17:50:39.113006+00:00",
-  "workflow_source_commit": "e89aa728e7da1b64672a2a4289632289362262f4"
+  "updated_at": "2026-07-27T18:11:30.640332+00:00",
+  "workflow_source_commit": "c3c4603d9e32e6f14e6d8377dfbdda9ae25ac483"
 }
