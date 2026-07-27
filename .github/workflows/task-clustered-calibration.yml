@@ -1,6 +1,12 @@
 name: Task-clustered ARC calibration
 
 on:
+  push:
+    branches: [arc-task-clustered-v2]
+    paths:
+      - 'task_clustered_analysis.py'
+      - 'ablate_cell_training.parquet'
+      - '.github/workflows/task-clustered-calibration.yml'
   pull_request:
     branches: [main]
     paths:
@@ -10,13 +16,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   recompute:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -26,6 +34,14 @@ jobs:
         run: python task_clustered_analysis.py --bootstrap 50000 --seed 20260727
       - name: Show machine-readable result
         run: cat results/task_weighted_calibration.json
+      - name: Commit deterministic results on branch pushes
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/task_weighted_calibration.json results/task_weighted_calibration.md results/task_weighted_task_cells.csv
+          git diff --cached --quiet || git commit -m 'Add task-weighted ARC calibration results'
+          git push
       - name: Upload result artifacts
         uses: actions/upload-artifact@v4
         with:
