@@ -1,6 +1,6 @@
 # ARC Cycle 001 — Leaderboard Snapshot
 
-**Observed:** 2026-07-27T20:33:31.901185+00:00  
+**Observed:** 2026-07-27T20:33:56.911067+00:00  
 **Competition:** `arc-prize-2026-arc-agi-2`  
 **Downloaded leaderboard rows:** `unavailable`
 
