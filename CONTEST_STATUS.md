@@ -5,71 +5,97 @@
 
 ## Executive status
 
-The research, corrected measurement paper, frozen public-evaluation diagnostics, and a Kaggle-compatible solver entrypoint are pushed to `main`.
+The corrected research program, canonical paper/PDF, frozen representation-v3 solver, self-contained Kaggle kernel, authenticated submission workflow, score collector, and rank collector are pushed to `main`.
 
-There is **not yet an official Kaggle score or leaderboard rank for this repository**. A rank is created only after an authenticated Kaggle notebook is run and submitted to the ARC Prize 2026 competition.
+The automated Cycle 001 run has executed its preflight and recorded:
 
-The ARC Prize rules require ARC-AGI-2 competition submissions to be made through a **Kaggle notebook**, with internet disabled during evaluation. A standalone JSON file in GitHub does not create a competition entry.
+> **BLOCKED_AUTH — `KAGGLE_USERNAME` and a Kaggle API token are not configured as GitHub Actions secrets.**
+
+Therefore the current official contest status is:
+
+> **UNRANKED — no authenticated Kaggle notebook version has been submitted and scored.**
+
+This is an account-authorization blocker, not a solver or packaging blocker.
+
+## Official competition boundary
+
+ARC-AGI-2 submissions must be made through the Kaggle code competition as a Kaggle notebook with internet disabled. The competition scores exactly two predictions per test input. A GitHub JSON artifact, local holdout, or public-evaluation run does not create an official score or rank.
+
+The Paper Prize separately requires a linked Kaggle code submission, but that linked submission does not need a high score.
 
 Official pages:
 
 - Competition: https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2
-- ARC Prize requirements: https://arcprize.org/competitions/2026/arc-agi-2
+- ARC-AGI-2 requirements: https://arcprize.org/competitions/2026/arc-agi-2
 - Paper Prize: https://arcprize.org/competitions/2026/paper
 
-## What is pushed and reproducible
+## Frozen Private Cycle 001
 
-### Measurement program
+Registration:
 
-- `PAPER_V2.md`
-- `ARC_Measurement_Audit_v2.pdf`
-- `RESULTS_V2.md`
-- `results/task_weighted_calibration.json`
-- `results/crossfold/`
-- `results/solver/`
-- `results/representation_v3/`
-- `results/representation_v3_public/`
+- `HYPOTHESIS-private-v3-cycle-001.md`
 
-### Working contest entrypoint
+Frozen source commit:
 
-- `kaggle_submission_v3.py`
+- `70672f3aa62d089bfffd072461a5713caae1e099`
+
+Frozen files:
+
 - `dsl.py`
 - `dsl_v3.py`
 - `benchmark_representation_v3.py`
+- `kaggle_submission_v3.py`
+
+Execution and audit files:
+
+- `.github/workflows/private-v3-cycle-001.yml`
+- `scripts/kaggle_private_cycle_001.py`
+- `scripts/record_private_cycle_001.py`
+- `contest/kaggle_kernel_v3/`
 - `kaggle/arc_v3_entrypoint.py`
+- `results/private_cycle_001/result.json`
+- `results/private_cycle_001/RESULT.md`
+- `PRIVATE_CYCLE_001_STATUS.md`
 
-The frozen v3 public-evaluation check produced **0/167 pass@2**. That is a real negative result. It means the current symbolic grammar should not be represented as a high-scoring solver.
+The workflow:
 
-A valid low-scoring Kaggle notebook submission is still strategically useful because the ARC Prize Paper Track requires the paper to be linked to an ARC-AGI-2 or ARC-AGI-3 Kaggle code submission; the linked code submission does not need a high score.
+1. reconstructs the kernel from the frozen source commit;
+2. hashes all source files;
+3. creates a private, internet-disabled Kaggle competition kernel;
+4. runs the hidden competition test;
+5. submits the immutable kernel version;
+6. polls for a visible score;
+7. downloads the authenticated leaderboard;
+8. records exact rank when the team name is available, otherwise a score-derived tie range;
+9. commits a sanitized immutable result.
+
+## One remaining authorization action
+
+In repository **Settings → Secrets and variables → Actions**, add:
+
+- `KAGGLE_USERNAME`
+- either `KAGGLE_API_TOKEN` or legacy `KAGGLE_KEY`
+- optionally `KAGGLE_TEAM_NAME` when the team name differs from the username
+
+The Kaggle account must also have joined the competition and accepted its rules.
+
+Then run **Actions → Frozen ARC v3 private Cycle 001 → Run workflow** exactly once. The workflow guard prevents a second scored Cycle 001 submission after a terminal or submitted state.
+
+Detailed directions: [`KAGGLE_SUBMIT_NOW.md`](KAGGLE_SUBMIT_NOW.md)
+
+## Known evidence before private submission
+
+- Frozen v3 deterministic training holdout: 5/201 pass@2 versus 4/201 for v2; one v3-only win; exact paired p=1.0.
+- Frozen v3 public evaluation: 0/167 pass@2; registered verdict NULL.
+
+These do not determine the hidden competition score. They do indicate that the current symbolic grammar should not be presented as a likely high-ranking solver.
+
+## Representation firewall
+
+Cycle 001 is evaluation-only. No change to representation, ranking, fallback policy, or output construction is authorized under its name.
+
+Further representation work requires copying `HYPOTHESIS-representation-cycle-002-TEMPLATE.md` to `HYPOTHESIS-representation-cycle-002.md`, completing every field, and committing that registration before source changes or a new fresh-endpoint run.
 
 ## V4.1 boundary
 
-The repository contains v4.1 registration and workflow scaffolding, but the expected frozen core branch is no longer available and no canonical `site/representation-v4.json`, `results/representation_v4_1/` result, or committed `submission/arc_v4_1_submission.json` was produced.
-
-Therefore:
-
-- do **not** claim a v4.1 score;
-- do **not** label a v3 artifact as v4.1;
-- do **not** claim a new competition rank from v4.1;
-- restore and rerun the frozen v4 core before using that name.
-
-## Exact next contest action
-
-1. Open the ARC Prize 2026 Kaggle competition and join it.
-2. Create a private competition notebook.
-3. Turn internet **off**.
-4. Attach the competition data and an uploaded dataset containing the repository files listed above.
-5. Run `kaggle/arc_v3_entrypoint.py`.
-6. Confirm `/kaggle/working/submission.json` exists and contains exactly two attempts per test input.
-7. Save a version and click **Submit to Competition**.
-8. Record the returned score, team name, entry timestamp, and leaderboard rank in this file.
-
-Detailed instructions are in [`KAGGLE_SUBMIT_NOW.md`](KAGGLE_SUBMIT_NOW.md).
-
-## Ranking rule
-
-Until Kaggle returns a scored notebook submission, the official status is:
-
-> **Unranked — submission not yet authenticated and scored by Kaggle.**
-
-No local holdout, public demonstration audit, GitHub workflow, or generated JSON file is a substitute for the official competition rank.
+The repository contains historical v4.1 workflow scaffolding, but the referenced frozen core branch is unavailable and no canonical v4.1 benchmark or private score was established. Do not claim a v4.1 contest score or rank.
