@@ -2,7 +2,7 @@ name: Evidence-weighted ARC solver benchmark
 
 on:
   push:
-    branches: [arc-task-clustered-v2]
+    branches: [arc-task-clustered-v2, main]
     paths:
       - 'dsl.py'
       - 'evidence_weighted_solver.py'
