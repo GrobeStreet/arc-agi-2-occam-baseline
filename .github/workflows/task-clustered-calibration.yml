@@ -10,13 +10,22 @@ on:
       - 'advanced_arc_audit.py'
       - 'ablate_cell_training.parquet'
       - '.github/workflows/task-clustered-calibration.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'task_clustered_analysis.py'
+      - 'crossfold_ablation.py'
+      - 'crossfold_analysis.py'
+      - 'advanced_arc_audit.py'
+      - 'ablate_cell_training.parquet'
+      - '.github/workflows/task-clustered-calibration.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: arc-measurement-v2-${{ github.ref_name }}
+  group: arc-measurement-v2-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -27,7 +36,7 @@ jobs:
       - name: Check out audit branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -86,7 +95,8 @@ jobs:
           echo '--- TRAINING TO EVALUATION REPLICATION ---'
           cat results/crossfold/arc_crossfold_audit.md
 
-      - name: Commit deterministic evidence record
+      - name: Commit deterministic evidence record on branch pushes
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
