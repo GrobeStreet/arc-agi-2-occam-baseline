@@ -11,14 +11,24 @@ on:
       - 'results/task_weighted_calibration.json'
       - 'results/crossfold/training_audit/crossfold_calibration.json'
       - '.github/workflows/build-paper.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'PAPER.md'
+      - 'fig_v2.py'
+      - 'build_paper.py'
+      - 'requirements.txt'
+      - 'results/task_weighted_calibration.json'
+      - 'results/crossfold/training_audit/crossfold_calibration.json'
+      - '.github/workflows/build-paper.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: arc-paper-${{ github.ref_name }}
-  cancel-in-progress: false
+  group: arc-paper-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -28,7 +38,7 @@ jobs:
       - name: Check out source and evidence
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -59,6 +69,7 @@ jobs:
           ls -lh ARC_Measurement_Audit_v2.pdf fig_v2_*.png
 
       - name: Commit generated paper assets
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
