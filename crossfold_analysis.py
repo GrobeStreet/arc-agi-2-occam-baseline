@@ -3,20 +3,14 @@
 
 Primary statistical unit: ARC task.
 
-The raw cross-fold experiment records every combination of:
-  task x held-out demonstration x k fitted demonstrations x fitted subset.
+The raw experiment records every combination of task, held-out demonstration,
+k fitted demonstrations, and fitted subset. This script averages subset choices
+within fixed task/holdout/k folds, averages held-out folds within task, then gives
+each task equal weight. Bootstrap uncertainty resamples complete task clusters.
 
-This script first averages subset choices within each fixed task/holdout/k fold,
-then averages held-out folds within each task, and finally averages tasks equally.
-Task-cluster bootstrap intervals preserve every dependency below the task level.
-
-Outputs
--------
-results/crossfold/crossfold_calibration.json
-results/crossfold/crossfold_calibration.md
-results/crossfold/crossfold_fold_summary.csv
-results/crossfold/crossfold_task_summary.csv
-results/crossfold/crossfold_selection_by_k.csv
+The bootstrap is vectorized with multinomial task weights. A single set of task
+weights is shared across every metric for a given estimand, preserving covariance
+while avoiding the enormous 3-D sampled arrays used by the first implementation.
 """
 from __future__ import annotations
 
@@ -75,71 +69,65 @@ SELECTION_COLUMNS = {
 
 
 def finite(values: Iterable[float]) -> np.ndarray:
-    arr = np.asarray(list(values), dtype=float)
-    return arr[np.isfinite(arr)]
+    array = np.asarray(list(values), dtype=float)
+    return array[np.isfinite(array)]
 
 
 def safe_mean(values: Iterable[float]) -> float | None:
-    arr = finite(values)
-    return float(arr.mean()) if arr.size else None
+    array = finite(values)
+    return float(array.mean()) if array.size else None
 
 
-def ci95(values: np.ndarray) -> list[float] | None:
-    arr = finite(values)
-    if not arr.size:
+def interval(values: np.ndarray) -> list[float] | None:
+    array = finite(values)
+    if not array.size:
         return None
-    return [float(np.quantile(arr, 0.025)), float(np.quantile(arr, 0.975))]
+    return [float(np.quantile(array, 0.025)), float(np.quantile(array, 0.975))]
 
 
-def bootstrap_task_matrix(
-    task_table: pd.DataFrame,
-    metric: str,
-    ks: list[int],
+def bootstrap_columns(
+    frame: pd.DataFrame,
+    columns: list[str],
     *,
     n_boot: int,
-    rng: np.random.Generator,
-) -> np.ndarray:
-    """Resample complete task rows while retaining all k values for each task."""
-    pivot = task_table.pivot(index="task", columns="k", values=metric).reindex(columns=ks)
-    matrix = pivot.to_numpy(float)
-    n_tasks = len(matrix)
-    out = np.full((n_boot, len(ks)), np.nan, dtype=float)
-    if n_tasks == 0:
-        return out
-    chunk = 2_000
-    for start in range(0, n_boot, chunk):
-        stop = min(start + chunk, n_boot)
-        draw = rng.integers(0, n_tasks, size=(stop - start, n_tasks))
-        sampled = matrix[draw]
-        counts = np.sum(np.isfinite(sampled), axis=1)
-        sums = np.nansum(sampled, axis=1)
-        np.divide(sums, counts, out=out[start:stop], where=counts > 0)
-    return out
+    seed: int,
+    chunk_size: int = 1_000,
+) -> dict[str, np.ndarray]:
+    """Bootstrap equally weighted rows and all requested columns together.
 
+    Multinomial counts are equivalent to sampling rows with replacement. Missing
+    values are handled column-by-column by dividing weighted sums by weighted
+    finite counts. Sharing count draws preserves cross-metric covariance.
+    """
+    if frame.empty:
+        return {column: np.array([], dtype=float) for column in columns}
 
-def bootstrap_task_mean(
-    values: np.ndarray,
-    *,
-    n_boot: int,
-    rng: np.random.Generator,
-) -> np.ndarray:
-    vals = finite(values)
-    if vals.size == 0:
-        return np.array([], dtype=float)
-    if vals.size == 1:
-        return np.repeat(vals[0], n_boot)
-    out = np.empty(n_boot, dtype=float)
-    chunk = 5_000
-    for start in range(0, n_boot, chunk):
-        stop = min(start + chunk, n_boot)
-        idx = rng.integers(0, vals.size, size=(stop - start, vals.size))
-        out[start:stop] = vals[idx].mean(axis=1)
-    return out
+    values = frame[columns].to_numpy(dtype=float)
+    valid = np.isfinite(values).astype(float)
+    filled = np.nan_to_num(values, nan=0.0)
+    n_rows = len(frame)
+    probability = np.full(n_rows, 1.0 / n_rows)
+    rng = np.random.default_rng(seed)
+    output = np.full((n_boot, len(columns)), np.nan, dtype=float)
+
+    for start in range(0, n_boot, chunk_size):
+        stop = min(start + chunk_size, n_boot)
+        counts = rng.multinomial(n_rows, probability, size=stop - start).astype(float)
+        numerator = counts @ filled
+        denominator = counts @ valid
+        np.divide(
+            numerator,
+            denominator,
+            out=output[start:stop],
+            where=denominator > 0,
+        )
+
+    return {column: output[:, index] for index, column in enumerate(columns)}
 
 
 def aggregate_fold(group: pd.DataFrame) -> pd.Series:
     covered = group[group["covered"] == 1]
-    n_total = len(group)
+    total = len(group)
     n_covered = len(covered)
 
     def covered_mean(column: str) -> float:
@@ -148,15 +136,16 @@ def aggregate_fold(group: pd.DataFrame) -> pd.Series:
     candidate_total = float(covered["n_consistent"].sum()) if n_covered else 0.0
     candidate_correct = float(covered["candidate_correct"].sum()) if n_covered else 0.0
 
-    def unstable(column: str) -> float:
-        values = covered[column][covered[column].astype(str) != ""]
+    def instability(column: str) -> float:
+        values = covered[column].astype(str)
+        values = values[values != ""]
         return float(values.nunique() > 1) if len(values) > 1 else 0.0
 
     return pd.Series(
         {
-            "n_subsets": n_total,
+            "n_subsets": total,
             "n_covered_subsets": n_covered,
-            "coverage": n_covered / n_total if n_total else np.nan,
+            "coverage": n_covered / total if total else np.nan,
             "random_yield": float(group["random_rate"].fillna(0).mean()),
             "legacy_mdl_yield": float(group["legacy_shortest_correct"].mean()),
             "mdl_random_yield": float(group["mdl_random_rate"].fillna(0).mean()),
@@ -178,9 +167,9 @@ def aggregate_fold(group: pd.DataFrame) -> pd.Series:
             ),
             "modal_fraction_covered": covered_mean("modal_frac"),
             "mean_candidate_count_covered": covered_mean("n_consistent"),
-            "legacy_subset_instability": unstable("legacy_prediction"),
-            "mdl_subset_instability": unstable("mdl_prediction"),
-            "consensus_subset_instability": unstable("consensus_prediction"),
+            "legacy_subset_instability": instability("legacy_prediction"),
+            "mdl_subset_instability": instability("mdl_prediction"),
+            "consensus_subset_instability": instability("consensus_prediction"),
             "random_rate_range": (
                 float(covered["random_rate"].max() - covered["random_rate"].min())
                 if n_covered > 1
@@ -207,15 +196,19 @@ def summarize_selection(
         "by_k": [],
         "contrasts": {},
     }
-    rng = np.random.default_rng(seed)
 
-    overall_task = ambiguous.groupby("task")[[*SELECTION_COLUMNS.values()]].mean()
+    task_overall = ambiguous.groupby("task")[[*SELECTION_COLUMNS.values()]].mean()
+    boot = bootstrap_columns(
+        task_overall,
+        list(SELECTION_COLUMNS.values()),
+        n_boot=n_boot,
+        seed=seed,
+    )
     for label, column in SELECTION_COLUMNS.items():
-        values = overall_task[column].to_numpy(float)
-        boot = bootstrap_task_mean(values, n_boot=n_boot, rng=rng)
+        values = finite(task_overall[column])
         result["overall"][label] = {
             "task_weighted_rate": float(values.mean()),
-            "ci95": ci95(boot),
+            "ci95": interval(boot[column]),
         }
 
     contrast_pairs = [
@@ -228,27 +221,38 @@ def summarize_selection(
         ("oracle_minus_consensus", "any_correct", "consensus_correct"),
     ]
     for label, left, right in contrast_pairs:
-        values = (overall_task[left] - overall_task[right]).to_numpy(float)
-        boot = bootstrap_task_mean(values, n_boot=n_boot, rng=rng)
+        task_difference = (task_overall[left] - task_overall[right]).to_frame("difference")
+        difference_boot = bootstrap_columns(
+            task_difference,
+            ["difference"],
+            n_boot=n_boot,
+            seed=seed + 100 + len(result["contrasts"]),
+        )["difference"]
+        observed = finite(task_difference["difference"])
         result["contrasts"][label] = {
-            "task_weighted_difference": float(values.mean()),
-            "ci95": ci95(boot),
-            "bootstrap_probability_positive": float(np.mean(boot > 0)),
+            "task_weighted_difference": float(observed.mean()),
+            "ci95": interval(difference_boot),
+            "bootstrap_probability_positive": float(np.mean(difference_boot > 0)),
         }
 
     rows: list[dict[str, Any]] = []
     for k, group in ambiguous.groupby("k", sort=True):
         task = group.groupby("task")[[*SELECTION_COLUMNS.values()]].mean()
+        boot_k = bootstrap_columns(
+            task,
+            list(SELECTION_COLUMNS.values()),
+            n_boot=n_boot,
+            seed=seed + 1_000 + int(k),
+        )
         row: dict[str, Any] = {
             "k": int(k),
             "n_cells": int(len(group)),
             "n_tasks": int(len(task)),
         }
         for label, column in SELECTION_COLUMNS.items():
-            values = task[column].to_numpy(float)
-            boot = bootstrap_task_mean(values, n_boot=n_boot, rng=rng)
+            values = finite(task[column])
             row[label] = float(values.mean())
-            row[f"{label}_ci95"] = ci95(boot)
+            row[f"{label}_ci95"] = interval(boot_k[column])
         result["by_k"].append(row)
         rows.append(row)
 
@@ -265,14 +269,15 @@ def summarize_modal_calibration(
     if covered.empty:
         return {"n_cells": 0, "n_tasks": 0}
 
-    rng = np.random.default_rng(seed)
-    task_brier = covered.assign(
-        brier=(covered["modal_frac"] - covered["modal_correct"]) ** 2,
-        abs_gap=np.abs(covered["modal_frac"] - covered["modal_correct"]),
-    ).groupby("task")[["brier", "abs_gap"]].mean()
-
-    brier_boot = bootstrap_task_mean(task_brier["brier"].to_numpy(float), n_boot=n_boot, rng=rng)
-    gap_boot = bootstrap_task_mean(task_brier["abs_gap"].to_numpy(float), n_boot=n_boot, rng=rng)
+    covered["brier"] = (covered["modal_frac"] - covered["modal_correct"]) ** 2
+    covered["abs_gap"] = np.abs(covered["modal_frac"] - covered["modal_correct"])
+    task_overall = covered.groupby("task")[["brier", "abs_gap"]].mean()
+    boot_overall = bootstrap_columns(
+        task_overall,
+        ["brier", "abs_gap"],
+        n_boot=n_boot,
+        seed=seed,
+    )
 
     edges = [0.0, 0.5, 0.7, 0.9, 0.999999, 1.000001]
     labels = ["[0,.5)", "[.5,.7)", "[.7,.9)", "[.9,1)", "1.0"]
@@ -284,16 +289,18 @@ def summarize_modal_calibration(
         include_lowest=True,
     )
     bins: list[dict[str, Any]] = []
-    for label, group in covered.groupby("confidence_bin", observed=True):
+    for index, (label, group) in enumerate(covered.groupby("confidence_bin", observed=True)):
         task = group.groupby("task").agg(
             confidence=("modal_frac", "mean"),
             accuracy=("modal_correct", "mean"),
         )
-        if task.empty:
-            continue
-        acc_boot = bootstrap_task_mean(task["accuracy"].to_numpy(float), n_boot=n_boot, rng=rng)
-        calibration_gap = (task["confidence"] - task["accuracy"]).to_numpy(float)
-        gap_bin_boot = bootstrap_task_mean(calibration_gap, n_boot=n_boot, rng=rng)
+        task["gap"] = task["confidence"] - task["accuracy"]
+        boot = bootstrap_columns(
+            task,
+            ["accuracy", "gap"],
+            n_boot=n_boot,
+            seed=seed + 100 + index,
+        )
         bins.append(
             {
                 "bin": str(label),
@@ -301,19 +308,19 @@ def summarize_modal_calibration(
                 "n_tasks": int(len(task)),
                 "task_weighted_confidence": float(task["confidence"].mean()),
                 "task_weighted_accuracy": float(task["accuracy"].mean()),
-                "accuracy_ci95": ci95(acc_boot),
-                "confidence_minus_accuracy": float(calibration_gap.mean()),
-                "gap_ci95": ci95(gap_bin_boot),
+                "accuracy_ci95": interval(boot["accuracy"]),
+                "confidence_minus_accuracy": float(task["gap"].mean()),
+                "gap_ci95": interval(boot["gap"]),
             }
         )
 
     return {
         "n_cells": int(len(covered)),
         "n_tasks": int(covered["task"].nunique()),
-        "task_weighted_brier": float(task_brier["brier"].mean()),
-        "brier_ci95": ci95(brier_boot),
-        "task_weighted_mean_absolute_gap": float(task_brier["abs_gap"].mean()),
-        "mean_absolute_gap_ci95": ci95(gap_boot),
+        "task_weighted_brier": float(task_overall["brier"].mean()),
+        "brier_ci95": interval(boot_overall["brier"]),
+        "task_weighted_mean_absolute_gap": float(task_overall["abs_gap"].mean()),
+        "mean_absolute_gap_ci95": interval(boot_overall["abs_gap"]),
         "bins": bins,
     }
 
@@ -322,7 +329,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default="results/crossfold/crossfold_training.parquet")
     parser.add_argument("--results-dir", default="results/crossfold")
-    parser.add_argument("--bootstrap", type=int, default=50_000)
+    parser.add_argument("--bootstrap", type=int, default=20_000)
     parser.add_argument("--seed", type=int, default=20260727)
     args = parser.parse_args()
 
@@ -364,27 +371,26 @@ def main() -> None:
     task = fold.groupby(["task", "n_demos", "k"], as_index=False)[PRIMARY_METRICS].mean()
 
     ks = sorted(int(k) for k in task["k"].unique())
-    rng = np.random.default_rng(args.seed)
-    boot_by_metric = {
-        metric: bootstrap_task_matrix(task, metric, ks, n_boot=args.bootstrap, rng=rng)
-        for metric in PRIMARY_METRICS
-    }
-
     results_by_k: list[dict[str, Any]] = []
-    for col, k in enumerate(ks):
-        observed = task[task["k"] == k]
+    for k in ks:
+        observed = task[task["k"] == k].set_index("task")
+        boot = bootstrap_columns(
+            observed,
+            PRIMARY_METRICS,
+            n_boot=args.bootstrap,
+            seed=args.seed + 10 * k,
+        )
         row: dict[str, Any] = {
             "k": k,
-            "n_tasks": int(observed["task"].nunique()),
+            "n_tasks": int(len(observed)),
             "n_holdout_folds": int(len(fold[fold["k"] == k])),
             "n_subset_cells": int(len(cells[cells["k"] == k])),
             "metrics": {},
         }
         for metric in PRIMARY_METRICS:
-            value = safe_mean(observed[metric])
             row["metrics"][metric] = {
-                "task_weighted_mean": value,
-                "ci95": ci95(boot_by_metric[metric][:, col]),
+                "task_weighted_mean": safe_mean(observed[metric]),
+                "ci95": interval(boot[metric]),
             }
         results_by_k.append(row)
 
@@ -396,52 +402,53 @@ def main() -> None:
         common = left.index.intersection(right.index)
         if len(common) == 0:
             continue
+        difference = pd.DataFrame(
+            right.loc[common, YIELD_METRICS].to_numpy(float)
+            - left.loc[common, YIELD_METRICS].to_numpy(float),
+            columns=YIELD_METRICS,
+        )
+        difference["task"] = [index[0] for index in common]
+        task_difference = difference.groupby("task")[YIELD_METRICS].mean()
+        boot = bootstrap_columns(
+            task_difference,
+            YIELD_METRICS,
+            n_boot=args.bootstrap,
+            seed=args.seed + 10_000 + k1,
+        )
         contrast: dict[str, Any] = {
             "contrast": f"k={k2} minus k={k1}",
             "n_common_task_holdouts": int(len(common)),
-            "n_common_tasks": int(len(set(index[0] for index in common))),
+            "n_common_tasks": int(len(task_difference)),
             "metrics": {},
         }
-        contrast_rng = np.random.default_rng(args.seed + 1000 + k1)
         for metric in YIELD_METRICS:
-            diff = (
-                right.loc[common, metric].to_numpy(float)
-                - left.loc[common, metric].to_numpy(float)
-            )
-            diff_table = pd.DataFrame(
-                {
-                    "task": [index[0] for index in common],
-                    "difference": diff,
-                }
-            )
-            task_diff = diff_table.groupby("task")["difference"].mean().to_numpy(float)
-            boot = bootstrap_task_mean(task_diff, n_boot=args.bootstrap, rng=contrast_rng)
+            values = finite(task_difference[metric])
             contrast["metrics"][metric] = {
-                "task_weighted_delta": float(task_diff.mean()),
-                "ci95": ci95(boot),
-                "bootstrap_probability_positive": float(np.mean(boot > 0)),
+                "task_weighted_delta": float(values.mean()),
+                "ci95": interval(boot[metric]),
+                "bootstrap_probability_positive": float(np.mean(boot[metric] > 0)),
             }
         contrasts.append(contrast)
 
     selection, selection_table = summarize_selection(
         cells,
         n_boot=args.bootstrap,
-        seed=args.seed + 2000,
+        seed=args.seed + 20_000,
     )
     modal = summarize_modal_calibration(
         cells,
         n_boot=args.bootstrap,
-        seed=args.seed + 3000,
+        seed=args.seed + 30_000,
     )
 
     output: dict[str, Any] = {
         "design": (
-            "For every training task and held-out demonstration, evaluate every subset of the "
-            "remaining demonstrations. Same-target adjacent-k effects hold the target fixed."
+            "For every task and held-out demonstration, evaluate every subset of the remaining "
+            "demonstrations. Same-target adjacent-k effects hold the target fixed."
         ),
         "data_policy": (
-            "Public ARC-AGI-2 training demonstrations only; no evaluation labels or leaderboard "
-            "feedback used for development."
+            "Public ARC-AGI-2 demonstration pairs only; no hidden test labels or private "
+            "leaderboard feedback used for development."
         ),
         "primary_unit": "ARC task",
         "input": str(input_path),
@@ -457,7 +464,7 @@ def main() -> None:
         "modal_vote_calibration": modal,
         "interpretation": (
             "Marginal rates by k are descriptive because tasks with fewer demonstrations cannot "
-            "contribute at larger k. Same-holdout contrasts are the primary demonstration-count test."
+            "contribute at larger k. Same-holdout contrasts are the primary evidence-count test."
         ),
     }
 
@@ -481,10 +488,10 @@ def main() -> None:
     def format_metric(row: dict[str, Any], metric: str) -> str:
         item = row["metrics"][metric]
         value = item["task_weighted_mean"]
-        interval = item["ci95"]
-        if value is None or interval is None:
+        ci = item["ci95"]
+        if value is None or ci is None:
             return "NA"
-        return f"{100*value:.1f}% [{100*interval[0]:.1f}, {100*interval[1]:.1f}]"
+        return f"{100*value:.1f}% [{100*ci[0]:.1f}, {100*ci[1]:.1f}]"
 
     for row in results_by_k:
         lines.append(
@@ -501,38 +508,38 @@ def main() -> None:
             f"{contrast['n_common_task_holdouts']} held-out folds)"
         )
         for metric, item in contrast["metrics"].items():
-            interval = item["ci95"]
+            ci = item["ci95"]
             lines.append(
                 f"- **{metric}:** {100*item['task_weighted_delta']:+.1f} pp; "
-                f"95% CI [{100*interval[0]:+.1f}, {100*interval[1]:+.1f}] pp; "
+                f"95% CI [{100*ci[0]:+.1f}, {100*ci[1]:+.1f}] pp; "
                 f"P(delta>0)={item['bootstrap_probability_positive']:.4f}."
             )
         lines.append("")
 
     lines += ["## Selection on ambiguous subset cells", ""]
     if selection.get("n_cells", 0):
-        lines.append(
-            f"**{selection['n_cells']:,} ambiguous cells across {selection['n_tasks']} tasks.**"
-        )
+        lines.append(f"**{selection['n_cells']:,} ambiguous cells across {selection['n_tasks']} tasks.**")
         for label, item in selection["overall"].items():
-            interval = item["ci95"]
+            ci = item["ci95"]
             lines.append(
                 f"- **{label}:** {100*item['task_weighted_rate']:.1f}% "
-                f"[95% CI {100*interval[0]:.1f}, {100*interval[1]:.1f}]"
+                f"[95% CI {100*ci[0]:.1f}, {100*ci[1]:.1f}]"
             )
         lines.append("")
         for label, item in selection["contrasts"].items():
-            interval = item["ci95"]
+            ci = item["ci95"]
             lines.append(
                 f"- **{label}:** {100*item['task_weighted_difference']:+.1f} pp "
-                f"[95% CI {100*interval[0]:+.1f}, {100*interval[1]:+.1f}]"
+                f"[95% CI {100*ci[0]:+.1f}, {100*ci[1]:+.1f}]"
             )
 
     lines += [
         "",
         "## Resolution rule",
         "",
-        "The same-target adjacent-k effects are the primary test of whether added demonstrations improve this DSL's reliable end-to-end behavior. The selection analysis distinguishes a legacy enumeration-order shortest program from tie-aware MDL and consensus, preventing an arbitrary list order from masquerading as Occam's razor.",
+        "The same-target adjacent-k effects are the primary test of whether added demonstrations improve this DSL's reliable end-to-end behavior. The selection analysis distinguishes a legacy enumeration-order shortest program from tie-aware MDL and consensus, preventing arbitrary list order from masquerading as Occam's razor.",
+        "",
+        f"Task-cluster bootstrap: {args.bootstrap:,} replicates, seed {args.seed}.",
     ]
     md_path = results_dir / "crossfold_calibration.md"
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
