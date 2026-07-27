@@ -2,7 +2,8 @@
 """Build the self-contained Kaggle notebook for Private Cycle 001.
 
 The notebook embeds the exact frozen v3 source files from a supplied directory.
-It writes those modules into /kaggle/working, records their SHA-256 hashes, and
+It writes those modules into /kaggle/working, records their SHA-256 hashes, finds
+the official attached ARC challenge JSON without modifying solver logic, and
 executes kaggle_submission_v3.py with internet disabled by kernel metadata. Only
 Python's standard library is needed to build the notebook.
 """
@@ -101,8 +102,55 @@ print(json.dumps(manifest, indent=2))
 '''
 
     run_cell = '''\
+import json
+import os
 import pathlib
 import runpy
+
+
+def is_arc_challenge_file(path):
+    name = path.name.lower()
+    if "solution" in name or "submission" in name:
+        return False
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    if not isinstance(payload, dict) or not payload:
+        return False
+    first = next(iter(payload.values()))
+    return (
+        isinstance(first, dict)
+        and isinstance(first.get("train"), list)
+        and isinstance(first.get("test"), list)
+    )
+
+
+input_root = pathlib.Path("/kaggle/input")
+patterns = (
+    "arc-agi_evaluation_challenges.json",
+    "*evaluation_challenges*.json",
+    "arc-agi_test_challenges.json",
+    "*test_challenges*.json",
+    "*challenges*.json",
+)
+ordered = []
+seen = set()
+for pattern in patterns:
+    for candidate in sorted(input_root.rglob(pattern)):
+        resolved = str(candidate.resolve())
+        if resolved not in seen:
+            seen.add(resolved)
+            ordered.append(candidate)
+challenge_path = next((path for path in ordered if is_arc_challenge_file(path)), None)
+if challenge_path is None:
+    available = [str(path) for path in sorted(input_root.rglob("*.json"))[:100]]
+    raise FileNotFoundError(
+        "No valid ARC challenge JSON was found under /kaggle/input. "
+        f"Observed JSON files: {available}"
+    )
+os.environ["ARC_TEST_CHALLENGES"] = str(challenge_path)
+print("Using ARC challenge file:", challenge_path)
 
 runpy.run_path("/kaggle/working/kaggle_submission_v3.py", run_name="__main__")
 submission = pathlib.Path("/kaggle/working/submission.json")
