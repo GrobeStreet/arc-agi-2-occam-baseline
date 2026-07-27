@@ -3,21 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="A full-corpus, task- and target-controlled audit of demonstration consistency, candidate selection, and leaderboard uncertainty in ARC-AGI-2." />
-  <title>ARC Measurement Audit v2 — When a Calibration Curve Is a Selection Curve</title>
+  <meta name="description" content="A full-corpus, task- and target-controlled audit of demonstration consistency, candidate selection, representation coverage, and leaderboard uncertainty in ARC-AGI-2." />
+  <title>ARC Measurement Lab — Audit v2 and Representation v3</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="hero">
     <div class="wrap">
-      <p class="kicker">ARC Prize 2026 · Paper Track candidate · full-corpus resolution · publish regardless</p>
+      <p class="kicker">ARC Prize 2026 · Paper Track candidate · contest baseline · publish regardless</p>
       <h1>When a calibration curve is really a selection curve.</h1>
-      <p class="lead">A live audit of the ruler underneath ARC-AGI-2: equal task weights, fixed prediction targets, explicit no-candidate failures, selection regret, and one-shot public-evaluation replication.</p>
+      <p class="lead">A live audit of the ruler underneath ARC-AGI-2—and the contest program that followed: equal task weights, fixed targets, explicit no-candidate failures, calibrated selection, and a frozen representation expansion.</p>
       <div class="badges">
-        <span>1,000 training tasks</span><span>120 evaluation tasks</span><span>28,476 subset cells</span><span>Task-cluster bootstrap</span><span>Frozen holdout</span>
+        <span>1,000 training tasks</span><span>120 evaluation tasks</span><span>28,476 subset cells</span><span>20k task bootstrap</span><span>V3 private-test artifact</span>
       </div>
       <div class="actions">
-        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER_V2.md">Read paper v2</a>
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER_V2.md">Read measurement paper</a>
+        <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/REPRESENTATION-v3.md">Read v3 addendum</a>
         <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline">Code and evidence</a>
       </div>
     </div>
@@ -75,6 +76,18 @@
       </aside>
     </section>
 
+    <section class="dark-panel" id="representation-v3">
+      <p class="eyebrow">Representation expansion v3</p>
+      <h2>Change what the solver can represent, then freeze the test.</h2>
+      <p class="section-lead">V3 adds generic object, color, panel, line, symmetry, gravity, counting, packing, and reduction operations. Public evaluation was excluded from development; the first complete run used a deterministic training holdout registered in advance.</p>
+      <div id="v3Summary" class="result-stack"><p class="muted">Loading frozen v3 holdout.</p></div>
+      <p class="callout"><strong>Registered verdict:</strong> directional improvement only. V3 solves one additional output and loses none, but one discordant pair gives an exact two-sided p-value of 1.0. A validated two-attempt private-test artifact is ready; no private score is claimed.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/REPRESENTATION-v3.md">V3 findings</a>
+        <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/kaggle_submission_v3.py">Private-test entrypoint</a>
+      </div>
+    </section>
+
     <section>
       <p class="eyebrow">Leaderboard correction</p>
       <h2>The public score is not 120 Bernoulli trials.</h2>
@@ -105,24 +118,25 @@
       <p class="eyebrow">Claims ledger</p>
       <h2>The better test is allowed to reverse the paper.</h2>
       <div class="change-grid">
-        <article><h3>Withdrawn</h3><p>“One-example consistency is exactly a coin flip.” “More demos cause a 50→95% rise.” “MDL matches the oracle.”</p></article>
-        <article><h3>Established</h3><p>Demonstrations create a precision–coverage tradeoff. MDL beats random under ambiguity. Training engagement transfers poorly.</p></article>
-        <article><h3>Next frontier</h3><p>Generate better hypotheses, retain semantic diversity, and route uncovered tasks to a richer solver.</p></article>
+        <article><h3>Withdrawn</h3><p>“One-example consistency is exactly a coin flip.” “More demos cause a 50→95% rise.” “MDL matches the oracle.” “Consensus is calibrated.”</p></article>
+        <article><h3>Established</h3><p>Evidence creates a precision–coverage tradeoff. MDL beats random under ambiguity. Evaluation engagement transfers poorly.</p></article>
+        <article><h3>Advanced</h3><p>Generic representation v3 adds one frozen-holdout success with no loss. The untouched private competition test is now the decisive next endpoint.</p></article>
       </div>
     </section>
 
     <section class="closing">
       <p class="eyebrow">The contribution</p>
-      <h2>Not a better score. A better ruler.</h2>
-      <p>All code, registrations, negative results, exact data provenance, and machine-readable outputs are public.</p>
+      <h2>Not only a better ruler. A falsifiable path to a better solver.</h2>
+      <p>All code, registrations, negative results, exact data provenance, machine-readable outputs, and the promoted private-test artifact are public.</p>
       <div class="actions">
-        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER_V2.md">Canonical paper v2</a>
+        <a class="button primary" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/PAPER_V2.md">Canonical paper</a>
         <a class="button" href="https://github.com/GrobeStreet/arc-agi-2-occam-baseline/blob/main/RESULTS_V2.md">Findings ledger</a>
+        <a class="button" href="ARC_Measurement_Audit_v2.pdf">Download PDF</a>
       </div>
     </section>
   </main>
 
-  <footer><div class="wrap">Robert Morong · independent, AI-assisted research · ARC Prize 2026 Paper Track candidate · full-corpus results committed and reproducible</div></footer>
+  <footer><div class="wrap">Robert Morong · independent, AI-assisted research · ARC Prize 2026 Paper Track candidate · public corrections and contest artifacts reproducible</div></footer>
   <script src="app.js"></script>
 </body>
 </html>
