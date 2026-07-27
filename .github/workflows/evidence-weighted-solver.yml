@@ -9,22 +9,14 @@ on:
       - 'benchmark_solver_v2.py'
       - 'HYPOTHESIS-evidence-weighted-solver.md'
       - '.github/workflows/evidence-weighted-solver.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'dsl.py'
-      - 'evidence_weighted_solver.py'
-      - 'benchmark_solver_v2.py'
-      - 'HYPOTHESIS-evidence-weighted-solver.md'
-      - '.github/workflows/evidence-weighted-solver.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: arc-evidence-solver-${{ github.event.pull_request.number || github.ref_name }}
-  cancel-in-progress: true
+  group: arc-evidence-solver-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   benchmark:
@@ -34,7 +26,7 @@ jobs:
       - name: Check out frozen solver branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -74,8 +66,7 @@ jobs:
           cat results/solver/solver_v2_benchmark.md
           cat results/solver/solver_v2_benchmark.json
 
-      - name: Commit frozen benchmark artifacts on branch pushes
-        if: github.event_name == 'push'
+      - name: Commit frozen benchmark artifacts
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
