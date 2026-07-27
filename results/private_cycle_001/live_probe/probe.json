@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-07-27T20:20:34.844476+00:00",
+  "observed_at": "2026-07-27T20:22:54.485861+00:00",
   "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
   "competition": "arc-prize-2026-arc-agi-2",
   "authenticated": true,
@@ -53,6 +53,16 @@
       "returncode": 0,
       "output": "ref,fileName,date,description,status,publicScore,privateScore\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.PENDING,,\n"
     },
+    "submission_detail": {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submission",
+        "55037417"
+      ],
+      "returncode": 2,
+      "output": "usage: kaggle competitions [-h]\n                           {list,files,download,submit,submissions,leaderboard,team-submissions,submission-limits,episodes,replay,logs,pages,hosts,data,settings,solution,launch,init,create,topics,topic-messages}\n                           ...\nkaggle competitions: error: argument command: invalid choice: 'submission' (choose from 'list', 'files', 'download', 'submit', 'submissions', 'leaderboard', 'team-submissions', 'submission-limits', 'episodes', 'replay', 'logs', 'pages', 'hosts', 'data', 'settings', 'solution', 'launch', 'init', 'create', 'topics', 'topic-messages')\n"
+    },
     "entered_competitions": {
       "command": [
         "kaggle",
@@ -63,8 +73,10 @@
         "-v"
       ],
       "returncode": 0,
-      "output": "ref,deadline,category,reward,teamCount,userHasEntered,userRank\nhttps://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,\"700,000 Usd\",1282,True,0\nhttps://www.kaggle.com/competitions/arc-prize-2026-paper-track,2026-11-09 23:59:00,Featured,\"450,000 Usd\",107,True,0\n"
+      "output": "ref,deadline,category,reward,teamCount,userHasEntered,userRank\nhttps://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,\"700,000 Usd\",1283,True,0\nhttps://www.kaggle.com/competitions/arc-prize-2026-paper-track,2026-11-09 23:59:00,Featured,\"450,000 Usd\",107,True,0\n"
     }
   },
+  "submission_ref": "55037417",
+  "submission_detail": "usage: kaggle competitions [-h]\n                           {list,files,download,submit,submissions,leaderboard,team-submissions,submission-limits,episodes,replay,logs,pages,hosts,data,settings,solution,launch,init,create,topics,topic-messages}\n                           ...\nkaggle competitions: error: argument command: invalid choice: 'submission' (choose from 'list', 'files', 'download', 'submit', 'submissions', 'leaderboard', 'team-submissions', 'submission-limits', 'episodes', 'replay', 'logs', 'pages', 'hosts', 'data', 'settings', 'solution', 'launch', 'init', 'create', 'topics', 'topic-messages')",
   "state": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.COMPLETE\""
 }

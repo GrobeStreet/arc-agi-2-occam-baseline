@@ -1,8 +1,9 @@
 # Frozen ARC Cycle 001 — Live Kaggle Probe
 
-**Observed:** 2026-07-27T20:20:34.844476+00:00  
+**Observed:** 2026-07-27T20:22:54.485861+00:00  
 **Kernel:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001`  
-**State:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.COMPLETE"`
+**State:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status "KernelWorkerStatus.COMPLETE"`  
+**Submission ref:** `55037417`
 
 ## kernel_status
 
@@ -40,13 +41,25 @@ ref,fileName,date,description,status,publicScore,privateScore
 
 ```
 
+## submission_detail
+
+Return code: `2`
+
+```text
+usage: kaggle competitions [-h]
+                           {list,files,download,submit,submissions,leaderboard,team-submissions,submission-limits,episodes,replay,logs,pages,hosts,data,settings,solution,launch,init,create,topics,topic-messages}
+                           ...
+kaggle competitions: error: argument command: invalid choice: 'submission' (choose from 'list', 'files', 'download', 'submit', 'submissions', 'leaderboard', 'team-submissions', 'submission-limits', 'episodes', 'replay', 'logs', 'pages', 'hosts', 'data', 'settings', 'solution', 'launch', 'init', 'create', 'topics', 'topic-messages')
+
+```
+
 ## entered_competitions
 
 Return code: `0`
 
 ```text
 ref,deadline,category,reward,teamCount,userHasEntered,userRank
-https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,"700,000 Usd",1282,True,0
+https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2,2026-11-02 23:59:00,Featured,"700,000 Usd",1283,True,0
 https://www.kaggle.com/competitions/arc-prize-2026-paper-track,2026-11-09 23:59:00,Featured,"450,000 Usd",107,True,0
 
 ```
