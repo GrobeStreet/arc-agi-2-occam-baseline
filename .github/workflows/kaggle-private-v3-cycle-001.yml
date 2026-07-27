@@ -1,0 +1,94 @@
+name: Frozen ARC v3 private Cycle 001
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type SUBMIT_FROZEN_V3_CYCLE_001 to authorize the exact frozen code submission'
+        required: true
+        default: 'DO_NOT_SUBMIT'
+  push:
+    branches: [main]
+    paths:
+      - 'contest/private_cycle_001.trigger'
+      - 'PRIVATE_CYCLE_001_PACKAGING_NOTE.md'
+      - 'scripts/build_frozen_v3_kaggle_notebook.py'
+      - 'scripts/kaggle_private_cycle_001_v2.py'
+      - '.github/workflows/kaggle-private-v3-cycle-001.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaggle-private-v3-cycle-001
+  cancel-in-progress: false
+
+jobs:
+  submit-frozen-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      # Current authentication: KAGGLE_API_TOKEN. Legacy authentication remains
+      # available through the separate KAGGLE_USERNAME/KAGGLE_KEY pair.
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+      PYTHONUNBUFFERED: '1'
+
+    steps:
+      - name: Check out complete source history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enforce explicit manual authorization
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          if [[ "${{ inputs.confirmation }}" != "SUBMIT_FROZEN_V3_CYCLE_001" ]]; then
+            echo 'Manual dispatch was not explicitly authorized.' >&2
+            exit 2
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install official Kaggle CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'kaggle>=2.2.0,<3'
+          kaggle --version
+
+      - name: Run publish-regardless frozen private cycle
+        run: python scripts/kaggle_private_cycle_001_v2.py
+
+      - name: Display immutable result record
+        if: always()
+        run: |
+          cat results/private_cycle_001/RESULT.md || true
+          cat results/private_cycle_001/result.json || true
+
+      - name: Commit result, blocker, score, or rank
+        if: always()
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/private_cycle_001/
+          git diff --cached --quiet || git commit -m 'Record frozen v3 private Kaggle Cycle 001 outcome'
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Upload complete private-cycle evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frozen-v3-private-cycle-001
+          retention-days: 180
+          path: |
+            results/private_cycle_001/
+            contest/kaggle_kernel_v3/build/kernel-metadata.json
+            contest/kaggle_kernel_v3/build/frozen_v3_cycle_001.ipynb
+            contest/kaggle_kernel_v3/build/source_manifest.json
