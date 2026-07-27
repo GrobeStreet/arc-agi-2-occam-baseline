@@ -8,6 +8,7 @@ on:
       - 'crossfold_ablation.py'
       - 'crossfold_analysis.py'
       - 'crossfold_replication.py'
+      - 'leaderboard_stats_v2.py'
       - 'HYPOTHESIS-crossfold-v2.md'
       - 'ablate_cell_training.parquet'
       - '.github/workflows/arc-measurement-v2.yml'
@@ -45,6 +46,13 @@ jobs:
           git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git external/ARC-AGI-2
           mkdir -p results
           git -C external/ARC-AGI-2 rev-parse HEAD | tee results/arc_agi_2_data_commit.txt
+
+      - name: Audit the actual leaderboard scoring denominator
+        run: |
+          python leaderboard_stats_v2.py \
+            --data-root external/ARC-AGI-2/data \
+            --split evaluation \
+            --output-dir results
 
       - name: Recompute corrected legacy-prefix calibration
         run: python task_clustered_analysis.py --bootstrap 50000 --seed 20260727
@@ -87,6 +95,8 @@ jobs:
 
       - name: Display resolved findings
         run: |
+          cat results/leaderboard_measurement_v2.md
+          echo '--- TASK WEIGHTING ---'
           cat results/task_weighted_calibration.md
           echo '--- SAME-HOLDOUT TRAINING AUDIT ---'
           cat results/crossfold/training_audit/crossfold_calibration.md
@@ -99,8 +109,14 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add results/arc_agi_2_data_commit.txt results/task_weighted_calibration.* results/task_weighted_task_cells.csv results/crossfold/
-          git diff --cached --quiet || git commit -m 'Add resolved same-holdout ARC measurement audit v2'
+          git add \
+            results/arc_agi_2_data_commit.txt \
+            results/leaderboard_measurement_v2.json \
+            results/leaderboard_measurement_v2.md \
+            results/task_weighted_calibration.* \
+            results/task_weighted_task_cells.csv \
+            results/crossfold/
+          git diff --cached --quiet || git commit -m 'Update resolved ARC measurement audit v2'
           git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload complete audit artifact
@@ -110,6 +126,8 @@ jobs:
           retention-days: 90
           path: |
             results/arc_agi_2_data_commit.txt
+            results/leaderboard_measurement_v2.json
+            results/leaderboard_measurement_v2.md
             results/task_weighted_calibration.json
             results/task_weighted_calibration.md
             results/task_weighted_task_cells.csv
