@@ -30,15 +30,15 @@ PRIMARY = [
 
 
 def finite(values: Iterable[float]) -> np.ndarray:
-    arr = np.asarray(list(values), dtype=float)
-    return arr[np.isfinite(arr)]
+    array = np.asarray(list(values), dtype=float)
+    return array[np.isfinite(array)]
 
 
 def interval(values: np.ndarray) -> list[float] | None:
-    arr = finite(values)
-    if not arr.size:
+    array = finite(values)
+    if not array.size:
         return None
-    return [float(np.quantile(arr, 0.025)), float(np.quantile(arr, 0.975))]
+    return [float(np.quantile(array, 0.025)), float(np.quantile(array, 0.975))]
 
 
 def independent_bootstrap_difference(
@@ -52,14 +52,25 @@ def independent_bootstrap_difference(
     test = finite(evaluation)
     if not train.size or not test.size:
         return np.array([], dtype=float)
-    out = np.empty(n_boot, dtype=float)
-    chunk = 2_000
+    output = np.empty(n_boot, dtype=float)
+    chunk = 1_000
     for start in range(0, n_boot, chunk):
         stop = min(start + chunk, n_boot)
-        train_idx = rng.integers(0, train.size, size=(stop - start, train.size))
-        test_idx = rng.integers(0, test.size, size=(stop - start, test.size))
-        out[start:stop] = test[test_idx].mean(axis=1) - train[train_idx].mean(axis=1)
-    return out
+        train_counts = rng.multinomial(
+            train.size,
+            np.full(train.size, 1.0 / train.size),
+            size=stop - start,
+        )
+        test_counts = rng.multinomial(
+            test.size,
+            np.full(test.size, 1.0 / test.size),
+            size=stop - start,
+        )
+        output[start:stop] = (
+            test_counts @ test / test.size
+            - train_counts @ train / train.size
+        )
+    return output
 
 
 def find_contrast(payload: dict[str, Any], name: str) -> dict[str, Any] | None:
@@ -69,6 +80,20 @@ def find_contrast(payload: dict[str, Any], name: str) -> dict[str, Any] | None:
     return None
 
 
+def pct(value: float | None) -> str:
+    return "NA" if value is None or not np.isfinite(value) else f"{100*value:.1f}%"
+
+
+def pp(value: float | None) -> str:
+    return "NA" if value is None or not np.isfinite(value) else f"{100*value:+.1f} pp"
+
+
+def ci_pp(value: list[float] | None) -> str:
+    if not value or len(value) != 2:
+        return "NA"
+    return f"[{100*value[0]:+.1f}, {100*value[1]:+.1f}] pp"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--training-task-summary", default="results/crossfold/training_audit/crossfold_task_summary.csv")
@@ -76,7 +101,7 @@ def main() -> None:
     parser.add_argument("--training-json", default="results/crossfold/training_audit/crossfold_calibration.json")
     parser.add_argument("--evaluation-json", default="results/crossfold/evaluation_audit/crossfold_calibration.json")
     parser.add_argument("--output-dir", default="results/crossfold")
-    parser.add_argument("--bootstrap", type=int, default=50_000)
+    parser.add_argument("--bootstrap", type=int, default=20_000)
     parser.add_argument("--seed", type=int, default=20260727)
     args = parser.parse_args()
 
@@ -91,64 +116,67 @@ def main() -> None:
     common_k = sorted(set(training["k"].astype(int)) & set(evaluation["k"].astype(int)))
     by_k: list[dict[str, Any]] = []
     for k in common_k:
-        train_k = training[training["k"] == k]
-        eval_k = evaluation[evaluation["k"] == k]
+        training_k = training[training["k"] == k]
+        evaluation_k = evaluation[evaluation["k"] == k]
         row: dict[str, Any] = {
             "k": int(k),
-            "n_training_tasks": int(train_k["task"].nunique()),
-            "n_evaluation_tasks": int(eval_k["task"].nunique()),
+            "n_training_tasks": int(training_k["task"].nunique()),
+            "n_evaluation_tasks": int(evaluation_k["task"].nunique()),
             "metrics": {},
         }
         for metric in PRIMARY:
-            train_values = finite(train_k[metric])
-            eval_values = finite(eval_k[metric])
-            boot = independent_bootstrap_difference(
-                train_values,
-                eval_values,
+            training_values = finite(training_k[metric])
+            evaluation_values = finite(evaluation_k[metric])
+            bootstrap = independent_bootstrap_difference(
+                training_values,
+                evaluation_values,
                 n_boot=args.bootstrap,
                 rng=rng,
             )
             row["metrics"][metric] = {
-                "training_task_weighted_mean": float(train_values.mean()) if train_values.size else None,
-                "evaluation_task_weighted_mean": float(eval_values.mean()) if eval_values.size else None,
+                "training_task_weighted_mean": float(training_values.mean()) if training_values.size else None,
+                "evaluation_task_weighted_mean": float(evaluation_values.mean()) if evaluation_values.size else None,
                 "evaluation_minus_training": (
-                    float(eval_values.mean() - train_values.mean())
-                    if train_values.size and eval_values.size
+                    float(evaluation_values.mean() - training_values.mean())
+                    if training_values.size and evaluation_values.size
                     else None
                 ),
-                "ci95": interval(boot),
+                "ci95": interval(bootstrap),
                 "bootstrap_probability_evaluation_higher": (
-                    float(np.mean(boot > 0)) if boot.size else None
+                    float(np.mean(bootstrap > 0)) if bootstrap.size else None
                 ),
             }
         by_k.append(row)
 
     primary_name = "k=2 minus k=1"
-    train_contrast = find_contrast(train_json, primary_name)
-    eval_contrast = find_contrast(eval_json, primary_name)
+    training_contrast = find_contrast(train_json, primary_name)
+    evaluation_contrast = find_contrast(eval_json, primary_name)
     primary_replication: dict[str, Any] = {
         "contrast": primary_name,
-        "training": train_contrast,
-        "evaluation": eval_contrast,
+        "training": training_contrast,
+        "evaluation": evaluation_contrast,
         "same_direction": {},
     }
     for metric in ["coverage", "random_yield", "mdl_vote_yield", "consensus_yield", "oracle_yield"]:
-        train_delta = (
-            train_contrast.get("metrics", {}).get(metric, {}).get("task_weighted_delta")
-            if train_contrast
+        training_delta = (
+            training_contrast.get("metrics", {}).get(metric, {}).get("task_weighted_delta")
+            if training_contrast
             else None
         )
-        eval_delta = (
-            eval_contrast.get("metrics", {}).get(metric, {}).get("task_weighted_delta")
-            if eval_contrast
+        evaluation_delta = (
+            evaluation_contrast.get("metrics", {}).get(metric, {}).get("task_weighted_delta")
+            if evaluation_contrast
             else None
         )
         primary_replication["same_direction"][metric] = {
-            "training_delta": train_delta,
-            "evaluation_delta": eval_delta,
+            "training_delta": training_delta,
+            "evaluation_delta": evaluation_delta,
             "same_nonzero_direction": (
-                bool(np.sign(train_delta) == np.sign(eval_delta))
-                if train_delta is not None and eval_delta is not None and train_delta != 0 and eval_delta != 0
+                bool(np.sign(training_delta) == np.sign(evaluation_delta))
+                if training_delta is not None
+                and evaluation_delta is not None
+                and training_delta != 0
+                and evaluation_delta != 0
                 else None
             ),
         }
@@ -181,12 +209,11 @@ def main() -> None:
     for row in by_k:
         for metric in ["coverage", "consensus_yield", "mdl_vote_yield", "candidate_reliability"]:
             item = row["metrics"][metric]
-            ci = item["ci95"]
             lines.append(
-                f"| {row['k']} | {metric} | {100*item['training_task_weighted_mean']:.1f}% | "
-                f"{100*item['evaluation_task_weighted_mean']:.1f}% | "
-                f"{100*item['evaluation_minus_training']:+.1f} pp | "
-                f"[{100*ci[0]:+.1f}, {100*ci[1]:+.1f}] pp |"
+                f"| {row['k']} | {metric} | {pct(item['training_task_weighted_mean'])} | "
+                f"{pct(item['evaluation_task_weighted_mean'])} | "
+                f"{pp(item['evaluation_minus_training'])} | "
+                f"{ci_pp(item['ci95'])} |"
             )
 
     lines += ["", "## Primary same-target effect replication", ""]
@@ -194,15 +221,15 @@ def main() -> None:
         if item["training_delta"] is None or item["evaluation_delta"] is None:
             continue
         lines.append(
-            f"- **{metric}:** training {100*item['training_delta']:+.1f} pp; "
-            f"evaluation {100*item['evaluation_delta']:+.1f} pp; "
+            f"- **{metric}:** training {pp(item['training_delta'])}; "
+            f"evaluation {pp(item['evaluation_delta'])}; "
             f"same direction = {item['same_nonzero_direction']}."
         )
     lines += [
         "",
         "## Interpretation",
         "",
-        "Replication concerns the direction and uncertainty of the pre-specified same-target effects. Differences in marginal levels are expected because the public evaluation set is deliberately harder and compositionally different. No method or threshold is changed in response to this file.",
+        "Replication concerns the direction and uncertainty of the pre-specified same-target effects. Differences in marginal levels are expected because the public evaluation set is deliberately harder and compositionally different. Sparse high-k cells are reported as NA rather than causing a formatting failure. No method or threshold is changed in response to this file.",
     ]
     md_path = output_dir / "crossfold_replication.md"
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
