@@ -1,4 +1,4 @@
-name: Deploy ARC measurement audit site
+name: Deploy ARC Measurement Lab
 
 on:
   push:
@@ -32,10 +32,24 @@ jobs:
           rm -rf _site
           mkdir -p _site/data
           cp site/index.html site/styles.css site/app.js _site/
-          test -f results/task_weighted_calibration.json && cp results/task_weighted_calibration.json _site/data/ || true
-          test -f results/crossfold/arc_crossfold_audit.json && cp results/crossfold/arc_crossfold_audit.json _site/data/ || true
-          test -f results/crossfold/training_audit/crossfold_calibration.json && cp results/crossfold/training_audit/crossfold_calibration.json _site/data/ || true
-          test -f results/solver/solver_v2_benchmark.json && cp results/solver/solver_v2_benchmark.json _site/data/ || true
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          mapping = {
+              'results/task_weighted_calibration.json': '_site/data/task_weighted_calibration.json',
+              'results/crossfold/training_audit/crossfold_calibration.json': '_site/data/crossfold_training.json',
+              'results/crossfold/evaluation_audit/crossfold_calibration.json': '_site/data/crossfold_evaluation.json',
+              'results/crossfold/crossfold_replication.json': '_site/data/crossfold_replication.json',
+              'results/solver/solver_v2_benchmark.json': '_site/data/solver_v2_benchmark.json',
+          }
+          for source, target in mapping.items():
+              src, dst = Path(source), Path(target)
+              if src.exists():
+                  dst.write_bytes(src.read_bytes())
+              else:
+                  dst.write_text(json.dumps({'status': 'pending', 'source': source}, indent=2) + '\n')
+          PY
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
