@@ -3,11 +3,11 @@
 **State:** `BLOCKED_AUTH`  
 **Competition:** `arc-prize-2026-arc-agi-2`  
 **Frozen source:** `70672f3aa62d089bfffd072461a5713caae1e099`  
-**Recorded:** 2026-07-27T16:16:42.345093+00:00
+**Recorded:** 2026-07-27T17:50:39.113006+00:00
 
 ## Official competition record
 
-- Kernel: `not created`
+- Kernel: `robertmorong/grobestreet-arc-frozen-v3-cycle-001`
 - Kernel version: `not available`
 - Submission ref: `not available`
 - Submission status: `not available`
@@ -27,5 +27,5 @@ Cycle 001 authorizes no representation edits. Any expansion requires a new `HYPO
 ## Blocker or error
 
 ```text
-Missing GitHub Actions secret(s): KAGGLE_USERNAME, KAGGLE_API_TOKEN or legacy KAGGLE_KEY
+Missing GitHub Actions secret(s): KAGGLE_API_TOKEN or legacy KAGGLE_KEY
 ```
