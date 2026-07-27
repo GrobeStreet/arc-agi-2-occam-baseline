@@ -28,7 +28,7 @@ permissions:
 
 concurrency:
   group: arc-paper-${{ github.event.pull_request.number || github.ref_name }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
