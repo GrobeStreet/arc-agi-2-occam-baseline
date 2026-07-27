@@ -9,14 +9,22 @@ on:
       - 'benchmark_representation_v3.py'
       - 'HYPOTHESIS-representation-v3.md'
       - '.github/workflows/representation-v3.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dsl.py'
+      - 'dsl_v3.py'
+      - 'benchmark_representation_v3.py'
+      - 'HYPOTHESIS-representation-v3.md'
+      - '.github/workflows/representation-v3.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: arc-representation-v3-${{ github.ref_name }}
-  cancel-in-progress: false
+  group: arc-representation-v3-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   benchmark:
@@ -26,7 +34,7 @@ jobs:
       - name: Check out frozen v3 grammar
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -56,6 +64,7 @@ jobs:
           cat results/representation_v3/representation_v3_benchmark.json
 
       - name: Commit frozen result
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
