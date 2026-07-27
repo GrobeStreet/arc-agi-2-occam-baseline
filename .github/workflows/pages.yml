@@ -1,0 +1,54 @@
+name: Deploy ARC measurement audit site
+
+on:
+  push:
+    branches: [arc-task-clustered-v2, main]
+    paths:
+      - 'site/**'
+      - 'results/task_weighted_calibration.json'
+      - 'results/crossfold/**'
+      - 'results/solver/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Assemble static site and committed evidence
+        run: |
+          rm -rf _site
+          mkdir -p _site/data
+          cp site/index.html site/styles.css site/app.js _site/
+          test -f results/task_weighted_calibration.json && cp results/task_weighted_calibration.json _site/data/ || true
+          test -f results/crossfold/arc_crossfold_audit.json && cp results/crossfold/arc_crossfold_audit.json _site/data/ || true
+          test -f results/crossfold/training_audit/crossfold_calibration.json && cp results/crossfold/training_audit/crossfold_calibration.json _site/data/ || true
+          test -f results/solver/solver_v2_benchmark.json && cp results/solver/solver_v2_benchmark.json _site/data/ || true
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
