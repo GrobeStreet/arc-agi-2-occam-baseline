@@ -1,0 +1,52 @@
+name: Probe frozen ARC v3 Cycle 001
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'contest/private_cycle_001.probe'
+      - '.github/workflows/private-v3-cycle-probe.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: frozen-arc-v3-private-cycle-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      KAGGLE_USERNAME: robertmorong
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install official Kaggle CLI
+        run: python -m pip install --upgrade 'kaggle>=2.2.0,<3'
+      - name: Probe latest kernel, outputs, submission, and rank
+        run: python scripts/kaggle_private_cycle_probe.py
+      - name: Commit sanitized probe record
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/private_cycle_001/live_probe/
+          git diff --cached --quiet || git commit -m 'Record live Kaggle probe for frozen ARC Cycle 001'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Upload probe artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frozen-arc-v3-cycle-001-probe
+          retention-days: 30
+          path: results/private_cycle_001/live_probe/
