@@ -3,7 +3,8 @@ const paths = {
   training: 'data/crossfold_training.json',
   evaluation: 'data/crossfold_evaluation.json',
   replication: 'data/crossfold_replication.json',
-  solver: 'data/solver_v2_benchmark.json'
+  solver: 'data/solver_v2_benchmark.json',
+  leaderboard: 'data/leaderboard_measurement_v2.json'
 };
 
 const fmt = (x, d = 1) => Number.isFinite(Number(x)) ? `${(100 * Number(x)).toFixed(d)}%` : '—';
@@ -42,16 +43,19 @@ function renderCrossfold(training, evaluation, replication) {
   const trainK1Coverage = metric(training, 1, 'coverage');
   const trainK1Reliability = metric(training, 1, 'candidate_reliability');
   const trainK1Consensus = metric(training, 1, 'consensus_yield');
+  const trainK2Reliability = metric(training, 2, 'candidate_reliability');
+  const evalK1Coverage = metric(evaluation, 1, 'coverage');
   const evalK1Consensus = metric(evaluation, 1, 'consensus_yield');
   const primary = contrast(training);
+  const primaryCoverage = primary?.metrics?.coverage;
   const primaryConsensus = primary?.metrics?.consensus_yield;
 
   const cards = [
-    `<div class="result-card"><strong>DSL coverage at k=1</strong><div class="big">${fmt(trainK1Coverage?.task_weighted_mean)}</div><span>95% task CI ${ci(trainK1Coverage?.ci95)}</span></div>`,
-    `<div class="result-card"><strong>Candidate reliability at k=1</strong><div class="big">${fmt(trainK1Reliability?.task_weighted_mean)}</div><span>Conditional on a generated candidate</span></div>`,
-    `<div class="result-card"><strong>Consensus yield at k=1</strong><div class="big">${fmt(trainK1Consensus?.task_weighted_mean)}</div><span>Coverage and correctness combined</span></div>`,
-    `<div class="result-card"><strong>Same-target k=2 minus k=1</strong><div class="big">${pp(primaryConsensus?.task_weighted_delta)}</div><span>95% task CI ${ci(primaryConsensus?.ci95, pp)}</span></div>`,
-    `<div class="result-card"><strong>One-shot evaluation consensus</strong><div class="big">${fmt(evalK1Consensus?.task_weighted_mean)}</div><span>Evaluation demonstrations; frozen analysis</span></div>`
+    `<div class="result-card"><strong>Training DSL coverage at k=1</strong><div class="big">${fmt(trainK1Coverage?.task_weighted_mean)}</div><span>95% task CI ${ci(trainK1Coverage?.ci95)}</span></div>`,
+    `<div class="result-card"><strong>Candidate reliability: k=1 → k=2</strong><div class="big">${fmt(trainK1Reliability?.task_weighted_mean)} → ${fmt(trainK2Reliability?.task_weighted_mean)}</div><span>Conditional on candidate generation</span></div>`,
+    `<div class="result-card"><strong>Same-target coverage effect</strong><div class="big">${pp(primaryCoverage?.task_weighted_delta)}</div><span>95% task CI ${ci(primaryCoverage?.ci95, pp)}</span></div>`,
+    `<div class="result-card"><strong>Primary consensus-yield effect</strong><div class="big">${pp(primaryConsensus?.task_weighted_delta)}</div><span>95% task CI ${ci(primaryConsensus?.ci95, pp)} · registered negative</span></div>`,
+    `<div class="result-card"><strong>One-shot evaluation coverage / yield</strong><div class="big">${fmt(evalK1Coverage?.task_weighted_mean)} / ${fmt(evalK1Consensus?.task_weighted_mean)}</div><span>Evaluation demonstrations; analysis frozen before run</span></div>`
   ];
   document.getElementById('crossfoldSummary').innerHTML = cards.join('');
 
@@ -68,8 +72,9 @@ function renderCrossfold(training, evaluation, replication) {
     const item = selection.overall?.[key] || {};
     return `<tr><td>${label}</td><td>${fmt(item.task_weighted_rate)}</td><td>${ci(item.ci95)}</td></tr>`;
   }).join('');
+  const mdlGain = selection.contrasts?.mdl_vote_minus_random;
   const oracleGap = selection.contrasts?.oracle_minus_mdl_vote;
-  document.getElementById('selectorTable').innerHTML = `<table><thead><tr><th>Rule</th><th>Task-weighted accuracy</th><th>95% task CI</th></tr></thead><tbody>${rows}</tbody></table><p class="note">Ambiguous cells: ${selection.n_cells ?? '—'} across ${selection.n_tasks ?? '—'} tasks. Oracle minus tie-aware MDL: ${pp(oracleGap?.task_weighted_difference)}; 95% CI ${ci(oracleGap?.ci95, pp)}.</p>`;
+  document.getElementById('selectorTable').innerHTML = `<table><thead><tr><th>Rule</th><th>Task-weighted accuracy</th><th>95% task CI</th></tr></thead><tbody>${rows}</tbody></table><p class="note">Ambiguous cells: ${selection.n_cells ?? '—'} across ${selection.n_tasks ?? '—'} tasks. MDL minus random: ${pp(mdlGain?.task_weighted_difference)} (${ci(mdlGain?.ci95, pp)}). Oracle minus MDL: ${pp(oracleGap?.task_weighted_difference)} (${ci(oracleGap?.ci95, pp)}).</p>`;
 
   const rep = replication?.primary_same_holdout_replication?.same_direction?.consensus_yield;
   if (rep) {
@@ -81,20 +86,20 @@ function renderCrossfold(training, evaluation, replication) {
 function renderSolver(payload) {
   const methods = payload?.methods || payload?.benchmarks?.public_evaluation?.methods || {};
   const normalize = method => {
-    if (!method) return { pass1: null, pass2: null };
+    if (!method) return { pass1: null, pass2: null, correct: null, trials: null };
     const p1 = method.pass1?.rate ?? method.pass_at_1 ?? method.pass1;
     const p2 = method.pass2?.rate ?? method.pass_at_2 ?? method.pass2;
     const correct = method.pass2?.correct;
     const trials = method.pass2?.trials;
     return { pass1: Number(p1), pass2: Number(p2), correct, trials };
   };
-  const legacy = normalize(methods.legacy || methods.legacy_vote_mdl);
-  const mdl = normalize(methods.mdl || methods.pure_mdl);
-  const evidence = normalize(methods.evidence || methods.evidence_weighted);
+  const legacy = normalize(methods.baseline_vote_then_mdl || methods.legacy || methods.legacy_vote_mdl);
+  const mdl = normalize(methods.pure_mdl || methods.mdl);
+  const evidence = normalize(methods.evidence_weighted || methods.evidence);
   document.getElementById('solverSummary').innerHTML = [
     `<div class="result-card"><strong>Released baseline pass@2</strong><div class="big">${fmt(legacy.pass2)}</div><span>${legacy.correct ?? '—'} / ${legacy.trials ?? '—'} public-evaluation outputs</span></div>`,
     `<div class="result-card"><strong>Pure MDL pass@2</strong><div class="big">${fmt(mdl.pass2)}</div><span>Frozen comparator</span></div>`,
-    `<div class="result-card"><strong>Evidence-weighted v2 pass@2</strong><div class="big">${fmt(evidence.pass2)}</div><span>Delta vs baseline ${pp(evidence.pass2 - legacy.pass2)}</span></div>`
+    `<div class="result-card"><strong>Evidence-weighted v2 pass@2</strong><div class="big">${fmt(evidence.pass2)}</div><span>Delta vs baseline ${pp(evidence.pass2 - legacy.pass2)} · promotion gate not met</span></div>`
   ].join('');
 }
 
@@ -117,13 +122,17 @@ async function render() {
 
   if (data.training) {
     renderCrossfold(data.training, data.evaluation || {}, data.replication || {});
-    document.getElementById('runTitle').textContent = 'Registered same-holdout evidence is live.';
+    document.getElementById('runTitle').textContent = 'Full-corpus registered evidence is live.';
     status.classList.add('ready');
   } else {
-    document.getElementById('crossfoldSummary').innerHTML = '<div class="result-card"><strong>The registered run is still executing.</strong><p>This page reads committed result files and will update after the workflow finishes.</p></div>';
+    document.getElementById('crossfoldSummary').innerHTML = '<div class="result-card"><strong>The registered result file is unavailable.</strong><p>See the repository evidence ledger.</p></div>';
   }
 
   if (data.solver) renderSolver(data.solver);
+  if (data.leaderboard?.test_output_count) {
+    document.getElementById('taskCount').value = data.leaderboard.test_output_count;
+    calculate();
+  }
 
   if (!Object.keys(data).length) {
     status.classList.add('error');
@@ -146,14 +155,16 @@ function erf(x) {
 }
 const normalCdf = x => .5 * (1 + erf(x / Math.sqrt(2)));
 function calculate() {
-  const n = Math.max(10, Number(document.getElementById('taskCount').value) || 120);
-  const a = Math.min(1, Math.max(0, Number(document.getElementById('scoreA').value) / 100));
-  const b = Math.min(1, Math.max(0, Number(document.getElementById('scoreB').value) / 100));
-  const ia = wilson(a, n), ib = wilson(b, n), pooled = (a + b) / 2;
+  const n = Math.max(10, Number(document.getElementById('taskCount').value) || 167);
+  const requestedA = Math.min(1, Math.max(0, Number(document.getElementById('scoreA').value) / 100));
+  const requestedB = Math.min(1, Math.max(0, Number(document.getElementById('scoreB').value) / 100));
+  const successesA = Math.round(requestedA * n), successesB = Math.round(requestedB * n);
+  const a = successesA / n, b = successesB / n;
+  const ia = wilson(a, n), ib = wilson(b, n), pooled = (successesA + successesB) / (2 * n);
   const se = Math.sqrt(2 * pooled * (1 - pooled) / n);
   const z = se ? Math.abs(a - b) / se : 0;
   const p = 2 * (1 - normalCdf(z));
-  document.getElementById('calcResult').innerHTML = `<strong>System A:</strong> ${fmt(a)} (95% Wilson ${fmt(ia[0])}–${fmt(ia[1])})<br><strong>System B:</strong> ${fmt(b)} (95% Wilson ${fmt(ib[0])}–${fmt(ib[1])})<br><strong>Unpaired difference test:</strong> z=${z.toFixed(2)}, p=${p.toFixed(3)}. ${p < .05 ? 'This clears 0.05 under the unpaired approximation.' : 'This does not clear 0.05 under the unpaired approximation.'}`;
+  document.getElementById('calcResult').innerHTML = `<strong>System A:</strong> ${successesA}/${n} = ${fmt(a)} (Wilson ${fmt(ia[0])}–${fmt(ia[1])})<br><strong>System B:</strong> ${successesB}/${n} = ${fmt(b)} (Wilson ${fmt(ib[0])}–${fmt(ib[1])})<br><strong>Unpaired output-level approximation:</strong> z=${z.toFixed(2)}, p=${p.toFixed(3)}.<br><small>Use paired per-output outcomes and task-clustered uncertainty for a defensible comparison.</small>`;
 }
 
 document.getElementById('calcForm').addEventListener('submit', event => { event.preventDefault(); calculate(); });
