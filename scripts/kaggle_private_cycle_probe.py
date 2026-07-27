@@ -2,14 +2,14 @@
 """Inspect the live Kaggle state for frozen ARC Private Cycle 001.
 
 This probe is observational only. It never pushes a kernel, submits a prediction,
-or changes solver code. It records the latest Kaggle kernel status, attempts to
-retrieve output/error artifacts, and captures the authenticated submission and
-competition-rank views for debugging and progress reporting.
+or changes solver code. It records the latest kernel status, output artifacts,
+submission list, exact submission detail, and authenticated competition rank.
 """
 from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +39,16 @@ def run(command: list[str], timeout: int = 600) -> dict[str, Any]:
     }
 
 
+def save_command(name: str, command: list[str], record: dict[str, Any]) -> dict[str, Any]:
+    try:
+        result = run(command)
+    except Exception as exc:
+        result = {"command": command, "returncode": 999, "output": repr(exc)}
+    record["commands"][name] = result
+    (OUT / f"{name}.txt").write_text(result["output"], encoding="utf-8")
+    return result
+
+
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     token = os.environ.get("KAGGLE_API_TOKEN", "").strip() or os.environ.get("KAGGLE_KEY", "").strip()
@@ -53,31 +63,45 @@ def main() -> int:
         record["state"] = "BLOCKED_AUTH"
         record["error"] = "Kaggle API token unavailable to probe workflow."
     else:
-        commands = {
-            "kernel_status": ["kaggle", "kernels", "status", KERNEL],
-            "kernel_output": [
+        status = save_command(
+            "kernel_status", ["kaggle", "kernels", "status", KERNEL], record
+        )
+        save_command(
+            "kernel_output",
+            [
                 "kaggle", "kernels", "output", KERNEL,
                 "-p", str(OUT / "kernel_output"), "-o", "-q",
             ],
-            "kernel_pull": [
+            record,
+        )
+        save_command(
+            "kernel_pull",
+            [
                 "kaggle", "kernels", "pull", KERNEL,
                 "-p", str(OUT / "kernel_pull"), "-m",
             ],
-            "submissions": [
-                "kaggle", "competitions", "submissions", COMPETITION, "-v", "-q",
-            ],
-            "entered_competitions": [
-                "kaggle", "competitions", "list", "--group", "entered", "-v",
-            ],
-        }
-        for name, command in commands.items():
-            try:
-                result = run(command)
-            except Exception as exc:
-                result = {"command": command, "returncode": 999, "output": repr(exc)}
-            record["commands"][name] = result
-            (OUT / f"{name}.txt").write_text(result["output"], encoding="utf-8")
-        status_text = record["commands"]["kernel_status"]["output"].strip()
+            record,
+        )
+        submissions = save_command(
+            "submissions",
+            ["kaggle", "competitions", "submissions", COMPETITION, "-v", "-q"],
+            record,
+        )
+        match = re.search(r"(?m)^(\d+),", submissions["output"])
+        if match:
+            record["submission_ref"] = match.group(1)
+            detail = save_command(
+                "submission_detail",
+                ["kaggle", "competitions", "submission", match.group(1)],
+                record,
+            )
+            record["submission_detail"] = detail["output"].strip()
+        save_command(
+            "entered_competitions",
+            ["kaggle", "competitions", "list", "--group", "entered", "-v"],
+            record,
+        )
+        status_text = status["output"].strip()
         record["state"] = status_text or "STATUS_UNAVAILABLE"
 
     (OUT / "probe.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
@@ -86,7 +110,8 @@ def main() -> int:
         "",
         f"**Observed:** {record['observed_at']}  ",
         f"**Kernel:** `{KERNEL}`  ",
-        f"**State:** `{record.get('state')}`",
+        f"**State:** `{record.get('state')}`  ",
+        f"**Submission ref:** `{record.get('submission_ref') or 'not available'}`",
         "",
     ]
     if record.get("error"):
