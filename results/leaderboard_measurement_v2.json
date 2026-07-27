@@ -1,0 +1,41 @@
+{
+  "split": "evaluation",
+  "task_count": 120,
+  "test_output_count": 167,
+  "mean_test_outputs_per_task": 1.3916666666666666,
+  "legacy_n_equals_120_assumption_valid": false,
+  "reason": "The official public evaluation corpus contains 120 tasks but 167 test outputs. Competition accuracy is calculated over test outputs, and outputs within a task are dependent.",
+  "aggregate_score_example": {
+    "requested_score_a": 0.54,
+    "requested_score_b": 0.45,
+    "nearest_representable_score_a": 0.5389221556886228,
+    "nearest_representable_score_b": 0.4491017964071856,
+    "successes_a": 90,
+    "successes_b": 75,
+    "output_level_wilson_ci95_a": [
+      0.4632934990193235,
+      0.612800442637099
+    ],
+    "output_level_wilson_ci95_b": [
+      0.37565110886717273,
+      0.5248414289667362
+    ],
+    "unpaired_output_level_test": {
+      "z": 1.6416446967544251,
+      "two_sided_p": 0.100663658932423
+    },
+    "warning": "This is an output-level approximation. A system comparison requires paired per-output outcomes, with uncertainty clustered by ARC task when tasks contain multiple outputs."
+  },
+  "outputs_needed_for_five_point_gap_near_half_80pct_power_unpaired": 1565,
+  "reporting_standard": [
+    "State whether the denominator is tasks or test outputs.",
+    "Release per-output outcomes for paired tests.",
+    "Cluster uncertainty by task when tasks contain multiple test outputs.",
+    "Do not infer significance by eyeballing marginal confidence intervals."
+  ],
+  "provenance": {
+    "output_count_cross_check": "results/solver/solver_v2_benchmark.json records 167 public-evaluation output trials",
+    "method_script": "leaderboard_stats_v2.py",
+    "status": "Committed controlling result; workflow recomputation may add the exact outputs-per-task distribution without changing the headline counts."
+  }
+}
