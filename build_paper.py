@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the canonical ARC Measurement Audit v2 PDF from PAPER.md.
+"""Build the canonical ARC Measurement Audit v2 PDF from PAPER_V2.md.
 
 The builder injects figures generated from committed machine-readable results,
 embeds them as data URIs, and uses Playwright's installed Chromium. Set
@@ -16,7 +16,7 @@ from playwright.sync_api import sync_playwright
 
 
 ROOT = Path(__file__).resolve().parent
-PAPER = ROOT / "PAPER.md"
+PAPER = ROOT / "PAPER_V2.md"
 OUTPUT = ROOT / "ARC_Measurement_Audit_v2.pdf"
 HTML_OUTPUT = ROOT / "_paper_v2.html"
 
@@ -51,9 +51,10 @@ def inject_figures(source: str) -> str:
     gallery = ["", "---", "", "## Evidence Figures", ""]
     for filename, caption in available:
         gallery.extend([f"![{caption}]({filename})", f"*{caption}*", ""])
-    marker = "\n---\n\n## 6. Discussion"
-    if marker in source:
-        return source.replace(marker, "\n".join(gallery) + marker, 1)
+    markers = ["\n---\n\n## 8. What is established", "\n---\n\n## 9. Reporting standard", "\n---\n\n## 10. Limitations"]
+    for marker in markers:
+        if marker in source:
+            return source.replace(marker, "\n".join(gallery) + marker, 1)
     return source + "\n" + "\n".join(gallery)
 
 
@@ -120,113 +121,74 @@ def main() -> None:
       font-size: 11.2pt;
       margin: 12pt 0 4pt;
     }
-    p { margin: 0 0 7pt; text-align: justify; }
-    strong { color: #111827; }
-    em { color: #374151; }
-    hr { border: 0; border-top: 1px solid #cbd5e1; margin: 13pt 0; }
-    ul, ol { margin: 0 0 8pt; padding-left: 19pt; }
-    li { margin: 0 0 3pt; }
-    code {
-      background: #f1f5f9;
-      border-radius: 3px;
-      font-family: Menlo, Consolas, monospace;
-      font-size: 8.7pt;
-      padding: 1px 3px;
+    p { margin: 5pt 0 8pt; orphans: 3; widows: 3; }
+    ul, ol { margin: 5pt 0 8pt 18pt; padding-left: 8pt; }
+    li { margin: 1.8pt 0; }
+    blockquote {
+      border-left: 3px solid #0b6d59;
+      color: #374151;
+      margin: 8pt 0;
+      padding: 2pt 0 2pt 10pt;
     }
-    pre {
-      background: #f8fafc;
-      border: 1px solid #dbe3ec;
-      border-radius: 6px;
-      line-height: 1.35;
-      overflow-wrap: anywhere;
-      padding: 9pt;
-      page-break-inside: avoid;
-      white-space: pre-wrap;
-    }
-    pre code { background: transparent; padding: 0; }
     table {
-      border-collapse: separate;
-      border-spacing: 0;
+      border-collapse: collapse;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 8.7pt;
-      margin: 7pt auto 11pt;
-      max-width: 100%;
+      font-size: 8.5pt;
+      margin: 8pt 0 12pt;
       page-break-inside: avoid;
       width: 100%;
     }
-    thead { display: table-header-group; }
-    th {
-      background: #1f2937;
-      color: white;
-      font-size: 8.3pt;
-      font-weight: 600;
-      line-height: 1.25;
-      padding: 6pt 6pt;
-      text-align: left;
-      vertical-align: middle;
+    th, td { border: 1px solid #9ca3af; padding: 4pt 5pt; vertical-align: top; }
+    th { background: #e8ecef; font-weight: 700; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    code {
+      background: #f1f5f9;
+      border-radius: 2px;
+      font-family: 'Courier New', monospace;
+      font-size: 8.8pt;
+      padding: 0.4pt 2pt;
     }
-    td {
-      border-bottom: 1px solid #dbe3ec;
-      line-height: 1.3;
-      padding: 5pt 6pt;
-      vertical-align: middle;
+    pre {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      font-size: 8pt;
+      overflow-wrap: anywhere;
+      padding: 7pt;
+      white-space: pre-wrap;
     }
-    tbody tr:nth-child(even) td { background: #f8fafc; }
     img {
-      border: 1px solid #dbe3ec;
-      border-radius: 5px;
       display: block;
       height: auto;
-      margin: 9pt auto 3pt;
-      max-height: 178mm;
-      max-width: 93%;
+      margin: 10pt auto 4pt;
+      max-height: 190mm;
+      max-width: 100%;
       object-fit: contain;
       page-break-inside: avoid;
     }
-    p > em:only-child {
-      color: #4b5563;
-      display: block;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 8.3pt;
-      line-height: 1.35;
-      margin: 2pt auto 11pt;
-      max-width: 90%;
-      text-align: center;
-    }
-    blockquote {
-      background: #f8fafc;
-      border-left: 4px solid #64748b;
-      margin: 9pt 0;
-      padding: 8pt 11pt;
-    }
-    blockquote p { margin: 0; }
-    a { color: #1d4ed8; text-decoration: none; }
+    hr { border: 0; border-top: 1px solid #cbd5e1; margin: 14pt 0; }
+    a { color: #0b5f92; text-decoration: none; }
+    strong { color: #111827; }
     """
-
-    html = f"""<!doctype html>
-    <html><head><meta charset="utf-8"><title>ARC Measurement Audit v2</title>
-    <style>{css}</style></head><body>{body}</body></html>"""
+    html = f"<!doctype html><html><head><meta charset='utf-8'><style>{css}</style></head><body>{body}</body></html>"
     HTML_OUTPUT.write_text(html, encoding="utf-8")
 
+    executable = os.environ.get("CHROMIUM_EXECUTABLE")
     with sync_playwright() as playwright:
-        executable = os.environ.get("CHROMIUM_EXECUTABLE")
-        launch_args = {"executable_path": executable} if executable else {}
-        browser = playwright.chromium.launch(**launch_args)
-        page = browser.new_page(viewport={"width": 1240, "height": 1754})
+        browser = playwright.chromium.launch(
+            headless=True,
+            executable_path=executable if executable else None,
+        )
+        page = browser.new_page(viewport={"width": 1200, "height": 1600})
         page.goto(HTML_OUTPUT.as_uri(), wait_until="networkidle")
-        page.emulate_media(media="print")
         page.pdf(
             path=str(OUTPUT),
             format="A4",
             print_background=True,
-            display_header_footer=True,
-            header_template='<div style="font-size:8px;color:#6b7280;width:100%;padding:0 17mm;text-align:right;">ARC Measurement Audit v2</div>',
-            footer_template='<div style="font-size:8px;color:#6b7280;width:100%;padding:0 17mm;display:flex;justify-content:space-between;"><span>Robert Morong · July 2026</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>',
-            margin={"top": "19mm", "bottom": "20mm", "left": "17mm", "right": "17mm"},
+            prefer_css_page_size=True,
         )
         browser.close()
-
-    print(f"built {OUTPUT.name}: {OUTPUT.stat().st_size:,} bytes")
+    print(f"wrote {OUTPUT}")
 
 
 if __name__ == "__main__":
