@@ -1,0 +1,71 @@
+name: ARC representation-cycle firewall
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dsl*.py'
+      - 'representation*.py'
+      - 'kaggle_submission*.py'
+      - 'kaggle_solver*.py'
+      - 'benchmark_representation*.py'
+  push:
+    branches: [main]
+    paths:
+      - 'dsl*.py'
+      - 'representation*.py'
+      - 'kaggle_submission*.py'
+      - 'kaggle_solver*.py'
+      - 'benchmark_representation*.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  enforce-registration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require scored Cycle 001 and a new precommitted registration
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          result_path = Path('results/private_cycle_001/result.json')
+          registration = Path('HYPOTHESIS-representation-cycle-002.md')
+
+          if not result_path.exists():
+              raise SystemExit('BLOCKED: Private Cycle 001 has no immutable result record.')
+
+          state = json.loads(result_path.read_text()).get('state')
+          allowed_terminal_states = {'SCORED_NONZERO', 'SCORED_NULL'}
+          if state not in allowed_terminal_states:
+              raise SystemExit(
+                  f'BLOCKED: representation is frozen until Private Cycle 001 is scored; current state={state!r}.'
+              )
+
+          if not registration.exists():
+              raise SystemExit(
+                  'BLOCKED: create and commit HYPOTHESIS-representation-cycle-002.md before changing representation source.'
+              )
+
+          required_phrases = (
+              'fresh holdout',
+              'promotion',
+              'failure',
+              'publish-regardless',
+          )
+          text = registration.read_text(encoding='utf-8').lower()
+          missing = [phrase for phrase in required_phrases if phrase not in text]
+          if missing:
+              raise SystemExit(
+                  'BLOCKED: Cycle 002 registration is missing required commitments: ' + ', '.join(missing)
+              )
+
+          print(f'Authorized representation cycle: Cycle 001 state={state}; Cycle 002 registration present.')
+          PY
