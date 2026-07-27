@@ -1,0 +1,82 @@
+name: Evidence-weighted ARC solver benchmark
+
+on:
+  push:
+    branches: [arc-task-clustered-v2]
+    paths:
+      - 'dsl.py'
+      - 'evidence_weighted_solver.py'
+      - 'benchmark_solver_v2.py'
+      - '.github/workflows/evidence-weighted-solver.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arc-evidence-solver-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Check out solver branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip numpy pandas scipy pyarrow
+
+      - name: Fetch official ARC-AGI-2 public corpus
+        run: |
+          rm -rf external/ARC-AGI-2
+          git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git external/ARC-AGI-2
+          mkdir -p results/solver
+          git -C external/ARC-AGI-2 rev-parse HEAD | tee results/solver/arc_agi_2_data_commit.txt
+
+      - name: Learn family priors on training demonstrations and freeze the evaluation benchmark
+        run: |
+          python benchmark_solver_v2.py \
+            --data-root external/ARC-AGI-2/data \
+            --priors results/solver/family_priors.json \
+            --output-dir results/solver \
+            --prior-strength 8 \
+            --relearn
+
+      - name: Build the reproducible evaluation submission artifact
+        run: |
+          python evidence_weighted_solver.py evaluation \
+            --data-root external/ARC-AGI-2/data \
+            --priors results/solver/family_priors.json \
+            --output results/solver/submission_v2.json \
+            --metadata results/solver/submission_v2_metadata.json
+
+      - name: Show benchmark verdict
+        run: |
+          cat results/solver/solver_v2_benchmark.md
+          cat results/solver/solver_v2_benchmark.json
+
+      - name: Commit frozen benchmark and submission artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/solver/
+          git diff --cached --quiet || git commit -m 'Add frozen evidence-weighted ARC solver benchmark'
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload solver benchmark artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-weighted-arc-solver
+          retention-days: 90
+          path: results/solver/
