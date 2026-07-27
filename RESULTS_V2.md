@@ -1,8 +1,9 @@
 # ARC Measurement Audit v2 — Resolved Findings Ledger
 
-**Status:** full public-training run complete; pre-specified public-evaluation demonstration replication complete; frozen public-evaluation solver benchmark complete.  
+**Status:** full public-training run complete; pre-specified public-evaluation demonstration replication complete; frozen public-evaluation selector benchmark complete; registered representation-v3 training holdout complete; private competition test not yet scored.  
 **Canonical paper:** [`PAPER_V2.md`](PAPER_V2.md)  
-**Registration:** [`HYPOTHESIS-crossfold-v2.md`](HYPOTHESIS-crossfold-v2.md), [`HYPOTHESIS-evidence-weighted-solver.md`](HYPOTHESIS-evidence-weighted-solver.md)
+**Contest addendum:** [`REPRESENTATION-v3.md`](REPRESENTATION-v3.md)  
+**Registrations:** [`HYPOTHESIS-crossfold-v2.md`](HYPOTHESIS-crossfold-v2.md), [`HYPOTHESIS-evidence-weighted-solver.md`](HYPOTHESIS-evidence-weighted-solver.md), [`HYPOTHESIS-representation-v3.md`](HYPOTHESIS-representation-v3.md)
 
 ## Executive answer
 
@@ -14,12 +15,19 @@ The corrected full-corpus experiment shows a **precision–coverage tradeoff**:
 - More demonstrations also make the current DSL much less likely to generate any candidate.
 - End-to-end accuracy therefore falls slightly rather than rising.
 
+The contest-facing program then tested that diagnosis:
+
+- Reweighting candidate families did not help when no useful hypothesis was generated.
+- A pre-registered generic representation expansion solved one additional frozen training-holdout output without losing a v2 success.
+- The gain is directional only: 5/201 versus 4/201, one discordant pair, exact two-sided p=1.0.
+- The fresh private competition test remains the unresolved endpoint.
+
 ## Test ledger
 
 | # | Test | Result | Verdict |
 |---:|---|---|---|
 | 1 | Reproduce legacy program-pooled curve | 50.0% / 86.8% / 94.9% | NUMERICALLY REPRODUCED |
-| 2 | Equal task weighting | 45.6% / 79.8% / 90.9%; wide task intervals | PROGRAM WEIGHTING MATTERS |
+| 2 | Equal task weighting | 45.5% / 79.8% / 90.9%; wide task intervals | PROGRAM WEIGHTING MATTERS |
 | 3 | Paired legacy `k=2−k=1` | −4.6 pp; CI spans zero | CROSS-SECTIONAL RISE NOT PAIRED |
 | 4 | Registered same-target design | 1,000 tasks; 28,476 subset cells | COMPLETE |
 | 5 | One-demo full-corpus coverage | 7.1% [5.7, 8.6] | DSL COVERAGE LOW |
@@ -29,10 +37,14 @@ The corrected full-corpus experiment shows a **precision–coverage tradeoff**:
 | 9 | Primary same-target consensus-yield effect | **−0.4 pp [−0.6, −0.2]** | **REGISTERED NEGATIVE EFFECT** |
 | 10 | MDL-vote vs random on ambiguous cells | +11.1 pp [4.6, 17.9] | MDL SUPPORTED |
 | 11 | Oracle vs MDL-vote | +3.7 pp [0.1, 9.5] | “MDL=ORACLE” REFUTED |
-| 12 | Public-evaluation demonstration replication | k=1 coverage 1.0%; yield 0.1%; negative effect direction repeats | HARDNESS WALL CONFIRMED |
-| 13 | Frozen evidence-weighted selector | 0/167 pass@1 and 0/167 pass@2, same as baseline | NO SOLVER GAIN |
-| 14 | Public-evaluation score denominator | 120 tasks, **167 test outputs** | LEGACY N=120 AUDIT WRONG |
-| 15 | Leaderboard comparison requirement | paired per-output outcomes + task clustering required | AGGREGATE SCORE INSUFFICIENT |
+| 12 | Candidate-vote calibration | unanimous candidates correct 37.8%; Brier 0.542 | AGREEMENT OVERCONFIDENT |
+| 13 | Public-evaluation demonstration replication | k=1 coverage 1.0%; yield 0.1%; negative effect direction repeats | HARDNESS WALL CONFIRMED |
+| 14 | Frozen evidence-weighted selector | 0/167 pass@1 and 0/167 pass@2, same as baseline | NO SELECTOR GAIN |
+| 15 | Public-evaluation score denominator | 120 tasks, **167 test outputs** | LEGACY N=120 AUDIT WRONG |
+| 16 | Representation-v3 frozen holdout | 5/201 vs 4/201; one v3-only win; zero losses; p=1.0 | DIRECTIONAL ONLY |
+| 17 | V3 full candidate oracle | 5/201, equal to ranked v3 pass@2 | NO EXTRA HOLDOUT WIN LEFT UNRANKED |
+| 18 | Private-test submission artifact | two distinct validated attempts per test input | READY; UNSCORED |
+| 19 | Leaderboard comparison requirement | paired per-output outcomes + task clustering required | AGGREGATE SCORE INSUFFICIENT |
 
 ## Full-corpus training results
 
@@ -52,11 +64,22 @@ Across 224 ambiguous subset cells from 41 tasks:
 |---|---:|
 | Random consistent candidate | 18.9% [10.8, 27.8] |
 | Legacy first-shortest | 31.2% [18.5, 44.8] |
+| Random minimum-complexity tie | 30.4% [18.3, 43.5] |
 | Tie-aware MDL vote | 30.0% [17.7, 43.1] |
 | Consensus | 27.4% [15.6, 40.0] |
 | Candidate oracle | 33.7% [20.5, 47.6] |
 
 MDL is useful, but the oracle gap is non-zero and statistically resolved under the task-cluster bootstrap.
+
+## Confidence calibration
+
+Across 1,166 covered subset cells from 107 tasks:
+
+- task-weighted Brier score: **0.542 [0.465, 0.618]**;
+- mean absolute confidence-error gap: **59.5 pp [52.1, 66.7]**;
+- at modal candidate-vote fraction exactly 1.0, task-weighted accuracy: **37.8% [28.8, 47.0]**.
+
+Candidate agreement is not calibrated confidence. A misspecified grammar can produce unanimous but wrong hypotheses.
 
 ## Public-evaluation replication
 
@@ -71,7 +94,7 @@ The same analysis was frozen and run once on public evaluation demonstration pai
 - k=2 consensus yield 0.0%;
 - registered end-to-end effects all repeat in the negative direction.
 
-## Frozen contest-facing result
+## Frozen selector result
 
 Program-family reliability priors were learned from the 1,000 public training tasks and frozen. On 167 public-evaluation test outputs:
 
@@ -83,21 +106,49 @@ Program-family reliability priors were learned from the 1,000 public training ta
 
 This is a negative algorithmic result. The current bottleneck is hypothesis coverage, not tie-breaking among generated hypotheses.
 
+## Representation-v3 result
+
+V3 was registered before the first complete run and evaluated on a deterministic SHA1 holdout from public training tasks. The 120 public evaluation tasks were excluded from v3 development.
+
+**Holdout:** 183 tasks, 201 test outputs.
+
+| endpoint | v2 baseline | v3 expanded grammar | v3 candidate oracle |
+|---|---:|---:|---:|
+| Output pass@1 | 4/201 (1.99%) | **5/201 (2.49%)** | — |
+| Output pass@2 | 4/201 (1.99%) | **5/201 (2.49%)** | 5/201 (2.49%) |
+| Whole-task pass@2 | 4/183 (2.19%) | **5/183 (2.73%)** | 5/183 (2.73%) |
+| Valid-candidate coverage | 4/201 (1.99%) | **5/201 (2.49%)** | — |
+
+Paired output comparison:
+
+- v3-only wins: **1**;
+- v2-only wins: **0**;
+- exact two-sided p-value: **1.0**.
+
+**Registered verdict: DIRECTIONAL IMPROVEMENT.** The extra solved output is task `22168020`, captured by the generic same-color horizontal line-connection family. The v3 candidate oracle equals ranked pass@2 on the holdout, so no additional represented solution was lost to ranking. The evidence is not statistically sufficient to claim superiority.
+
+The repository includes `kaggle_submission_v3.py`, which writes exactly two distinct validated attempts per private test input. It has not yet been privately scored.
+
 ## Claims withdrawn
 
 - “A demonstration-consistent program is exactly a coin flip after one example.”
 - “Reliability rises to 95% because additional demonstrations teach the solver the rule.”
 - “MDL matches the oracle ceiling.”
+- “Candidate agreement is calibrated confidence.”
 - “The 120-task leaderboard is 120 Bernoulli trials.”
 - “Selection is the main obstacle for this DSL.”
+- “One v3-only holdout win establishes a better ARC solver.”
 
 ## Claims retained in corrected form
 
 - Demonstration consistency is an imperfect generalization signal.
 - Candidate programs within a task are dependent and must not be treated as independent benchmark observations.
-- MDL is a useful selection prior under ambiguity.
-- ARC score differences require uncertainty and paired outcomes.
-- The decisive engineering frontier for this solver is richer hypothesis generation plus coverage-aware routing.
+- Added evidence can increase conditional precision while lowering end-to-end yield in a misspecified hypothesis class.
+- MDL is a useful, incomplete selection prior under ambiguity.
+- Candidate agreement must be calibrated empirically.
+- ARC score differences require the correct output denominator, uncertainty, paired outcomes, and task clustering.
+- Representation expansion, not another selector, is the next engineering frontier for this solver.
+- V3 is directionally better on its frozen training holdout and ready for an untouched private-test evaluation, but not yet validated there.
 
 ## Machine-readable record
 
@@ -106,4 +157,6 @@ This is a negative algorithmic result. The current bottleneck is hypothesis cove
 - `results/crossfold/evaluation_audit/crossfold_calibration.json`
 - `results/crossfold/crossfold_replication.json`
 - `results/solver/solver_v2_benchmark.json`
-- `results/leaderboard_measurement_v2.json` (generated by the updated workflow)
+- `results/representation_v3/representation_v3_benchmark.json`
+- `results/representation_v3/representation_v3_output_results.csv`
+- `results/leaderboard_measurement_v2.json`
