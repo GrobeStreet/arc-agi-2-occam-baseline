@@ -1,0 +1,91 @@
+{
+  "estimand": "For each k, average the within-task fraction of demonstration-consistent programs that generalize, giving every represented task equal weight.",
+  "uncertainty": "Nonparametric percentile bootstrap resampling complete task clusters; all k cells from a sampled task travel together.",
+  "input": "ablate_cell_training.parquet",
+  "n_unique_tasks_any_k": 67,
+  "bootstrap_replicates": 50000,
+  "bootstrap_seed": 20260727,
+  "results_by_k": [
+    {
+      "k": 1,
+      "n_tasks": 67,
+      "n_programs": 248,
+      "program_weighted_rate": 0.5,
+      "task_weighted_rate": 0.45552540328659735,
+      "task_minus_program_weighted": -0.04447459671340265,
+      "task_cluster_bootstrap_se": 0.0584564288892426,
+      "task_cluster_bootstrap_ci95": [
+        0.34245439469320066,
+        0.5710839740690488
+      ]
+    },
+    {
+      "k": 2,
+      "n_tasks": 31,
+      "n_programs": 114,
+      "program_weighted_rate": 0.868421052631579,
+      "task_weighted_rate": 0.7982590885816693,
+      "task_minus_program_weighted": -0.07016196404990971,
+      "task_cluster_bootstrap_se": 0.07095299172372604,
+      "task_cluster_bootstrap_ci95": [
+        0.6507936507936508,
+        0.9262672811059908
+      ]
+    },
+    {
+      "k": 3,
+      "n_tasks": 11,
+      "n_programs": 39,
+      "program_weighted_rate": 0.9487179487179487,
+      "task_weighted_rate": 0.9090909090909091,
+      "task_minus_program_weighted": -0.03962703962703962,
+      "task_cluster_bootstrap_se": NaN,
+      "task_cluster_bootstrap_ci95": [
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "k": 4,
+      "n_tasks": 2,
+      "n_programs": 2,
+      "program_weighted_rate": 1.0,
+      "task_weighted_rate": 1.0,
+      "task_minus_program_weighted": 0.0,
+      "task_cluster_bootstrap_se": NaN,
+      "task_cluster_bootstrap_ci95": [
+        NaN,
+        NaN
+      ]
+    }
+  ],
+  "adjacent_k_contrasts": [
+    {
+      "contrast": "k=2 minus k=1",
+      "observed_delta": 0.3427336852950719,
+      "bootstrap_ci95": [
+        0.18453620076754398,
+        0.5001928129913207
+      ],
+      "bootstrap_probability_positive": 1.0
+    },
+    {
+      "contrast": "k=3 minus k=2",
+      "observed_delta": 0.11083182050923979,
+      "bootstrap_ci95": [
+        NaN,
+        NaN
+      ],
+      "bootstrap_probability_positive": 0.89734
+    },
+    {
+      "contrast": "k=4 minus k=3",
+      "observed_delta": 0.09090909090909094,
+      "bootstrap_ci95": [
+        NaN,
+        NaN
+      ],
+      "bootstrap_probability_positive": 0.54688
+    }
+  ]
+}
