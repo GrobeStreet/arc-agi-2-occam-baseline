@@ -2,7 +2,7 @@ name: Deploy ARC Measurement Lab
 
 on:
   push:
-    branches: [arc-task-clustered-v2, main]
+    branches: [main]
     paths:
       - 'site/**'
       - 'ARC_Measurement_Audit_v2.pdf'
@@ -10,6 +10,8 @@ on:
       - 'results/leaderboard_measurement_v2.json'
       - 'results/crossfold/**'
       - 'results/solver/**'
+      - 'results/representation_v3/**'
+      - 'results/representation_v3_public/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -28,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: main
       - name: Assemble static site and committed evidence
         run: |
           rm -rf _site
@@ -48,6 +50,8 @@ jobs:
               'results/crossfold/evaluation_audit/crossfold_calibration.json': '_site/data/crossfold_evaluation.json',
               'results/crossfold/crossfold_replication.json': '_site/data/crossfold_replication.json',
               'results/solver/solver_v2_benchmark.json': '_site/data/solver_v2_benchmark.json',
+              'results/representation_v3/representation_v3_benchmark.json': '_site/data/representation_v3_holdout.json',
+              'results/representation_v3_public/representation_v3_public_benchmark.json': '_site/data/representation_v3_public.json',
           }
           for source, target in mapping.items():
               src, dst = Path(source), Path(target)
