@@ -7,6 +7,15 @@ on:
       - 'dsl.py'
       - 'evidence_weighted_solver.py'
       - 'benchmark_solver_v2.py'
+      - 'HYPOTHESIS-evidence-weighted-solver.md'
+      - '.github/workflows/evidence-weighted-solver.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dsl.py'
+      - 'evidence_weighted_solver.py'
+      - 'benchmark_solver_v2.py'
+      - 'HYPOTHESIS-evidence-weighted-solver.md'
       - '.github/workflows/evidence-weighted-solver.yml'
   workflow_dispatch:
 
@@ -14,7 +23,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: arc-evidence-solver-${{ github.ref_name }}
+  group: arc-evidence-solver-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -22,10 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - name: Check out solver branch
+      - name: Check out frozen solver branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 1
 
       - name: Set up Python
@@ -37,14 +46,14 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip numpy pandas scipy pyarrow
 
-      - name: Fetch official ARC-AGI-2 public corpus
+      - name: Fetch official ARC-AGI-2 public corpus and pin commit
         run: |
           rm -rf external/ARC-AGI-2
           git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git external/ARC-AGI-2
           mkdir -p results/solver
           git -C external/ARC-AGI-2 rev-parse HEAD | tee results/solver/arc_agi_2_data_commit.txt
 
-      - name: Learn family priors on training demonstrations and freeze the evaluation benchmark
+      - name: Learn family priors on training demonstrations and run one-shot frozen evaluation
         run: |
           python benchmark_solver_v2.py \
             --data-root external/ARC-AGI-2/data \
@@ -53,7 +62,7 @@ jobs:
             --prior-strength 8 \
             --relearn
 
-      - name: Build the reproducible evaluation submission artifact
+      - name: Build reproducible two-attempt evaluation submission artifact
         run: |
           python evidence_weighted_solver.py evaluation \
             --data-root external/ARC-AGI-2/data \
@@ -66,7 +75,8 @@ jobs:
           cat results/solver/solver_v2_benchmark.md
           cat results/solver/solver_v2_benchmark.json
 
-      - name: Commit frozen benchmark and submission artifacts
+      - name: Commit frozen benchmark artifacts on branch pushes
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
