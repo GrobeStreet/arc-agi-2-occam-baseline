@@ -3,12 +3,12 @@
 **State:** `KERNEL_EXECUTION_FAILED`  
 **Competition:** `arc-prize-2026-arc-agi-2`  
 **Frozen source:** `70672f3aa62d089bfffd072461a5713caae1e099`  
-**Recorded:** 2026-07-27T19:17:56.401526+00:00
+**Recorded:** 2026-07-27T19:21:34.620257+00:00
 
 ## Official competition record
 
 - Kernel: `robertmorong/grobestreet-arc-frozen-v3-cycle-001`
-- Kernel version: `1`
+- Kernel version: `3`
 - Submission ref: `not available`
 - Submission status: `not available`
 - Visible public score: **not available**
