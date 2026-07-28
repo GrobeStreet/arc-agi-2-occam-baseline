@@ -1,25 +1,27 @@
 {
-  "cycle": "private-v3-cycle-001",
-  "state": "REPAIRED_SUBMISSION_SCORE_PENDING",
+  "accepted_at_utc": "2026-07-28T14:17:46.087000Z",
   "competition": "arc-prize-2026-arc-agi-2",
+  "cycle": "private-v3-cycle-001",
+  "error": null,
+  "frozen_solver_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
+  "interpretation": "The schema-correct repaired frozen v3 submission received a visible score of zero. This valid null is the terminal Cycle 001 result.",
   "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
   "kernel_version": 10,
-  "frozen_solver_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
   "mechanical_repair": "PRIVATE_CYCLE_001_SCORING_REPAIR.md",
-  "supersedes_scoring_error_submission": "55037417",
-  "submission_ref": "55057282",
-  "submission_status": "SubmissionStatus.PENDING",
-  "public_score": null,
-  "public_rank": null,
-  "team_count": 1290,
+  "observed_at_utc": "2026-07-28T14:30:08.454728+00:00",
+  "private_score": null,
+  "public_rank": 1291,
+  "public_score": 0.0,
   "schema_validation": {
-    "task_count": 240,
+    "challenge_task_ids_match": true,
     "output_count": 259,
     "sample_task_ids_match": true,
-    "challenge_task_ids_match": true,
-    "submission_sha256": "457a36b6ed4b360a3e7d95a79c4de144b1c27051ce3559473901b33d6fc60a6d"
+    "submission_sha256": "457a36b6ed4b360a3e7d95a79c4de144b1c27051ce3559473901b33d6fc60a6d",
+    "task_count": 240
   },
-  "accepted_at_utc": "2026-07-28T14:17:46.087000Z",
-  "observed_at_utc": "2026-07-28T14:22:59.791547Z",
-  "interpretation": "Kaggle accepted the mechanically repaired version-10 submission after exact validation against the official 240-task / 259-output schema. Later duplicate submission calls returned HTTP 400 but did not invalidate accepted submission 55057282. The accepted submission is awaiting scoring."
+  "state": "SCORED_NULL",
+  "submission_ref": "55057282",
+  "submission_status": "SubmissionStatus.COMPLETE",
+  "supersedes_scoring_error_submission": "55037417",
+  "team_count": 1290
 }
