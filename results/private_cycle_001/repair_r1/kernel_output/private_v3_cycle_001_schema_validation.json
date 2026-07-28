@@ -1,0 +1,9 @@
+{
+  "task_count": 240,
+  "output_count": 259,
+  "sample_task_ids_match": true,
+  "challenge_task_ids_match": true,
+  "sample_submission": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/sample_submission.json",
+  "test_challenges": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/arc-agi_test_challenges.json",
+  "submission_bytes": 380070
+}

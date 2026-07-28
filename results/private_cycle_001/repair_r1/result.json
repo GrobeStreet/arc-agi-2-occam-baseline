@@ -1,0 +1,88 @@
+{
+  "base_solver_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
+  "commands": [
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submissions",
+        "arc-prize-2026-arc-agi-2",
+        "-v",
+        "-q"
+      ],
+      "output": "ref,fileName,date,description,status,publicScore,privateScore\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.COMPLETE,,\n",
+      "returncode": 0,
+      "seconds": 0.482
+    },
+    {
+      "command": [
+        "kaggle",
+        "kernels",
+        "status",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001"
+      ],
+      "output": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.COMPLETE\"\n",
+      "returncode": 0,
+      "seconds": 0.467
+    },
+    {
+      "command": [
+        "kaggle",
+        "kernels",
+        "output",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/repair_r1/kernel_output",
+        "-o",
+        "-q"
+      ],
+      "output": "",
+      "returncode": 0,
+      "seconds": 2.093
+    },
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submit",
+        "arc-prize-2026-arc-agi-2",
+        "-f",
+        "submission.json",
+        "-k",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-v",
+        "10",
+        "-m",
+        "Frozen v3 Cycle 001 \u2014 mechanical test-routing repair R1 \u2014 240 tasks / 259 outputs"
+      ],
+      "output": "0 submissions remaining today.\n",
+      "returncode": 0,
+      "seconds": 1.601
+    }
+  ],
+  "competition": "arc-prize-2026-arc-agi-2",
+  "created_at": "2026-07-28T14:17:41.743231+00:00",
+  "cycle": "private-v3-cycle-001-repair-r1",
+  "error": null,
+  "interpretation": "The frozen v3 solver received a visible zero after the registered mechanical input-routing repair.",
+  "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+  "kernel_version": 10,
+  "original_submission_ref": "55037417",
+  "private_score": null,
+  "public_rank": 1291,
+  "public_score": 0.0,
+  "schema_validation": {
+    "challenge_task_ids_match": true,
+    "output_count": 259,
+    "sample_submission": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/sample_submission.json",
+    "sample_task_ids_match": true,
+    "submission_bytes": 380070,
+    "task_count": 240,
+    "test_challenges": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/arc-agi_test_challenges.json"
+  },
+  "state": "REPAIRED_SCORED_NULL",
+  "submission_ref": "55057282",
+  "submission_status": "SubmissionStatus.COMPLETE",
+  "team_count": 1290,
+  "updated_at": "2026-07-28T14:30:11.480373+00:00"
+}
