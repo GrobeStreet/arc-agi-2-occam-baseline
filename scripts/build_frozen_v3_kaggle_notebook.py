@@ -2,10 +2,14 @@
 """Build the self-contained Kaggle notebook for Private Cycle 001.
 
 The notebook embeds the exact frozen v3 source files from a supplied directory.
-It writes those modules into /kaggle/working, records their SHA-256 hashes, finds
-the official attached ARC challenge JSON without modifying solver logic, and
-executes kaggle_submission_v3.py with internet disabled by kernel metadata. Only
-Python's standard library is needed to build the notebook.
+It writes those modules into /kaggle/working, records their SHA-256 hashes, pairs
+the official ARC test challenge file with the official sample submission by exact
+task-ID equality, and executes kaggle_submission_v3.py with internet disabled by
+kernel metadata.
+
+The solver is unchanged. This wrapper includes the mechanical repair registered
+in PRIVATE_CYCLE_001_SCORING_REPAIR.md after kernel version 8 accidentally routed
+to the already-observed public evaluation challenge file.
 """
 
 from __future__ import annotations
@@ -68,7 +72,13 @@ def make_notebook(
         },
         "registration": "HYPOTHESIS-private-v3-cycle-001.md",
         "packaging_note": "PRIVATE_CYCLE_001_PACKAGING_NOTE.md",
+        "mechanical_repair": "PRIVATE_CYCLE_001_SCORING_REPAIR.md",
         "output_contract": "/kaggle/working/submission.json",
+        "required_schema": {
+            "task_count": 240,
+            "output_count": 259,
+            "source_pairing": "sample_submission task IDs must exactly equal test challenge task IDs",
+        },
     }
 
     bootstrap = f'''\
@@ -109,14 +119,15 @@ import runpy
 import sys
 
 
-def is_arc_challenge_file(path):
-    name = path.name.lower()
-    if "solution" in name or "submission" in name:
-        return False
+def load_json_object(path):
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except Exception:
-        return False
+        return None
+    return payload if isinstance(payload, dict) and payload else None
+
+
+def is_arc_challenge_payload(payload):
     if not isinstance(payload, dict) or not payload:
         return False
     first = next(iter(payload.values()))
@@ -127,41 +138,170 @@ def is_arc_challenge_file(path):
     )
 
 
-input_root = pathlib.Path("/kaggle/input")
-patterns = (
-    "arc-agi_evaluation_challenges.json",
-    "*evaluation_challenges*.json",
-    "arc-agi_test_challenges.json",
-    "*test_challenges*.json",
-    "*challenges*.json",
-)
-ordered = []
-seen = set()
-for pattern in patterns:
-    for candidate in sorted(input_root.rglob(pattern)):
-        resolved = str(candidate.resolve())
+def choose_official_pair(root):
+    sample_paths = sorted(root.rglob("sample_submission.json"))
+    exact_test_paths = sorted(root.rglob("arc-agi_test_challenges.json"))
+    wildcard_test_paths = sorted(root.rglob("*test_challenges*.json"))
+    all_test_paths = []
+    seen = set()
+    for path in exact_test_paths + wildcard_test_paths:
+        if "evaluation" in path.name.lower():
+            continue
+        resolved = str(path.resolve())
         if resolved not in seen:
             seen.add(resolved)
-            ordered.append(candidate)
-challenge_path = next((path for path in ordered if is_arc_challenge_file(path)), None)
-if challenge_path is None:
-    available = [str(path) for path in sorted(input_root.rglob("*.json"))[:100]]
-    raise FileNotFoundError(
-        "No valid ARC challenge JSON was found under /kaggle/input. "
-        f"Observed JSON files: {available}"
-    )
+            all_test_paths.append(path)
+
+    pairs = []
+    for sample_path in sample_paths:
+        sample = load_json_object(sample_path)
+        if sample is None:
+            continue
+        sample_keys = set(sample)
+        candidates = []
+        sibling = sample_path.parent / "arc-agi_test_challenges.json"
+        if sibling.is_file():
+            candidates.append(sibling)
+        candidates.extend(all_test_paths)
+        candidate_seen = set()
+        for challenge_path in candidates:
+            resolved = str(challenge_path.resolve())
+            if resolved in candidate_seen:
+                continue
+            candidate_seen.add(resolved)
+            challenge = load_json_object(challenge_path)
+            if not is_arc_challenge_payload(challenge):
+                continue
+            if set(challenge) != sample_keys:
+                continue
+            path_text = str(challenge_path).lower()
+            priority = (
+                0 if challenge_path.parent == sample_path.parent else 1,
+                0 if "arc-prize-2026-arc-agi-2" in path_text else 1,
+                len(challenge_path.parts),
+                path_text,
+            )
+            pairs.append((priority, sample_path, challenge_path, sample, challenge))
+
+    if not pairs:
+        observed_samples = [str(path) for path in sample_paths[:50]]
+        observed_tests = [str(path) for path in all_test_paths[:50]]
+        raise FileNotFoundError(
+            "Could not pair an official sample_submission.json with an ARC test "
+            "challenge file having exactly the same task IDs. "
+            f"Samples={observed_samples}; tests={observed_tests}"
+        )
+    pairs.sort(key=lambda item: item[0])
+    _, sample_path, challenge_path, sample, challenge = pairs[0]
+    return sample_path, challenge_path, sample, challenge
+
+
+def validate_grid(grid, label):
+    if not isinstance(grid, list) or not grid:
+        raise ValueError(f"{label}: grid is not a non-empty list")
+    if not all(isinstance(row, list) and row for row in grid):
+        raise ValueError(f"{label}: contains a non-list or empty row")
+    width = len(grid[0])
+    if any(len(row) != width for row in grid):
+        raise ValueError(f"{label}: ragged rows")
+    if len(grid) > 30 or width > 30:
+        raise ValueError(f"{label}: grid exceeds 30x30")
+    for row in grid:
+        for cell in row:
+            if type(cell) is not int or not 0 <= cell <= 9:
+                raise ValueError(f"{label}: invalid cell {cell!r}")
+
+
+def validate_against_official(sample, challenges, submission):
+    sample_keys = set(sample)
+    challenge_keys = set(challenges)
+    submission_keys = set(submission)
+    if sample_keys != challenge_keys:
+        raise ValueError("Official sample and challenge task IDs differ")
+    if submission_keys != sample_keys:
+        missing = sorted(sample_keys - submission_keys)[:30]
+        extra = sorted(submission_keys - sample_keys)[:30]
+        raise ValueError(
+            f"Submission task IDs do not match official sample: missing={missing}, extra={extra}"
+        )
+
+    sample_outputs = 0
+    challenge_outputs = 0
+    submission_outputs = 0
+    for task_id in sorted(sample_keys):
+        sample_entries = sample[task_id]
+        test_entries = challenges[task_id].get("test", [])
+        entries = submission[task_id]
+        if not isinstance(sample_entries, list):
+            raise ValueError(f"{task_id}: official sample entry is not a list")
+        if not isinstance(entries, list):
+            raise ValueError(f"{task_id}: submission entry is not a list")
+        if len(entries) != len(sample_entries) or len(entries) != len(test_entries):
+            raise ValueError(
+                f"{task_id}: output count submission={len(entries)}, "
+                f"sample={len(sample_entries)}, challenges={len(test_entries)}"
+            )
+        sample_outputs += len(sample_entries)
+        challenge_outputs += len(test_entries)
+        submission_outputs += len(entries)
+        for index, entry in enumerate(entries):
+            if not isinstance(entry, dict) or set(entry) != {"attempt_1", "attempt_2"}:
+                raise ValueError(f"{task_id}[{index}]: expected attempt_1 and attempt_2")
+            validate_grid(entry["attempt_1"], f"{task_id}[{index}].attempt_1")
+            validate_grid(entry["attempt_2"], f"{task_id}[{index}].attempt_2")
+
+    if len(submission) != 240 or submission_outputs != 259:
+        raise ValueError(
+            "Competition schema count mismatch: expected 240 tasks / 259 outputs, "
+            f"got {len(submission)} tasks / {submission_outputs} outputs"
+        )
+    if not (sample_outputs == challenge_outputs == submission_outputs):
+        raise ValueError(
+            f"Output totals differ: sample={sample_outputs}, challenges={challenge_outputs}, "
+            f"submission={submission_outputs}"
+        )
+    return {
+        "task_count": len(submission),
+        "output_count": submission_outputs,
+        "sample_task_ids_match": True,
+        "challenge_task_ids_match": True,
+    }
+
+
+input_root = pathlib.Path("/kaggle/input")
+sample_path, challenge_path, sample_payload, challenge_payload = choose_official_pair(input_root)
 os.environ["ARC_TEST_CHALLENGES"] = str(challenge_path)
-print("Using ARC challenge file:", challenge_path)
+print("Using official sample submission:", sample_path)
+print("Using official ARC test challenge file:", challenge_path)
+print("Official task/output counts:", len(sample_payload), sum(len(value) for value in sample_payload.values()))
 
 # Jupyter launches kernels with its own '-f <connection-file>' arguments. The
 # frozen script uses argparse, so expose only the script name and preserve all
-# of its registered defaults.
+# registered solver defaults.
 sys.argv = ["kaggle_submission_v3.py"]
 runpy.run_path("/kaggle/working/kaggle_submission_v3.py", run_name="__main__")
-submission = pathlib.Path("/kaggle/working/submission.json")
-if not submission.is_file() or submission.stat().st_size == 0:
+submission_path = pathlib.Path("/kaggle/working/submission.json")
+if not submission_path.is_file() or submission_path.stat().st_size == 0:
     raise RuntimeError("Frozen v3 solver did not produce /kaggle/working/submission.json")
-print(f"Submission ready: {submission} ({submission.stat().st_size:,} bytes)")
+submission_payload = json.loads(submission_path.read_text(encoding="utf-8"))
+validation = validate_against_official(
+    sample_payload, challenge_payload, submission_payload
+)
+pathlib.Path("private_v3_cycle_001_schema_validation.json").write_text(
+    json.dumps(
+        {
+            **validation,
+            "sample_submission": str(sample_path),
+            "test_challenges": str(challenge_path),
+            "submission_bytes": submission_path.stat().st_size,
+        },
+        indent=2,
+    )
+    + "\\n",
+    encoding="utf-8",
+)
+print("Official schema validation passed:", json.dumps(validation, sort_keys=True))
+print(f"Submission ready: {submission_path} ({submission_path.stat().st_size:,} bytes)")
 '''
 
     notebook = {
@@ -176,8 +316,9 @@ print(f"Submission ready: {submission} ({submission.stat().st_size:,} bytes)")
                     "\n",
                     f"- Frozen source commit: `{source_commit}`\n",
                     "- Registration: `HYPOTHESIS-private-v3-cycle-001.md`\n",
-                    "- Mechanical packaging note: `PRIVATE_CYCLE_001_PACKAGING_NOTE.md`\n",
+                    "- Mechanical repair: `PRIVATE_CYCLE_001_SCORING_REPAIR.md`\n",
                     "- Required output: `/kaggle/working/submission.json`\n",
+                    "- Required official schema: `240 tasks / 259 test outputs`\n",
                 ],
             },
             {
