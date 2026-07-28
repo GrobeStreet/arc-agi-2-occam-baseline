@@ -1,38 +1,27 @@
-# Frozen V3 Private Cycle 001 — Repaired Kaggle Result
+# ARC Cycle 001 — Version 10 Scoring Repair
 
-**State:** `SUBMISSION_FAILED`  
-**Competition:** `arc-prize-2026-arc-agi-2`  
-**Frozen solver source:** `70672f3aa62d089bfffd072461a5713caae1e099`  
+**State:** `REPAIR_SUBMISSION_FAILED`  
 **Kernel:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001` version `10`  
-**Recorded:** 2026-07-28T14:21:21.574128+00:00
+**Frozen solver commit:** `70672f3aa62d089bfffd072461a5713caae1e099`  
+**Supersedes scoring-error submission:** `55037417`  
+**Recorded:** 2026-07-28T14:22:01.359103+00:00
 
-## Mechanical repair
+## Official schema proof
 
-The solver, ranking, and two-output policy are unchanged. Version 10 fixes only the input-routing error that caused version 8 to run on the 120-task public evaluation file instead of the 240-task official competition test file.
-
-## Independent pre-submission validation
-
-- Official task count: **240**
-- Official output count: **259**
-- Sample task IDs match: **True**
-- Challenge task IDs match: **True**
+- 240 tasks / 259 outputs validated: **True**
 - Submission SHA-256: `457a36b6ed4b360a3e7d95a79c4de144b1c27051ce3559473901b33d6fc60a6d`
 
-## Official competition record
+## Competition record
 
 - Submission ref: `not available`
 - Submission status: `not available`
-- Visible public score: **not available**
-- Visible public rank: **not available**
-- Teams in snapshot: **not available**
+- Public score: **not available**
+- Public rank: **not available**
+- Teams: **not available**
 
 ## Interpretation
 
-Kaggle did not accept the mechanically repaired version-10 code submission.
-
-## Representation firewall
-
-Cycle 001 changes no model behavior. Any representation expansion requires a separately precommitted Cycle 002 registration.
+Kaggle rejected the schema-validated version-10 submission call.
 
 ## Error
 
