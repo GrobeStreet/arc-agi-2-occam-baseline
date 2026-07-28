@@ -1,9 +1,10 @@
 cycle=private-v3-cycle-001
 requested_by_user=true
 confirmation=SUBMIT_FROZEN_V3_CYCLE_001
-requested_at_utc=2026-07-27T18:45:17Z
-retry_after_rules_acceptance_utc=2026-07-27T18:46:30Z
+requested_at_utc=2026-07-28T13:54:30Z
+mechanical_repair=PRIVATE_CYCLE_001_SCORING_REPAIR.md
 authentication_status=KAGGLE_API_TOKEN_PRESENT
 competition_rules_status=ACCEPTED_CONFIRMED_IN_BROWSER
 kaggle_username=robertmorong
-purpose=Run the exact frozen v3 artifact live against the ARC Prize 2026 competition endpoint, submit the immutable notebook version, and record score and rank.
+required_schema=240_tasks_259_outputs
+purpose=Rebuild the exact frozen v3 solver with corrected official-test routing, validate against sample_submission.json, submit the repaired immutable kernel version, and record score and rank.
