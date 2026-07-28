@@ -1,0 +1,293 @@
+# ARC Cycle 001 — Scoring Error Diagnosis
+
+**Observed:** 2026-07-28T14:02:21.937296+00:00  
+**Submission:** `55037417`  
+**Kernel:** `robertmorong/grobestreet-arc-frozen-v3-cycle-001`
+
+## Schema comparison
+
+- Valid against downloaded sample and challenges: **False**
+- Task counts: `{'sample': 240, 'challenges': 240, 'submission': 120}`
+- Output counts: `{'sample': 259, 'challenges': 259, 'submission': 172}`
+- Shape summary: `{'min_rows': 4, 'max_rows': 30, 'min_cols': 4, 'max_cols': 30}`
+- Identical attempt pairs: `3`
+
+## Validation errors
+
+- submission task IDs differ from sample_submission: missing=['00576224', '007bbfb7', '009d5c81', '00d62c1b', '00dbd492', '017c7c7b', '025d127b', '03560426', '045e512c', '0520fde7', '05269061', '05a7bcf2', '05f2a901', '0607ce86', '0692e18c', '06df4c85', '070dd51e', '08ed6ac7', '09629e4f', '0962bcdd'] extra=['0934a4d8', '135a2760', '136b0064', '13e47133', '142ca369', '16b78196', '16de56c4', '1818057f', '195c6913', '1ae2feb7', '20270e3b', '20a9e565', '21897d95', '221dfab4', '247ef758', '269e22fb', '271d71e2', '28a6681f', '291dc1e1', '2b83f449']
+- submission task IDs differ from test challenges: missing=['00576224', '007bbfb7', '009d5c81', '00d62c1b', '00dbd492', '017c7c7b', '025d127b', '03560426', '045e512c', '0520fde7', '05269061', '05a7bcf2', '05f2a901', '0607ce86', '0692e18c', '06df4c85', '070dd51e', '08ed6ac7', '09629e4f', '0962bcdd'] extra=['0934a4d8', '135a2760', '136b0064', '13e47133', '142ca369', '16b78196', '16de56c4', '1818057f', '195c6913', '1ae2feb7', '20270e3b', '20a9e565', '21897d95', '221dfab4', '247ef758', '269e22fb', '271d71e2', '28a6681f', '291dc1e1', '2b83f449']
+- 00576224: submission value is not a list
+- 007bbfb7: submission value is not a list
+- 009d5c81: submission value is not a list
+- 00d62c1b: submission value is not a list
+- 00dbd492: submission value is not a list
+- 017c7c7b: submission value is not a list
+- 025d127b: submission value is not a list
+- 03560426: submission value is not a list
+- 045e512c: submission value is not a list
+- 0520fde7: submission value is not a list
+- 05269061: submission value is not a list
+- 05a7bcf2: submission value is not a list
+- 05f2a901: submission value is not a list
+- 0607ce86: submission value is not a list
+- 0692e18c: submission value is not a list
+- 06df4c85: submission value is not a list
+- 070dd51e: submission value is not a list
+- 08ed6ac7: submission value is not a list
+- 09629e4f: submission value is not a list
+- 0962bcdd: submission value is not a list
+- 09c534e7: submission value is not a list
+- 0a1d4ef5: submission value is not a list
+- 0a2355a6: submission value is not a list
+- 0a938d79: submission value is not a list
+- 0b148d64: submission value is not a list
+- 0b17323b: submission value is not a list
+- 0bb8deee: submission value is not a list
+- 0becf7df: submission value is not a list
+- 0c786b71: submission value is not a list
+- 0c9aba6e: submission value is not a list
+- 0ca9ddb6: submission value is not a list
+- 0d3d703e: submission value is not a list
+- 0d87d2a6: submission value is not a list
+- 0e206a2e: submission value is not a list
+- 0e671a1a: submission value is not a list
+- 0f63c0b9: submission value is not a list
+- 103eff5b: submission value is not a list
+- 10fcaaa3: submission value is not a list
+- 11852cab: submission value is not a list
+- 1190bc91: submission value is not a list
+- 1190e5a7: submission value is not a list
+- 11dc524f: submission value is not a list
+- 11e1fe23: submission value is not a list
+- 12422b43: submission value is not a list
+- 12997ef3: submission value is not a list
+- 12eac192: submission value is not a list
+- 13713586: submission value is not a list
+- 137eaa0f: submission value is not a list
+- 137f0df0: submission value is not a list
+- 13f06aa5: submission value is not a list
+- 140c817e: submission value is not a list
+- 14754a24: submission value is not a list
+- 1478ab18: submission value is not a list
+- 14b8e18c: submission value is not a list
+- 150deff5: submission value is not a list
+- 15113be4: submission value is not a list
+- 15660dd6: submission value is not a list
+- 15663ba9: submission value is not a list
+- 15696249: submission value is not a list
+- 17829a00: submission value is not a list
+- 178fcbfb: submission value is not a list
+- 17b80ad2: submission value is not a list
+- 17b866bd: submission value is not a list
+- 17cae0c1: submission value is not a list
+- 18286ef8: submission value is not a list
+- 182e5d0f: submission value is not a list
+- 18419cfa: submission value is not a list
+- 18447a8d: submission value is not a list
+- 184a9768: submission value is not a list
+- 195ba7dc: submission value is not a list
+- 1990f7a8: submission value is not a list
+- 19bb5feb: submission value is not a list
+- 1a07d186: submission value is not a list
+- 1a244afd: submission value is not a list
+- 1a2e2828: submission value is not a list
+- 1a6449f1: submission value is not a list
+- 1acc24af: submission value is not a list
+- 1b2d62fb: submission value is not a list
+- 1b59e163: submission value is not a list
+- 1b60fb0c: submission value is not a list
+- 1b8318e3: submission value is not a list
+- 1be83260: submission value is not a list
+- 1bfc4729: submission value is not a list
+- 1c02dbbe: submission value is not a list
+- 1c0d0a4b: submission value is not a list
+- 1c56ad9f: submission value is not a list
+- 1c786137: submission value is not a list
+- 1caeab9d: submission value is not a list
+- 1cf80156: submission value is not a list
+- 1d0a4b61: submission value is not a list
+- 1d398264: submission value is not a list
+- 1d61978c: submission value is not a list
+- 1da012fc: submission value is not a list
+- 1e0a9b12: submission value is not a list
+- 1e32b0e9: submission value is not a list
+- 1e5d6875: submission value is not a list
+- 1e81d6f9: submission value is not a list
+- 1efba499: submission value is not a list
+- 1f0c79e5: submission value is not a list
+- 1f642eb9: submission value is not a list
+- 1f85a75f: submission value is not a list
+- 1f876c06: submission value is not a list
+- 1fad071e: submission value is not a list
+- 2013d3e2: submission value is not a list
+- 2037f2c7: submission value is not a list
+- 2072aba6: submission value is not a list
+- 20818e16: submission value is not a list
+- 20981f0e: submission value is not a list
+- 20fb2937: submission value is not a list
+- 212895b5: submission value is not a list
+- 21f83797: submission value is not a list
+- 2204b7a8: submission value is not a list
+- 22168020: submission value is not a list
+- 22208ba4: submission value is not a list
+- 22233c11: submission value is not a list
+- 22425bda: submission value is not a list
+- 22806e14: submission value is not a list
+- 2281f1f4: submission value is not a list
+- 228f6490: submission value is not a list
+- 22a4bbc2: submission value is not a list
+- 22eb0ac0: submission value is not a list
+- 230f2e48: submission value is not a list
+- 234bbc79: submission value is not a list
+- 23581191: submission value is not a list
+- 239be575: submission value is not a list
+- 23b5c85d: submission value is not a list
+- 25094a63: submission value is not a list
+- 252143c9: submission value is not a list
+- 253bf280: submission value is not a list
+- 2546ccf6: submission value is not a list
+- 256b0a75: submission value is not a list
+- 25c199f5: submission value is not a list
+- 25d487eb: submission value is not a list
+- 25d8a9c8: submission value is not a list
+- 25e02866: submission value is not a list
+- 25ff71a9: submission value is not a list
+- 2601afb7: submission value is not a list
+- 264363fd: submission value is not a list
+- 2685904e: submission value is not a list
+- 2697da3f: submission value is not a list
+- 272f95fa: submission value is not a list
+- 2753e76c: submission value is not a list
+- 278e5215: submission value is not a list
+- 27a28665: submission value is not a list
+- 27a77e38: submission value is not a list
+- 27f8ce4f: submission value is not a list
+- 281123b4: submission value is not a list
+- 28bf18c6: submission value is not a list
+- 28e73c20: submission value is not a list
+- 292dd178: submission value is not a list
+- 29623171: submission value is not a list
+- 29700607: submission value is not a list
+- 29c11459: submission value is not a list
+- 2a28add5: submission value is not a list
+- 2a5f8217: submission value is not a list
+- 2b01abd0: submission value is not a list
+- 2b9ef948: submission value is not a list
+- 2bcee788: submission value is not a list
+- 2bee17df: submission value is not a list
+- 2c0b0aff: submission value is not a list
+- 2c608aff: submission value is not a list
+- 2c737e39: submission value is not a list
+- 2ccd9fef: submission value is not a list
+- 2dc579da: submission value is not a list
+- 2dd70a9a: submission value is not a list
+- 2de01db2: submission value is not a list
+- 2dee498d: submission value is not a list
+- 2e65ae53: submission value is not a list
+- 2f0c5170: submission value is not a list
+- 2f767503: submission value is not a list
+- 2faf500b: submission value is not a list
+- 305b1341: submission value is not a list
+- 30f42897: submission value is not a list
+- 310f3251: submission value is not a list
+- 3194b014: submission value is not a list
+- 319f2597: submission value is not a list
+- 31aa019c: submission value is not a list
+- 31adaf00: submission value is not a list
+- 31d5ba1a: submission value is not a list
+- 320afe60: submission value is not a list
+- 321b1fc6: submission value is not a list
+- 32597951: submission value is not a list
+- 32e9702f: submission value is not a list
+- 33067df9: submission value is not a list
+- 332202d5: submission value is not a list
+- 332efdb3: submission value is not a list
+- 3345333e: submission value is not a list
+- 337b420f: submission value is not a list
+- 3391f8c0: submission value is not a list
+- 33b52de3: submission value is not a list
+- 3428a4f5: submission value is not a list
+- 342ae2ed: submission value is not a list
+- 342dd610: submission value is not a list
+- 3490cc26: submission value is not a list
+- 34b99a2b: submission value is not a list
+- 34cfa167: submission value is not a list
+- 351d6448: submission value is not a list
+- 358ba94e: submission value is not a list
+- 3618c87e: submission value is not a list
+- 363442ee: submission value is not a list
+- 36d67576: submission value is not a list
+- 36fdfd69: submission value is not a list
+- 37ce87bb: submission value is not a list
+- 37d3e8b2: submission value is not a list
+- 3906de3d: submission value is not a list
+- 396d80d7: submission value is not a list
+- 3979b1a8: submission value is not a list
+- 39a8645d: submission value is not a list
+- 39e1d7f9: submission value is not a list
+- 3a301edc: submission value is not a list
+- 3aa6fb7a: submission value is not a list
+- 3ac3eb23: submission value is not a list
+- 3ad05f52: submission value is not a list
+- 3af2c5a8: submission value is not a list
+- 3b4c2228: submission value is not a list
+- 3bd292e8: submission value is not a list
+- 3bd67248: submission value is not a list
+- 3bdb4ada: submission value is not a list
+- 3befdf3e: submission value is not a list
+- 3c9b0459: submission value is not a list
+- 3cd86f4f: submission value is not a list
+- 3d31c5b3: submission value is not a list
+- 3d588dc9: submission value is not a list
+- 3d6c6e23: submission value is not a list
+- 3de23699: submission value is not a list
+- 3e980e27: submission value is not a list
+- 3eda0437: submission value is not a list
+- 3ee1011a: submission value is not a list
+- 3f23242b: submission value is not a list
+- 3f7978a0: submission value is not a list
+- 4093f84a: submission value is not a list
+- 40f6cd08: submission value is not a list
+- 412b6263: submission value is not a list
+- 414297c0: submission value is not a list
+- 41ace6b5: submission value is not a list
+- 41e4d17e: submission value is not a list
+- 423a55dc: submission value is not a list
+- 4258a5f9: submission value is not a list
+- 4290ef0e: submission value is not a list
+- 42918530: submission value is not a list
+
+## Warnings
+
+- 3 test outputs contain identical attempt_1 and attempt_2
+
+## Kaggle submission object
+
+```json
+[
+  {
+    "ref": 55037417,
+    "totalBytes": 0,
+    "date": "2026-07-27T20:18:06.167Z",
+    "description": "Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d",
+    "errorDescription": "Your notebook generated a submission file with incorrect format. Some examples causing this are: wrong number of rows or columns, empty values, an incorrect data type for a value, or invalid submission values from what is expected.",
+    "fileName": "submission.json",
+    "status": "COMPLETE",
+    "submittedBy": "robertmorong",
+    "submittedByRef": "robertmorong",
+    "teamName": "Robert Morong",
+    "url": "/code/robertmorong/grobestreet-arc-frozen-v3-cycle-001?scriptVersionId=338392267"
+  }
+]
+```
+
+## Located files
+
+```json
+{
+  "sample_submission": "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/scoring_diagnosis/work/competition/arc-prize-2026-arc-agi-2/sample_submission.json",
+  "test_challenges": "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/scoring_diagnosis/work/competition/arc-prize-2026-arc-agi-2/arc-agi_test_challenges.json",
+  "kernel_submission": "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/scoring_diagnosis/work/kernel_output/submission.json",
+  "kernel_metadata": "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/scoring_diagnosis/work/kernel_output/submission_v3_metadata.json"
+}
+```

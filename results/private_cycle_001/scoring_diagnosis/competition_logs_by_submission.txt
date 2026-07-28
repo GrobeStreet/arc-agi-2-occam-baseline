@@ -1,0 +1,2 @@
+usage: kaggle competitions logs [-h] [-p PATH] [-q] episode_id agent_index
+kaggle competitions logs: error: the following arguments are required: agent_index

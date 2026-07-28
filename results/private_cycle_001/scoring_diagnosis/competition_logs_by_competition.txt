@@ -1,0 +1,2 @@
+usage: kaggle competitions logs [-h] [-p PATH] [-q] episode_id agent_index
+kaggle competitions logs: error: argument episode_id: invalid int value: 'arc-prize-2026-arc-agi-2'

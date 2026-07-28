@@ -1,0 +1,1289 @@
+{
+  "solver": "representation-v3.0-frozen",
+  "registration": "HYPOTHESIS-representation-v3.md",
+  "promotion_basis": {
+    "holdout_v2_pass2": "4/201",
+    "holdout_v3_pass2": "5/201",
+    "v3_only_wins": 1,
+    "v2_only_wins": 0,
+    "exact_two_sided_p": 1.0,
+    "registered_verdict": "DIRECTIONAL IMPROVEMENT"
+  },
+  "challenge_file": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/arc-agi_evaluation_challenges.json",
+  "task_count": 120,
+  "output_count": 172,
+  "task_metadata": {
+    "0934a4d8": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "135a2760": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "136b0064": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "13e47133": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "142ca369": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "16b78196": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "16de56c4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "1818057f": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "195c6913": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "1ae2feb7": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "20270e3b": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "20a9e565": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "21897d95": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "221dfab4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "247ef758": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "269e22fb": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "271d71e2": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "28a6681f": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "291dc1e1": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "2b83f449": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "2ba387bc": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "2c181942": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "2d0172a1": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "31f7f899": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "332f06d7": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "35ab12c3": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "36a08778": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "38007db0": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "3a25b0d8": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "3dc255db": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "3e6067c3": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "409aa875": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "446ef5d2": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "45a5af55": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "4a21e3da": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "4c3d4a41": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "4c416de3": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "4c7dc4dd": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "4e34c42c": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "53fb4810": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "5545f144": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "581f7754": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "58490d8a": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "58f5dbd5": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "5961cc34": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "5dbc8537": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "62593bfd": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "64efde09": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "65b59efc": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "67e490f4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "6e453dd6": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "6e4f6532": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "6ffbe589": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "71e489b6": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7491f3cf": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7666fa5d": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "78332cb0": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7b0280bc": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7b3084d4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7b5033c1": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7b80bb43": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7c66cb00": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "7ed72f31": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "800d221b": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "80a900e0": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "8698868d": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "88bcf3b4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "88e364bc": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "89565ca0": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "898e7135": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "8b7bacbf": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "8b9c3697": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "8e5c0c38": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "8f215267": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "8f3a5a89": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "9385bd28": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "97d7923e": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "981571dc": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "9aaea919": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "9bbf930d": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "a251c730": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "a25697e4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "a32d8b75": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "a395ee82": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "a47bf94d": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "a6f40cea": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "aa4ec2a5": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "abc82100": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "b0039139": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "b10624e5": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "b5ca7ac4": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "b6f77b65": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "b99e7126": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "b9e38dc0": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "bf45cf4b": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "c4d067a0": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "c7f57c3e": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "cb2d8a2c": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "cbebaa4b": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "d35bdbdc": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "d59b0160": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "d8e07eb2": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "da515329": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "db0c5428": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "db695cfb": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "dbff022c": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "dd6b8c4b": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "de809cff": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "dfadab01": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "e12f9a14": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "e3721c99": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "e376de54": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "e8686506": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "e87109e9": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "edb79dae": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "eee78d87": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "f560132c": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "f931b4a8": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "faa9f03d": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      },
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ],
+    "fc7cae8d": [
+      {
+        "passing_programs": 0,
+        "distinct_candidate_outputs": 0,
+        "top_votes": 0,
+        "top_min_complexity": null
+      }
+    ]
+  }
+}

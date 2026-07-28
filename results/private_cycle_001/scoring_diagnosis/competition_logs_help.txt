@@ -1,0 +1,8 @@
+usage: kaggle competitions logs [-h] [-p PATH] [-q] episode_id agent_index
+
+options:
+  -h, --help            show this help message and exit
+  episode_id            Episode ID (find these with "kaggle competitions episodes <submission_id>")
+  agent_index           Agent index (0-based position of the agent in the episode)
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
+  -q, --quiet           Suppress printing information about the upload/download progress
