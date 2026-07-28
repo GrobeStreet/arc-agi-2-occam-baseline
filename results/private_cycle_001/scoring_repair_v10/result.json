@@ -11,7 +11,7 @@
       ],
       "output": "ref,fileName,date,description,status,publicScore,privateScore\n55057282,submission.json,2026-07-28 14:17:46.087000,Frozen v3 Cycle 001 \u2014 mechanical test-routing repair R1 \u2014 240 tasks / 259 outputs,SubmissionStatus.PENDING,,\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.COMPLETE,,\n",
       "returncode": 0,
-      "seconds": 0.601
+      "seconds": 0.777
     },
     {
       "command": [
@@ -22,7 +22,7 @@
       ],
       "output": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.COMPLETE\"\n",
       "returncode": 0,
-      "seconds": 0.498
+      "seconds": 0.653
     },
     {
       "command": [
@@ -37,7 +37,7 @@
       ],
       "output": "",
       "returncode": 0,
-      "seconds": 2.082
+      "seconds": 3.355
     },
     {
       "command": [
@@ -51,7 +51,7 @@
       ],
       "output": "",
       "returncode": 0,
-      "seconds": 0.801
+      "seconds": 0.968
     },
     {
       "command": [
@@ -70,11 +70,11 @@
       ],
       "output": "400 Client Error: Bad Request for url: https://api.kaggle.com/v1/competitions.CompetitionApiService/CreateCodeSubmission\n",
       "returncode": 1,
-      "seconds": 0.791
+      "seconds": 0.809
     }
   ],
   "competition": "arc-prize-2026-arc-agi-2",
-  "created_at": "2026-07-28T14:21:56.526217+00:00",
+  "created_at": "2026-07-28T14:22:28.088442+00:00",
   "cycle": "private-v3-cycle-001",
   "error": "400 Client Error: Bad Request for url: https://api.kaggle.com/v1/competitions.CompetitionApiService/CreateCodeSubmission\n",
   "frozen_source_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
@@ -107,5 +107,5 @@
   "submission_status": null,
   "supersedes_submission_ref": "55037417",
   "team_count": null,
-  "updated_at": "2026-07-28T14:22:01.359103+00:00"
+  "updated_at": "2026-07-28T14:22:34.708265+00:00"
 }
