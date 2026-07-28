@@ -4,7 +4,7 @@
   "data_root": "external/ARC-AGI-2/data/evaluation",
   "task_count": 120,
   "output_count": 167,
-  "runtime_seconds": 40.013540506362915,
+  "runtime_seconds": 54.86646389961243,
   "output_level": {
     "coverage": {
       "successes": 0,
