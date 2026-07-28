@@ -1,0 +1,25 @@
+{
+  "cycle": "private-v3-cycle-001",
+  "state": "REPAIRED_SUBMISSION_SCORE_PENDING",
+  "competition": "arc-prize-2026-arc-agi-2",
+  "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+  "kernel_version": 10,
+  "frozen_solver_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
+  "mechanical_repair": "PRIVATE_CYCLE_001_SCORING_REPAIR.md",
+  "supersedes_scoring_error_submission": "55037417",
+  "submission_ref": "55057282",
+  "submission_status": "SubmissionStatus.PENDING",
+  "public_score": null,
+  "public_rank": null,
+  "team_count": 1290,
+  "schema_validation": {
+    "task_count": 240,
+    "output_count": 259,
+    "sample_task_ids_match": true,
+    "challenge_task_ids_match": true,
+    "submission_sha256": "457a36b6ed4b360a3e7d95a79c4de144b1c27051ce3559473901b33d6fc60a6d"
+  },
+  "accepted_at_utc": "2026-07-28T14:17:46.087000Z",
+  "observed_at_utc": "2026-07-28T14:22:59.791547Z",
+  "interpretation": "Kaggle accepted the mechanically repaired version-10 submission after exact validation against the official 240-task / 259-output schema. Later duplicate submission calls returned HTTP 400 but did not invalidate accepted submission 55057282. The accepted submission is awaiting scoring."
+}
