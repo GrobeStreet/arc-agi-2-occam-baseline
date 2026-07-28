@@ -1,6 +1,6 @@
 {
   "competition": "arc-prize-2026-arc-agi-2",
-  "created_at_utc": "2026-07-27T19:51:34.993010+00:00",
+  "created_at_utc": "2026-07-28T14:08:02.206735+00:00",
   "cycle": "private-v3-cycle-001",
   "frozen_files": {
     "benchmark_representation_v3.py": {
@@ -20,8 +20,14 @@
       "sha256": "2f1b26257b0843949e5aaa9c5484fd5e23fe304ec278b931d0bd5a53a4379ae6"
     }
   },
+  "mechanical_repair": "PRIVATE_CYCLE_001_SCORING_REPAIR.md",
   "output_contract": "/kaggle/working/submission.json",
   "packaging_note": "PRIVATE_CYCLE_001_PACKAGING_NOTE.md",
   "registration": "HYPOTHESIS-private-v3-cycle-001.md",
+  "required_schema": {
+    "output_count": 259,
+    "source_pairing": "sample_submission task IDs must exactly equal test challenge task IDs",
+    "task_count": 240
+  },
   "source_commit": "70672f3aa62d089bfffd072461a5713caae1e099"
 }
