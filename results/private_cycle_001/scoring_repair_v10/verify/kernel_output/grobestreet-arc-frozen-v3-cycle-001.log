@@ -1,0 +1,60 @@
+[{"stream_name":"stderr","time":9.208168995,"data":"/usr/local/lib/python3.12/dist-packages/nbformat/__init__.py:96: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":9.208299052,"data":"  validate(nb)\n"}
+,{"stream_name":"stderr","time":10.582960711,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.583004035,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.583010891,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.583015754,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":11.440726217,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.440766472,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.440773867,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.440779569,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":12.922579903,"data":"Frozen source restored at /kaggle/working\n"}
+,{"stream_name":"stdout","time":12.923458334,"data":"{\n"}
+,{"stream_name":"stdout","time":12.923465544,"data":"  \"competition\": \"arc-prize-2026-arc-agi-2\",\n"}
+,{"stream_name":"stdout","time":12.923470945,"data":"  \"created_at_utc\": \"2026-07-28T14:12:07.780201+00:00\",\n"}
+,{"stream_name":"stdout","time":12.923476223,"data":"  \"cycle\": \"private-v3-cycle-001\",\n"}
+,{"stream_name":"stdout","time":12.923481248,"data":"  \"frozen_files\": {\n"}
+,{"stream_name":"stdout","time":12.923485799,"data":"    \"benchmark_representation_v3.py\": {\n"}
+,{"stream_name":"stdout","time":12.923491398,"data":"      \"bytes\": 14111,\n"}
+,{"stream_name":"stdout","time":12.92349609,"data":"      \"sha256\": \"82b07ad403406aff24b307f5565c09b29233ba05e43bf7b08945ec0524365046\"\n"}
+,{"stream_name":"stdout","time":12.923501058,"data":"    },\n"}
+,{"stream_name":"stdout","time":12.923523863,"data":"    \"dsl.py\": {\n"}
+,{"stream_name":"stdout","time":12.923528696,"data":"      \"bytes\": 7036,\n"}
+,{"stream_name":"stdout","time":12.923532901,"data":"      \"sha256\": \"8eddc1f9a64db82bf7357d4f42e0fdc8d155f4a076e5c5ec71d12cc9b5fe1c89\"\n"}
+,{"stream_name":"stdout","time":12.923537503,"data":"    },\n"}
+,{"stream_name":"stdout","time":12.923541559,"data":"    \"dsl_v3.py\": {\n"}
+,{"stream_name":"stdout","time":12.923546441,"data":"      \"bytes\": 22499,\n"}
+,{"stream_name":"stdout","time":12.923551243,"data":"      \"sha256\": \"14f84c3d696d40cb35d51cefbc32547e8d5b6d8769d7acd1d37c0849d939782d\"\n"}
+,{"stream_name":"stdout","time":12.923555995,"data":"    },\n"}
+,{"stream_name":"stdout","time":12.923560458,"data":"    \"kaggle_submission_v3.py\": {\n"}
+,{"stream_name":"stdout","time":12.923565173,"data":"      \"bytes\": 8843,\n"}
+,{"stream_name":"stdout","time":12.923569721,"data":"      \"sha256\": \"2f1b26257b0843949e5aaa9c5484fd5e23fe304ec278b931d0bd5a53a4379ae6\"\n"}
+,{"stream_name":"stdout","time":12.923574359,"data":"    }\n"}
+,{"stream_name":"stdout","time":12.923578426,"data":"  },\n"}
+,{"stream_name":"stdout","time":12.923597983,"data":"  \"mechanical_repair\": \"PRIVATE_CYCLE_001_SCORING_REPAIR.md\",\n"}
+,{"stream_name":"stdout","time":12.923603418,"data":"  \"output_contract\": \"/kaggle/working/submission.json\",\n"}
+,{"stream_name":"stdout","time":12.923608083,"data":"  \"packaging_note\": \"PRIVATE_CYCLE_001_PACKAGING_NOTE.md\",\n"}
+,{"stream_name":"stdout","time":12.923612852,"data":"  \"registration\": \"HYPOTHESIS-private-v3-cycle-001.md\",\n"}
+,{"stream_name":"stdout","time":12.923617576,"data":"  \"required_schema\": {\n"}
+,{"stream_name":"stdout","time":12.923622151,"data":"    \"output_count\": 259,\n"}
+,{"stream_name":"stdout","time":12.923626823,"data":"    \"source_pairing\": \"sample_submission task IDs must exactly equal test challenge task IDs\",\n"}
+,{"stream_name":"stdout","time":12.923631833,"data":"    \"task_count\": 240\n"}
+,{"stream_name":"stdout","time":12.92363631,"data":"  },\n"}
+,{"stream_name":"stdout","time":12.923640568,"data":"  \"source_commit\": \"70672f3aa62d089bfffd072461a5713caae1e099\"\n"}
+,{"stream_name":"stdout","time":12.92364638,"data":"}\n"}
+,{"stream_name":"stdout","time":13.123619483,"data":"Using official sample submission: /kaggle/input/competitions/arc-prize-2026-arc-agi-2/sample_submission.json\n"}
+,{"stream_name":"stdout","time":13.123659403,"data":"Using official ARC test challenge file: /kaggle/input/competitions/arc-prize-2026-arc-agi-2/arc-agi_test_challenges.json\n"}
+,{"stream_name":"stdout","time":13.123665739,"data":"Official task/output counts: 240 259\n"}
+,{"stream_name":"stdout","time":130.524987722,"data":"wrote frozen v3 submission for 240 tasks / 259 test inputs to /kaggle/working/submission.json\n"}
+,{"stream_name":"stdout","time":130.525024223,"data":"metadata: /kaggle/working/submission_v3_metadata.json\n"}
+,{"stream_name":"stdout","time":130.525030891,"data":"Official schema validation passed: {\"challenge_task_ids_match\": true, \"output_count\": 259, \"sample_task_ids_match\": true, \"task_count\": 240}\n"}
+,{"stream_name":"stdout","time":130.52503797399999,"data":"Submission ready: /kaggle/working/submission.json (380,070 bytes)\n"}
+,{"stream_name":"stderr","time":134.053152025,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":134.053191209,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":134.293331756,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":134.293370401,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":135.158090841,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":135.580966691,"data":"[NbConvertApp] Writing 89087 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":139.051076902,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":140.214411125,"data":"[NbConvertApp] Writing 392845 bytes to __results__.html\n"}
+]

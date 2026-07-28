@@ -1,0 +1,111 @@
+{
+  "commands": [
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submissions",
+        "arc-prize-2026-arc-agi-2",
+        "-v",
+        "-q"
+      ],
+      "output": "ref,fileName,date,description,status,publicScore,privateScore\n55057282,submission.json,2026-07-28 14:17:46.087000,Frozen v3 Cycle 001 \u2014 mechanical test-routing repair R1 \u2014 240 tasks / 259 outputs,SubmissionStatus.PENDING,,\n55037417,submission.json,2026-07-27 20:18:06.167000,Frozen representation v3 \u2014 Private Cycle 001 \u2014 70672f3aa62d,SubmissionStatus.COMPLETE,,\n",
+      "returncode": 0,
+      "seconds": 0.695
+    },
+    {
+      "command": [
+        "kaggle",
+        "kernels",
+        "status",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001"
+      ],
+      "output": "robertmorong/grobestreet-arc-frozen-v3-cycle-001 has status \"KernelWorkerStatus.COMPLETE\"\n",
+      "returncode": 0,
+      "seconds": 0.606
+    },
+    {
+      "command": [
+        "kaggle",
+        "kernels",
+        "output",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/scoring_repair_v10/verify/kernel_output",
+        "-o",
+        "-q"
+      ],
+      "output": "",
+      "returncode": 0,
+      "seconds": 3.298
+    },
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "download",
+        "arc-prize-2026-arc-agi-2",
+        "-p",
+        "/home/runner/work/arc-agi-2-occam-baseline/arc-agi-2-occam-baseline/results/private_cycle_001/scoring_repair_v10/verify/competition",
+        "-q"
+      ],
+      "output": "",
+      "returncode": 0,
+      "seconds": 1.112
+    },
+    {
+      "command": [
+        "kaggle",
+        "competitions",
+        "submit",
+        "arc-prize-2026-arc-agi-2",
+        "-f",
+        "submission.json",
+        "-k",
+        "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+        "-v",
+        "10",
+        "-m",
+        "Frozen v3 Cycle 001 scoring repair \u2014 official 240/259 schema \u2014 70672f3aa62d"
+      ],
+      "output": "400 Client Error: Bad Request for url: https://api.kaggle.com/v1/competitions.CompetitionApiService/CreateCodeSubmission\n",
+      "returncode": 1,
+      "seconds": 0.905
+    }
+  ],
+  "competition": "arc-prize-2026-arc-agi-2",
+  "created_at": "2026-07-28T14:20:14.273485+00:00",
+  "cycle": "private-v3-cycle-001",
+  "error": "400 Client Error: Bad Request for url: https://api.kaggle.com/v1/competitions.CompetitionApiService/CreateCodeSubmission\n",
+  "frozen_source_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
+  "interpretation": "Kaggle rejected the schema-validated version-10 submission call.",
+  "kernel_ref": "robertmorong/grobestreet-arc-frozen-v3-cycle-001",
+  "kernel_version": 10,
+  "mechanical_repair": "PRIVATE_CYCLE_001_SCORING_REPAIR.md",
+  "private_score": null,
+  "public_rank": null,
+  "public_score": null,
+  "schema_certificate": {
+    "challenge_task_ids_match": true,
+    "output_count": 259,
+    "sample_submission": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/sample_submission.json",
+    "sample_task_ids_match": true,
+    "submission_bytes": 380070,
+    "task_count": 240,
+    "test_challenges": "/kaggle/input/competitions/arc-prize-2026-arc-agi-2/arc-agi_test_challenges.json"
+  },
+  "schema_validation": {
+    "output_count": 259,
+    "output_multiplicities_match": true,
+    "task_count": 240,
+    "task_ids_match": true,
+    "valid": true
+  },
+  "state": "REPAIR_SUBMISSION_FAILED",
+  "submission_ref": null,
+  "submission_sha256": "457a36b6ed4b360a3e7d95a79c4de144b1c27051ce3559473901b33d6fc60a6d",
+  "submission_status": null,
+  "supersedes_submission_ref": "55037417",
+  "team_count": null,
+  "updated_at": "2026-07-28T14:20:20.948820+00:00"
+}
