@@ -1,0 +1,71 @@
+name: Submit ARC Cycle 001 mechanical repair R1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/submit_arc_cycle001_repair_r1.py'
+      - '.github/workflows/submit-arc-cycle001-repair-r1.yml'
+      - 'contest/private_cycle_001.repair_r1.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arc-cycle001-repair-r1
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      KAGGLE_USERNAME: robertmorong
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      PYTHONUNBUFFERED: '1'
+
+    steps:
+      - name: Check out repaired frozen kernel record
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Kaggle client
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'kaggle>=2.2.0,<3'
+          kaggle --version
+
+      - name: Submit only after official 240-task / 259-output schema gate
+        run: python scripts/submit_arc_cycle001_repair_r1.py
+
+      - name: Show repaired result
+        if: always()
+        run: |
+          cat results/private_cycle_001/repair_r1/RESULT.md || true
+          cat results/private_cycle_001/repair_r1/result.json || true
+
+      - name: Commit immutable repaired submission record
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/private_cycle_001/repair_r1/
+          git diff --cached --quiet || git commit -m 'Record ARC Cycle 001 mechanical repair R1 submission'
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Upload repaired submission evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: arc-cycle001-repair-r1
+          retention-days: 180
+          path: results/private_cycle_001/repair_r1/
