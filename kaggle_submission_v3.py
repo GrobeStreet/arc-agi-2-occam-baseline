@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 """Kaggle-compatible ARC-AGI-2 submission entrypoint for representation v3.
 
-Promotion basis
----------------
-The frozen representation-v3 grammar was registered before a deterministic
-training-holdout benchmark and produced one v3-only pass@2 win, zero v2-only
-wins (5/201 versus 4/201 outputs). Under the registered rule this is a
-DIRECTIONAL IMPROVEMENT, not a statistically clear promotion. The grammar and
-ranking below are therefore frozen before any private Kaggle evaluation.
-
-The script auto-discovers the ARC challenge JSON under /kaggle/input and writes
-exactly two semantically distinct output grids per test input.
+This file preserves the frozen representation-v3 grammar and ranking policy. The
+only post-Cycle-001 change is a mechanical input-selection repair: the competition
+mount can contain several ARC challenge JSON files, so the correct hidden test
+file is selected only when its task IDs and output multiplicities exactly match an
+official ``sample_submission.json`` file.
 """
 from __future__ import annotations
 
@@ -25,15 +20,126 @@ import numpy as np
 import dsl_v3 as v3
 
 
-def find_first(patterns: list[str], roots: list[Path]) -> Path | None:
-    for root in roots:
-        if not root.exists():
-            continue
-        for pattern in patterns:
-            matches = sorted(root.rglob(pattern))
-            if matches:
-                return matches[0]
-    return None
+def load_json(path: Path) -> dict[str, Any] | None:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return value if isinstance(value, dict) and value else None
+
+
+def is_challenge_payload(value: dict[str, Any]) -> bool:
+    first = next(iter(value.values()), None)
+    return (
+        isinstance(first, dict)
+        and isinstance(first.get("train"), list)
+        and isinstance(first.get("test"), list)
+    )
+
+
+def is_sample_payload(value: dict[str, Any]) -> bool:
+    first = next(iter(value.values()), None)
+    if not isinstance(first, list) or not first:
+        return False
+    item = first[0]
+    return isinstance(item, dict) and {"attempt_1", "attempt_2"}.issubset(item)
+
+
+def pair_matches(sample: dict[str, Any], challenges: dict[str, Any]) -> bool:
+    if set(sample) != set(challenges):
+        return False
+    return all(
+        isinstance(sample[task_id], list)
+        and isinstance(challenges[task_id], dict)
+        and len(sample[task_id]) == len(challenges[task_id].get("test", []))
+        for task_id in sample
+    )
+
+
+def discover_official_pair(
+    roots: list[Path],
+    explicit_challenges: str | None,
+    explicit_sample: str | None,
+) -> tuple[Path, Path, dict[str, Any], dict[str, Any]]:
+    if explicit_challenges:
+        challenge_paths = [Path(explicit_challenges)]
+    else:
+        challenge_paths = []
+        patterns = (
+            "arc-agi_test_challenges.json",
+            "*test_challenges*.json",
+            "*test*challenges*.json",
+        )
+        seen: set[Path] = set()
+        for root in roots:
+            if not root.exists():
+                continue
+            for pattern in patterns:
+                for path in sorted(root.rglob(pattern)):
+                    resolved = path.resolve()
+                    if resolved not in seen:
+                        seen.add(resolved)
+                        challenge_paths.append(path)
+
+    if explicit_sample:
+        sample_paths = [Path(explicit_sample)]
+    else:
+        sample_paths = []
+        seen_samples: set[Path] = set()
+        for root in roots:
+            if not root.exists():
+                continue
+            for path in sorted(root.rglob("sample_submission.json")):
+                resolved = path.resolve()
+                if resolved not in seen_samples:
+                    seen_samples.add(resolved)
+                    sample_paths.append(path)
+
+    challenge_records: list[tuple[Path, dict[str, Any]]] = []
+    for path in challenge_paths:
+        payload = load_json(path)
+        if payload is not None and is_challenge_payload(payload):
+            challenge_records.append((path, payload))
+
+    sample_records: list[tuple[Path, dict[str, Any]]] = []
+    for path in sample_paths:
+        payload = load_json(path)
+        if payload is not None and is_sample_payload(payload):
+            sample_records.append((path, payload))
+
+    candidates: list[
+        tuple[tuple[int, int, int, int], Path, Path, dict[str, Any], dict[str, Any]]
+    ] = []
+    for sample_path, sample in sample_records:
+        for challenge_path, challenges in challenge_records:
+            if not pair_matches(sample, challenges):
+                continue
+            score = (
+                int(sample_path.parent.resolve() == challenge_path.parent.resolve()),
+                int("arc-prize-2026-arc-agi-2" in str(challenge_path).lower()),
+                int(challenge_path.name == "arc-agi_test_challenges.json"),
+                len(challenges),
+            )
+            candidates.append((score, sample_path, challenge_path, sample, challenges))
+
+    if not candidates:
+        inventory = {
+            "challenge_candidates": [str(path) for path, _ in challenge_records],
+            "sample_candidates": [str(path) for path, _ in sample_records],
+            "challenge_task_counts": {
+                str(path): len(payload) for path, payload in challenge_records
+            },
+            "sample_task_counts": {str(path): len(payload) for path, payload in sample_records},
+        }
+        raise FileNotFoundError(
+            "No challenge JSON exactly matched an official sample_submission.json. "
+            + json.dumps(inventory, indent=2)
+        )
+
+    _, sample_path, challenge_path, sample, challenges = max(
+        candidates, key=lambda item: item[0]
+    )
+    return sample_path, challenge_path, sample, challenges
 
 
 def grid_key(grid: np.ndarray) -> bytes:
@@ -94,8 +200,6 @@ def rank_outputs(
         ),
     )
 
-    # The two fallback outputs preserve valid dimensions and ensure that pass@2
-    # always contains two grids even when the frozen grammar has no candidate.
     fallbacks = [test_input.copy(), np.rot90(test_input, 2).copy()]
     grids = [item["grid"] for item in ranked] + fallbacks
     first = grids[0]
@@ -145,13 +249,17 @@ def build_submission(challenges: dict[str, Any]) -> tuple[dict[str, Any], dict[s
 
 
 def validate_submission(
-    challenges: dict[str, Any], submission: dict[str, Any]
+    challenges: dict[str, Any],
+    sample: dict[str, Any],
+    submission: dict[str, Any],
 ) -> None:
-    if set(challenges) != set(submission):
-        raise ValueError("Submission task IDs do not match challenge task IDs")
-    for task_id, task in challenges.items():
+    if set(challenges) != set(sample) or set(submission) != set(sample):
+        raise ValueError("Submission, challenge, and sample task IDs do not match")
+    for task_id, expected in sample.items():
         outputs = submission[task_id]
-        if len(outputs) != len(task.get("test", [])):
+        if len(outputs) != len(expected) or len(outputs) != len(
+            challenges[task_id].get("test", [])
+        ):
             raise ValueError(f"{task_id}: wrong number of test outputs")
         for index, entry in enumerate(outputs):
             if set(entry) != {"attempt_1", "attempt_2"}:
@@ -161,12 +269,14 @@ def validate_submission(
                 if not isinstance(grid, list) or not grid:
                     raise ValueError(f"{task_id}[{index}].{attempt}: invalid grid")
                 width = len(grid[0])
-                if width == 0 or any(not isinstance(row, list) or len(row) != width for row in grid):
+                if width == 0 or any(
+                    not isinstance(row, list) or len(row) != width for row in grid
+                ):
                     raise ValueError(f"{task_id}[{index}].{attempt}: ragged grid")
                 if len(grid) > 30 or width > 30:
                     raise ValueError(f"{task_id}[{index}].{attempt}: grid exceeds 30x30")
                 if any(
-                    not isinstance(cell, int) or cell < 0 or cell > 9
+                    type(cell) is not int or cell < 0 or cell > 9
                     for row in grid
                     for cell in row
                 ):
@@ -176,8 +286,10 @@ def validate_submission(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--test-challenges",
-        default=os.environ.get("ARC_TEST_CHALLENGES"),
+        "--test-challenges", default=os.environ.get("ARC_TEST_CHALLENGES")
+    )
+    parser.add_argument(
+        "--sample-submission", default=os.environ.get("ARC_SAMPLE_SUBMISSION")
     )
     parser.add_argument(
         "--output",
@@ -186,33 +298,23 @@ def main() -> None:
     parser.add_argument(
         "--metadata",
         default=os.environ.get(
-            "ARC_SUBMISSION_METADATA",
-            "/kaggle/working/submission_v3_metadata.json",
+            "ARC_SUBMISSION_METADATA", "/kaggle/working/submission_v3_metadata.json"
         ),
     )
     args = parser.parse_args()
 
     roots = [Path("/kaggle/input"), Path.cwd(), Path(__file__).resolve().parent]
-    challenge_path = (
-        Path(args.test_challenges)
-        if args.test_challenges
-        else find_first(
-            [
-                "arc-agi_test_challenges.json",
-                "*test_challenges*.json",
-                "*test*challenges*.json",
-            ],
-            roots,
-        )
+    sample_path, challenge_path, sample, challenges = discover_official_pair(
+        roots,
+        args.test_challenges,
+        args.sample_submission,
     )
-    if challenge_path is None or not challenge_path.exists():
-        raise FileNotFoundError(
-            "Could not locate the ARC test challenge JSON; pass --test-challenges explicitly."
-        )
+    print("Using ARC sample submission:", sample_path)
+    print("Using ARC challenge file:", challenge_path)
+    print("Matched task/output counts:", len(sample), sum(len(v) for v in sample.values()))
 
-    challenges = json.loads(challenge_path.read_text(encoding="utf-8"))
     submission, metadata = build_submission(challenges)
-    validate_submission(challenges, submission)
+    validate_submission(challenges, sample, submission)
 
     output_path = Path(args.output)
     metadata_path = Path(args.metadata)
@@ -222,16 +324,11 @@ def main() -> None:
     metadata_path.write_text(
         json.dumps(
             {
-                "solver": "representation-v3.0-frozen",
-                "registration": "HYPOTHESIS-representation-v3.md",
-                "promotion_basis": {
-                    "holdout_v2_pass2": "4/201",
-                    "holdout_v3_pass2": "5/201",
-                    "v3_only_wins": 1,
-                    "v2_only_wins": 0,
-                    "exact_two_sided_p": 1.0,
-                    "registered_verdict": "DIRECTIONAL IMPROVEMENT",
-                },
+                "solver": "representation-v3.0-frozen-mechanical-repair-r1",
+                "registration": "HYPOTHESIS-private-v3-cycle-001-repair-r1.md",
+                "base_solver_commit": "70672f3aa62d089bfffd072461a5713caae1e099",
+                "repair_scope": "match hidden challenge IDs and output multiplicities to official sample_submission.json",
+                "sample_submission_file": str(sample_path),
                 "challenge_file": str(challenge_path),
                 "task_count": len(submission),
                 "output_count": sum(len(value) for value in submission.values()),
@@ -243,7 +340,7 @@ def main() -> None:
         encoding="utf-8",
     )
     print(
-        f"wrote frozen v3 submission for {len(submission)} tasks / "
+        f"wrote repaired frozen v3 submission for {len(submission)} tasks / "
         f"{sum(len(value) for value in submission.values())} test inputs to {output_path}"
     )
     print(f"metadata: {metadata_path}")
