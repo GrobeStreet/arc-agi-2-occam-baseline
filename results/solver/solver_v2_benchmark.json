@@ -5,8 +5,8 @@
   "evaluation_tasks": 120,
   "evaluation_test_outputs": 167,
   "prior_strength": 8.0,
-  "family_count": 136,
-  "benchmark_seconds": 42.19263359999999,
+  "family_count": 540,
+  "benchmark_seconds": 103.70044326799996,
   "methods": {
     "legacy": {
       "pass1": {
