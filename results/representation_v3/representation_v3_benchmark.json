@@ -7,7 +7,7 @@
     "task_count": 183,
     "output_count": 201
   },
-  "runtime_seconds": 60.52212953567505,
+  "runtime_seconds": 55.95432162284851,
   "output_level": {
     "baseline_coverage": {
       "successes": 4,
@@ -115,8 +115,8 @@
     }
   },
   "candidate_counts": {
-    "baseline_mean_passing_programs": 0.03482587064676617,
-    "v3_mean_passing_programs": 0.11442786069651742,
+    "baseline_mean_passing_programs": 0.14925373134328357,
+    "v3_mean_passing_programs": 0.22885572139303484,
     "baseline_mean_distinct_outputs": 0.01990049751243781,
     "v3_mean_distinct_outputs": 0.024875621890547265
   }
