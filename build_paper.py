@@ -2,7 +2,7 @@ import markdown, base64, re, os
 from playwright.sync_api import sync_playwright
 md = open("PAPER.md").read()
 # embed figures as base64
-for fn in ["fig1_calibration.png", "fig_selection.png", "fig_leaderboard_ci.png"]:
+for fn in ["fig_v2_task_weighting.png", "fig_v2_coverage_reliability.png", "fig_v2_same_target_delta.png", "fig_v2_selection.png", "fig_v2_consensus_calibration.png", "fig_leaderboard_ci.png"]:
     uri = "data:image/png;base64," + base64.b64encode(open(fn, "rb").read()).decode()
     md = md.replace(f"]({fn})", f"]({uri})")
 body = markdown.markdown(md, extensions=["tables", "sane_lists"])
