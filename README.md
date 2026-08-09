@@ -1,5 +1,10 @@
 # How Do We Know an ARC Solution Is Right? — code & data release
 
+[![Results: corrected v2](https://img.shields.io/badge/results-corrected_v2-78e6c4.svg)](#what-the-paper-shows)
+[![Design: pre-registered](https://img.shields.io/badge/design-pre--registered-78e6c4.svg)](HYPOTHESIS-crossfold-v2.md)
+[![License: MIT-0](https://img.shields.io/badge/license-MIT--0-2a3b55.svg)](LICENSE)
+[![Evidence: frozen results](https://img.shields.io/badge/evidence-frozen_results-2a3b55.svg)](results/)
+
 Reproduces every number and figure in the paper (`ARC_Paper_Draft.pdf`). CPU-only, minutes.
 Our own code is released under **MIT-0** (see `LICENSE`); third-party deps under their own
 permissive licenses (see `THIRD_PARTY_NOTICES.md`).
