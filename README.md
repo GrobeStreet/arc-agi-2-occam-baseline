@@ -1,7 +1,7 @@
 # How Do We Know an ARC Solution Is Right? — code & data release
 
 [![Results: corrected v2](https://img.shields.io/badge/results-corrected_v2-78e6c4.svg)](#what-the-paper-shows)
-[![Design: pre-registered](https://img.shields.io/badge/design-pre--registered-78e6c4.svg)](HYPOTHESIS-crossfold-v2.md)
+[![Design: pre-specified](https://img.shields.io/badge/design-pre--specified-78e6c4.svg)](HYPOTHESIS-crossfold-v2.md)
 [![License: MIT-0](https://img.shields.io/badge/license-MIT--0-2a3b55.svg)](LICENSE)
 [![Evidence: frozen results](https://img.shields.io/badge/evidence-frozen_results-2a3b55.svg)](results/)
 
@@ -10,10 +10,13 @@ Our own code is released under **MIT-0** (see `LICENSE`); third-party deps under
 permissive licenses (see `THIRD_PARTY_NOTICES.md`).
 
 ## What the paper shows
-1. **A pre-registered self-correction.** An earlier prefix analysis suggested a strong
+1. **A pre-specified self-correction.** An earlier prefix analysis suggested a strong
    calibration curve (~50%->87%->95%) and a large selection lever (~+24 pts). A stricter,
-   pre-registered same-holdout design (`HYPOTHESIS-crossfold-v2.md`) — frozen before the run,
-   with a publish-regardless commitment — overturned both. We report the corrected numbers.
+   same-holdout design (`HYPOTHESIS-crossfold-v2.md`) was frozen before the first complete
+   training/evaluation cross-fold run, with a publish-regardless commitment, and overturned
+   both. The repository records that before-run freeze; it does not claim an independently
+   timestamped public preregistration unless separate evidence is provided. We report the
+   corrected numbers.
 2. **The acceptance signal is weak.** Under the same-holdout design, a demonstration-consistent
    program reproduces a held-out demonstration only **32.8% / 50.8% / 63.4%** of the time at
    k = 1 / 2 / 3 (task-weighted, task-cluster 95% intervals) — far from the near-certainty
@@ -42,7 +45,7 @@ permissive licenses (see `THIRD_PARTY_NOTICES.md`).
     leaderboard_stats.py       section 4.3 leaderboard statistics + figure
     fig_v2.py                  paper figures, generated from committed results
     build_paper.py             PAPER.md (+figures) -> PDF
-    HYPOTHESIS-crossfold-v2.md frozen pre-registration for the same-holdout analysis
+    HYPOTHESIS-crossfold-v2.md frozen before-run specification for the same-holdout analysis
     PAPER.md                   paper source ; ARC_Paper_Draft.pdf built output
     results/                   frozen machine-readable outputs
 
