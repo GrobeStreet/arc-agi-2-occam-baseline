@@ -1,5 +1,6 @@
 # How Do We Know an ARC Solution Is Right?
 
+[![CI](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/ci.yml/badge.svg)](https://github.com/GrobeStreet/arc-agi-2-occam-baseline/actions/workflows/ci.yml)
 [![Results: corrected v2](https://img.shields.io/badge/results-corrected_v2-78e6c4.svg)](#headline-result)
 [![Design: pre-specified](https://img.shields.io/badge/design-pre--specified-78e6c4.svg)](HYPOTHESIS-crossfold-v2.md)
 [![Evidence: frozen results](https://img.shields.io/badge/evidence-frozen_results-2a3b55.svg)](results/)
