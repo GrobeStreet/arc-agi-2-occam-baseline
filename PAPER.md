@@ -123,13 +123,13 @@ Every ARC-AGI-2 score is 120 Bernoulli trials. The resulting 95% Wilson interval
 
 | System | Score | 95% CI |
 |---|---|---|
-| Poetiq (reported SOTA) | 54.0% | [45.1, 62.7] |
-| Gemini 3 Pro (+refinement) | 54.0% | [45.1, 62.7] |
+| Poetiq (Gemini 3 Pro + refinement; reported SOTA) | 54.0% | [45.1, 62.7] |
 | Gemini 3 Deep Think | 45.0% | [36.4, 53.9] |
 | Claude Opus 4.5 (Thinking) | 37.6% | [29.4, 46.5] |
-| Kaggle 2025 winner (private) | 24.0% | [17.2, 32.4] |
+| Gemini 3 Pro (baseline, no refinement) | 31.0% | [23.4, 39.8] |
+| Kaggle 2025 winner (NVARC, private) | 24.0% | [17.2, 32.4] |
 
-The top three systems' intervals overlap heavily. A two-proportion test on the headline **54% vs 45%** gap yields **p = 0.16** — not significant; the "SOTA lead" is within noise. Adjacent comparisons are generally indistinguishable (45% vs 37.6%: p = 0.24), while only larger gaps clear significance (37.6% vs 24.0%: p = 0.02). A power analysis makes the ceiling explicit: detecting a **5-point** difference near the 50% frontier at 80% power would require **≈1,566** tasks; a 3-point difference ≈4,357; a 2-point difference ≈9,800. ARC-AGI-2 provides 120. Much of what is reported as month-to-month progress is, statistically, a redraw of the same distribution.
+The top three systems' intervals overlap heavily. A two-proportion test on the headline **54% vs 45%** gap yields **p = 0.16** — not significant; the "SOTA lead" is within noise. Adjacent comparisons are generally indistinguishable (45% vs 37.6%: p = 0.24), while only larger gaps clear significance (37.6% vs 24.0%: p = 0.02). The one large, clearly significant movement on the board is not model-to-model but application-layer: Gemini 3 Pro's 31.0% baseline rises to a verified 54.0% under Poetiq's refinement harness (a ~23-point gap that easily clears significance), a reminder that at N=120 the wrapper can move the needle by more than most base-model differences can be shown to. A power analysis makes the ceiling explicit: detecting a **5-point** difference near the 50% frontier at 80% power would require **≈1,566** tasks; a 3-point difference ≈4,357; a 2-point difference ≈9,800. ARC-AGI-2 provides 120. Much of what is reported as month-to-month progress is, statistically, a redraw of the same distribution.
 
 ![Figure 6](fig_leaderboard_ci.png)
 *Figure 6: Verified ARC-AGI-2 scores with 95% Wilson confidence intervals at N=120. The top three systems' intervals overlap heavily; the highlighted band marks the region shared by the top-two "SOTA" contenders, whose 9-point gap is not statistically significant (p=0.16).*
@@ -186,4 +186,4 @@ A linked ARC-AGI-2 code submission packages the description-length-selecting sol
 
 [9] Q. McNemar. "Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages." Psychometrika, 12(2):153–157, 1947.
 
-*Verified scores in §4.3 are drawn from the ARC Prize 2025 Technical Report and public verified-leaderboard postings (Poetiq). Same-holdout numbers in §4.1–§4.2 are from `results/crossfold/training_audit/`; the pre-registration is `HYPOTHESIS-crossfold-v2.md`.*
+*Verified scores in §4.3 are drawn from the ARC Prize 2025 Technical Report and public verified-leaderboard postings (Poetiq), verified semi-private set as of the 2025 results. Same-holdout numbers in §4.1–§4.2 are from `results/crossfold/training_audit/`; the pre-registration is `HYPOTHESIS-crossfold-v2.md`.*
